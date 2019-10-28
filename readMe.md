@@ -10,7 +10,7 @@ In order to build this project, you will need to install:
 
 * [Python3](https://www.python.org/downloads/)
 * [Pip](https://pip.pypa.io/en/stable/installing/)
-* [Django]
+* [Django](https://docs.djangoproject.com/en/2.2/topics/install/)
 
 After downloading Python3 and Pip from the websites shown above, you can install Django (on Ubuntu) using:
 ```
