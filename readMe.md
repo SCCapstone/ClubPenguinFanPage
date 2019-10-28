@@ -4,18 +4,39 @@ This program is an SPA where the user can upload a document that is a .pdf or .d
 Term Frequency-Inverse Document Frequency, Sentiment Analysis, and Latent Direchlet Allocation. The documents can be saved in files called "Projects", which will act as a means to organize the documents for a single project if need be.
 The projects can be accessed later by the user as long as they have created a login.
 
+# Technologies
+
+In order to build this project, you will need to install:
+
+* [Python3](https://www.python.org/downloads/)
+* [Pip](https://pip.pypa.io/en/stable/installing/)
+* [Django]
+
+After downloading Python3 and Pip from the websites shown above, you can install Django (on Ubuntu) using:
+```
+pip install Django
+```
+
+# Running
+
+To run the app on your laptop, use the Linux command:
+```
+python3 manage.py runserver
+```
+
+
 ## Deployment
 
 
 ## Testing
 
 ## Authors
-Matthew O'Neill
+# 1. Contact info
 
-Ainsley McWaters
-
-Suzie Prentice
-
-Samyu Comandur
-
-Steven Maxwell
+|Name:                 |Gmail:                                |
+|----------------------|--------------------------------------|
+|Samyu Comandur        |samyuktha.comandur@gmail.com          |
+|Ainsley McWaters      |mcwatera@gmail.com                    |
+|Suzie Prentice        |suzanneprentice26@gmail.com           |
+|Matt O’Neill          |matthew.oneill71@gmail.com            |
+|Steven Maxwell        |maxwellstevene@gmail.com              |
