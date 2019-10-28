@@ -31,7 +31,6 @@ python3 manage.py runserver
 ## Testing
 
 ## Authors
-# 1. Contact info
 
 |Name:                 |Gmail:                                |
 |----------------------|--------------------------------------|
