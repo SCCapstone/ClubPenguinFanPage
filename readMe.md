@@ -11,7 +11,11 @@ The projects can be accessed later by the user as long as they have created a lo
 
 ## Authors
 Matthew O'Neill
+
 Ainsley McWaters
+
 Suzie Prentice
+
 Samyu Comandur
+
 Steven Maxwell
