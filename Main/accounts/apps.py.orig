@@ -1,0 +1,13 @@
+<<<<<<< HEAD
+from django.apps import AppConfig
+
+
+class AccountsConfig(AppConfig):
+    name = 'accounts'
+=======
+from django.apps import AppConfig
+
+
+class AccountsConfig(AppConfig):
+    name = 'accounts'
+>>>>>>> 5d307ab4db1164b647826e519903989db24a7518
