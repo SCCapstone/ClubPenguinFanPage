@@ -6,17 +6,8 @@
 {% if user.is_authenticated %}
   Hi {{ user.username }}!
   <p>
-	This oneillm71 Milestone 3 project code. <br>
-	This project uses Django as the means to run these web apps. <br>
-	This project consists of most of the elements of a login screen. <br>
-	The box below is for the user to input a word that is found in this <br>
-	body of text and it will return the frequency at which it appears.
+	This is the Home Page <br>
   </p>
-<form action= {% url 'result' % method="post">
-	<textarea rows="20" cols="70"></textarea>
-	<br>
-	<input type="submit" value="COUNT!!">
-</form>
   <p><a href="{% url 'logout' %}">Logout</a></p>
 {% else %}
   <p>You are not logged in</p>
