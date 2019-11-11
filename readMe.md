@@ -26,7 +26,7 @@ python3 manage.py runserver
 
 
 ## Deployment
-
+We will be deploying our website using Google Cloud Platform's [App Engine Standard Environment]https://cloud.google.com/appengine/. 
 
 ## Testing
 
