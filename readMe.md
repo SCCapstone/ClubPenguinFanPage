@@ -19,8 +19,9 @@ pip install Django
 
 # Running
 
-To run the app on your laptop, use the Linux command:
+To run the app on your laptop, log into the virtual environment and use the Linux command:
 ```
+source env/bin/activate
 python3 manage.py runserver
 ```
 
