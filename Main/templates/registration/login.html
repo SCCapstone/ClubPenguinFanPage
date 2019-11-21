@@ -1,14 +1,40 @@
-{%extends 'base.html' %}
+{% load static %}
 
-{% block title %}Login{% endblock %}
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>{% block title %}Login{% endblock %}</title>
+	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+	<link rel="stylesheet" type="text/css" href="{% static 'Main/nav.css' %}">
+ 	<link href="https://fonts.googleapis.com/css?family=Rajdhani|Roboto+Condensed|Roboto+Slab&display=swap" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="{% static 'Main/login.css' %}">
+</head>
+<body>
 
 {% block content %}
-<h2>Login</h2>
-<form method="post">
-	{% csrf_token %}
-	{{ form.as_p }}
-	<button type="submit">Login</button>
-	<a href = "{% url 'signup' %}">Sign Up</a>
-	<a href="{% url 'password_reset' %}">Reset password</a>
-</form>
+<h2 id="logintitle">Text Penguin</h2>
+<div id="logincenter">
+	<form method="post" id="loginform">
+		{% csrf_token %}
+		<h4 class="loginsection">Email Address</h4>
+		<input class="loginformbox" type="email" name="email"></input>
+		<h4 class="loginsection">Password</h4>
+		<input class="loginformbox" type="password" name="password"></input>
+		
+		<div id="checkforgot">
+			<span>
+				<label><input type="checkbox" id="rememberme" name="rememberme"/>&nbsp;Remember Me</label>
+				<a href="{% url 'password_reset' %}" id="forgotpassword">Forgot Password</a>
+			</span>
+		</div>
+
+		<button type="submit" id="loginsubmit">Login</button>
+	</form><br>
+	<span id="addloginlinks"><a href = "{% url 'signup' %}" id="addlink1">Create an Account</a><a href= "{% url 'home' %}" id=
+"addlink2">Continue as Guest</a></span>
+</div>
 {% endblock %}
+
+</body>
