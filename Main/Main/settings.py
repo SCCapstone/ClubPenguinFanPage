@@ -32,7 +32,7 @@ ALLOWED_HOSTS = ['0.0.0.0', 'localhost']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
-    'django.contrib.auth',
+    'django.contrib.auth', #lets us use authentifications stuff
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',

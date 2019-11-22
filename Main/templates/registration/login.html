@@ -16,12 +16,13 @@
 {% block content %}
 <h2 id="logintitle">Text Penguin</h2>
 <div id="logincenter">
-	<form method="post" id="loginform">
+
+	<form method="post" id="loginform" action="">
 		{% csrf_token %}
 		<h4 class="loginsection">Email Address</h4>
-		<input class="loginformbox" type="email" name="email"></input>
+		<input class="loginformbox" type="text" name="username">
 		<h4 class="loginsection">Password</h4>
-		<input class="loginformbox" type="password" name="password"></input>
+		<input class="loginformbox" type="password" name="password" >
 		
 		<div id="checkforgot">
 			<span>
@@ -32,6 +33,7 @@
 
 		<button type="submit" id="loginsubmit">Login</button>
 	</form><br>
+
 	<span id="addloginlinks"><a href = "{% url 'signup' %}" id="addlink1">Create an Account</a><a href= "{% url 'home' %}" id=
 "addlink2">Continue as Guest</a></span>
 </div>
