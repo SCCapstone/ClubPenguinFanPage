@@ -20,12 +20,15 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '4a*!t_bm+!w3t*@1#7ttr@y9tab-&a4()umo3+k&^y)bd1d+cz'
+SECRET_KEY =os.environ['SECRET_KEY'] 		#'4a*!t_bm+!w3t*@1#7ttr@y9tab-&a4()umo3+k&^y)bd1d+cz'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ['DEBUG'] == 'True'			#True
 
-ALLOWED_HOSTS = ['0.0.0.0', 'localhost']
+ALLOWED_HOSTS = [
+	'textpenguin1.appspot.com'
+	'0.0.0.0', 'localhost'
+]
 
 
 # Application definition
@@ -77,7 +80,11 @@ WSGI_APPLICATION = 'Main.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+	'HOST': os.environ['DB_HOST'],
+	'PORT': os.environ['DB_PORT'],
+        'NAME': os.environ['DB_NAME'],			#os.path.join(BASE_DIR, 'db.sqlite3'),
+	'USER': os.environ['DB_USER'],
+	'PASSWORD': os.environ['DB_PASSWORD']
     }
 }
 
@@ -118,7 +125,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = os.path.join(os.path.dirname(BASE_DIR), 'textpenguin'		#'/static/'
+
+STATICFILES_DIRS = [
+	os.path.join(BASE_DIR, 'static'),
+]
 
 LOGIN_REDIRECT_URL = '/'
 
