@@ -13,6 +13,16 @@
 		<p>Here is Recently Used!</p>
 	</div>
 	{% if user.is_authenticated %}
+<style>
+    textarea {
+    position:relative;
+    top:5px;
+    left:385px;
+    }
+</style>
+<textarea name = "textInput" cols="70" rows="25">
+Enter some text!
+</textarea>
 	{% else %}
 {% endif %}
 {% endblock %}
