@@ -5,18 +5,15 @@
 {% block title %}Home{% endblock %}
 
 {% block extra_head %}
-	<link rel="stylesheet" type="text/css" href="{% static 'Main/home.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'Main/resources.css' %}">
 {% endblock %}
 
 {% block content %}
+	<div id="placeholder">
+		<p>Here is Resources!</p>
+	</div>
 	{% if user.is_authenticated %}
-		<div id="login_status">
-  		<p>Resources!</p>
-		</div>
+
 	{% else %}
-  <div id="login_status">
-  	<p>You are not logged in</p>
-  	<a href="{% url 'login' %}">Login</a>
-  </div>
-{% endif %}
+	{% endif %}
 {% endblock %}

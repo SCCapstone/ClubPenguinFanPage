@@ -1,24 +1,27 @@
-<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
-
 {% extends 'base.html' %}
-body{
-	background-color: red;
-}
-{% block title %}Home{% endblock %}
+
+{% load static %}
+
+{% block title %}Results{% endblock %}
+
+{% block extra_head %}
+	<link rel="stylesheet" type="text/css" href="{% static 'Main/result.css' %}">
+{% endblock %}
 
 {% block content %}
 {% if user.is_authenticated %}
 <body>
-  <h1>Text Penguin</h1>
-  Hi {{ user.username }}!
-  <p>
-  	<br> Input text: <br>
-  	<br> {{ text | safe}} <br> 
-  	<br> TF-IDF Results <br>
-	<br> {{ newtext | safe}} <br>
-  </p>
-  <p><a href="{% url 'logout' %}">Logout</a></p>
+  <div id="resultscontents">
+	  <h1>Text Penguin</h1>
+	  Hi {{ user.username }}!
+	  <p>
+	  	<br> Input text: <br>
+	  	<br> {{ text | safe}} <br> 
+	  	<br> TF-IDF Results <br>
+		<br> {{ newtext | safe}} <br>
+	  </p>
+	  <p><a href="{% url 'logout' %}">Logout</a></p>
+  </div>
 </body>
 {% else %}
 <body>
