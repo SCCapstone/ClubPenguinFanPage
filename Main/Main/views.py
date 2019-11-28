@@ -4,6 +4,7 @@ import sys
 import nltk, string, os, pandas as pd
 import string
 import numpy as np
+from sklearn.feature_extraction import text
 from sklearn.feature_extraction.text import TfidfVectorizer
 from nltk.stem.porter import PorterStemmer
 
@@ -12,13 +13,14 @@ def button(request):
     return render(request, 'home.html')
 
 # runs tf-idf algorithm, returns ranked list 
-def tfidf(text):
+def tfidf(txt):
     tokens = []
     s = ''
-    for elem in text:
+    for elem in txt:
         tokens.append(elem.lower().translate(string.punctuation))
-
-    vectorizer = TfidfVectorizer(stop_words='english')
+    user_stopwords = ['man']
+    stopwords = text.ENGLISH_STOP_WORDS.union(user_stopwords)
+    vectorizer = TfidfVectorizer(stop_words=stopwords)
     vectors = vectorizer.fit_transform(tokens)
     feature_names = vectorizer.get_feature_names()
 
@@ -36,10 +38,10 @@ def tfidf(text):
     
 
 def result(request):
-    text = ['the man went out for a walk',
+    txt = ['the man went out for a walk',
             'the children sat around the fire',
             'fires are burning down homes',
             'i shall walk to the grocery store tomorrow']
-    newtext = tfidf(text)
-    textout = '<br>'.join(text)
+    newtext = tfidf(txt)
+    textout = '<br>'.join(txt)
     return render(request, 'result.html', {'text': textout, 'newtext': newtext})
