@@ -1,0 +1,8 @@
+#resultscontents {
+	width: 40%;
+	margin: 50px auto;
+	border: solid black 1px;
+	padding: 10px 20px;
+	text-align: center;
+	background-color: white;
+}
