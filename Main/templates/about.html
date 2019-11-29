@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}Home{% endblock %}
+
+{% block extra_head %}
+	<link rel="stylesheet" type="text/css" href="{% static 'Main/about.css' %}">
+{% endblock %}
+
+{% block content %}
+	<div id="placeholder">
+		<p>Here is About!</p>
+	</div>
+	{% if user.is_authenticated %}
+	{% else %}
+	{% endif %}
+{% endblock %}
