@@ -11,7 +11,14 @@
 {% block content %}
 	{% if user.is_authenticated %}
 		<div id="login_status">
-  		<p>Hi {{ user.username }}!</p>
+		<p>Hi {{ user.username }}!</p>
+		<body> 
+			<form action="/result/" method="post">
+				{% csrf_token %}
+				{{ form }}
+				<input type="submit" value="Submit">
+			</form>
+		</body> 
   		<p><a href="{% url 'logout' %}">Logout</a></p>
 		</div>
 	{% else %}
