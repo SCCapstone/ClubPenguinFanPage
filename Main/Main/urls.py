@@ -25,9 +25,10 @@ urlpatterns = [
 	path('accounts/', include('accounts.urls')),
 	path('accounts/', include('django.contrib.auth.urls')),
 	path('', TemplateView.as_view(template_name='home.html'), name='home'),
-        path('result/', views.result, name='result'),
+    path('result/', views.result, name='result'),
 	path('recentlyused/', TemplateView.as_view(template_name='recentlyused.html'), name='recentlyused'),
 	path('resources/', TemplateView.as_view(template_name='resources.html'), name='resources'),
-	path('about/', TemplateView.as_view(template_name='about.html'), name='about'),	
+	path('about/', TemplateView.as_view(template_name='about.html'), name='about'),
+	path('createProject/',  views.createProject, name='createProject'),
 
 ]

@@ -6,23 +6,28 @@
 
 {% block extra_head %}
 	<link rel="stylesheet" type="text/css" href="{% static 'Main/recentlyused.css' %}">
+	<style>
+         .button {
+         background-color: #1c87c9;
+         border: none;
+         color: white;
+         padding: 20px 20px;
+         text-align: center;
+         text-decoration: none;
+         display: inline-block;
+         font-size: 20px;
+         margin: 0 auto;
+         cursor: pointer;
+         }
+      </style>
 {% endblock %}
 
 {% block content %}
 	<div id="placeholder">
 		<p>Here is Recently Used!</p>
+		<a href="/createProject" class="button">Create Project</a>
 	</div>
 	{% if user.is_authenticated %}
-<style>
-    textarea {
-    position:relative;
-    top:5px;
-    left:385px;
-    }
-</style>
-<textarea name = "textInput" cols="70" rows="25">
-Enter some text!
-</textarea>
 	{% else %}
 {% endif %}
 {% endblock %}

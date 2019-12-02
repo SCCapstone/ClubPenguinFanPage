@@ -1,15 +1,14 @@
-from django.http import HttpResponse
 from django.shortcuts import render
-import sys
-import nltk, string, os, pandas as pd
+import pandas as pd
 import string
-import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer
-from nltk.stem.porter import PorterStemmer
+from .forms import createProjectForm  # Knows this exists until running server
+from django.shortcuts import render
 
-from subprocess import run,PIPE
+
 def button(request):
     return render(request, 'home.html')
+
 
 # runs tf-idf algorithm, returns ranked list 
 def tfidf(text):
@@ -43,3 +42,12 @@ def result(request):
     newtext = tfidf(text)
     textout = '<br>'.join(text)
     return render(request, 'result.html', {'text': textout, 'newtext': newtext})
+
+
+def createProject(request):
+    return render(request, 'createProject.html')
+
+
+def newProject(self, request):
+    form = createProjectForm()
+    return render(request, 'createProject.html', {'form': form})

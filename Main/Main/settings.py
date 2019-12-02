@@ -26,7 +26,7 @@ SECRET_KEY = '4a*!t_bm+!w3t*@1#7ttr@y9tab-&a4()umo3+k&^y)bd1d+cz'
 DEBUG = True
 
 
-ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '6196c1bd34c2404f9d6c1e5ccddd9471.vfs.cloud9.us-east-2.amazonaws.com'] #aws one is ainsley
+ALLOWED_HOSTS = ['0.0.0.0', '127.0.0.1', 'localhost', '6196c1bd34c2404f9d6c1e5ccddd9471.vfs.cloud9.us-east-2.amazonaws.com'] #aws one is ainsley
 
 
 
@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-	'accounts.apps.AccountsConfig',
+    'accounts.apps.AccountsConfig',
 ]
 
 MIDDLEWARE = [
