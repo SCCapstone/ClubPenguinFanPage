@@ -1,5 +1,7 @@
 from django import forms
 
 class InputTextForm(forms.Form):
-    input_text = forms.CharField(label="Input Text", max_length=500)
+    analysis_text = forms.CharField(label="Input Text", max_length=1000)
+    stop_words = forms.CharField(label="Stop Words", max_length=200)
+
 

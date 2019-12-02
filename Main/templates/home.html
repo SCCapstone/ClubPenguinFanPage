@@ -16,6 +16,7 @@
 			<form action="/result/" method="post">
 				{% csrf_token %}
 				{{ form }}
+				Create and save the output to a file <input type="checkbox" name="output_file" value="Output File" > <br>
 				<input type="submit" value="Submit">
 			</form>
 		</body> 
