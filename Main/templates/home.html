@@ -13,9 +13,9 @@
 		<div id="login_status">
 		<p>Hi {{ user.username }}!</p>
 		<body> 
-			<form action="/result/" method="post">
+			<form action="/result/" method="POST" class="post-form" enctype="multipart/form-data">
 				{% csrf_token %}
-				{{ form }}
+				{{ form.as_p }}
 				Create and save the output to a file <input type="checkbox" name="output_file" value="Output File" > <br>
 				<input type="submit" value="Submit">
 			</form>

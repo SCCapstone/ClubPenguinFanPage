@@ -9,9 +9,8 @@ from nltk.stem.porter import PorterStemmer
 from .forms import InputTextForm
 
 from subprocess import run,PIPE
-def button(request):
-    return render(request, 'home.html')
-
+# def button(request):
+#     return render(request, 'home.html')
 
 def get_input_text(request):
     # if this is a POST request we need to process the form data
