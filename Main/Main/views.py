@@ -7,6 +7,7 @@ import numpy as np
 from sklearn.feature_extraction import text
 from sklearn.feature_extraction.text import TfidfVectorizer
 from nltk.stem.porter import PorterStemmer
+from datetime import date 
 
 from subprocess import run,PIPE
 def button(request):
@@ -34,7 +35,7 @@ def tfidf(txt):
 
     ranking = pd.DataFrame(data, columns=['feat','rank'])
     ranking = ranking.sort_values('rank', ascending=False)
-    return ranking[['feat','rank']].to_html(index=False)
+    return ranking[['feat','rank']]
     
 
 def result(request):
@@ -42,6 +43,8 @@ def result(request):
             'the children sat around the fire',
             'fires are burning down homes',
             'i shall walk to the grocery store tomorrow']
-    newtext = tfidf(txt)
     textout = '<br>'.join(txt)
+    newtext = tfidf(txt).to_html(index=False)
+    filename = 'output-' + str(date.today()) + '.txt'
+    tfidf(txt).to_csv(filename, header=None, index=None, sep=' ', mode='a')
     return render(request, 'result.html', {'text': textout, 'newtext': newtext})
