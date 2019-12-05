@@ -2,7 +2,7 @@ from django.shortcuts import render
 import pandas as pd
 import string
 from sklearn.feature_extraction.text import TfidfVectorizer
-from .forms import createProjectForm  # Knows this exists until running server
+from .forms import createProjectForm
 from django.shortcuts import render
 
 
@@ -48,6 +48,12 @@ def createProject(request):
     return render(request, 'createProject.html')
 
 
+#def newProject(self, request):
+    #form = createProjectForm()
+    #return render(request, 'createProject.html', {'form': form})
+
 def newProject(self, request):
-    form = createProjectForm()
-    return render(request, 'createProject.html', {'form': form})
+    if request.method == 'POST':
+        if request.POST.get('docText'):
+            print(request.POST.get('textInput'))
+    return render(request, 'createProject.html')

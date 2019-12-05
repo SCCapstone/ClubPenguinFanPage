@@ -2,7 +2,7 @@
 
 {% load static %}
 
-{% block title %}Results{% endblock %}
+{% block title %}createproject{% endblock %}
 
 {% block extra_head %}
 	<link rel="stylesheet" type="text/css" href="{% static 'Main/createProject.css' %}">
@@ -13,29 +13,36 @@
          color: white;
          padding: 20px 20px;
          text-align: center;
-         text-decoration: none;
-         display: inline-block;
          font-size: 20px;
-         margin: 0 auto;
-         cursor: pointer;
+         position: absolute;
+         left: 39%;
+         bottom: 150px;
          }
       </style>
 {% endblock %}
 
 {% block content %}
-    <div id="placeholder">
-		<p>Create A Document to Start Your Project!</p>
+
+    <style>
+    textarea {
+    position:relative;
+    left:500px;
+    top:80px;
+    }
+    </style>
+
+    <form method=="post">
+        {% csrf_token %}
+        <textarea name = "textInput" cols="50" rows="20">
+        Enter text for your first document in the project!
+         </textarea>
+        <input type="submit" value="Submit">
+    </form>
+
+    <div id="button">
 		<a href="/recentlyused" class="button">Back</a>
     </div>
 {% if user.is_authenticated %}
-<form method= "post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type ="submit">Create Project</button>
-</form>
 {% else %}
-
-
 {% endif %}
-
 {% endblock %}
