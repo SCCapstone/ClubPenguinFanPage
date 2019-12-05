@@ -12,13 +12,19 @@
 	{% if user.is_authenticated %}
 		<div id="login_status">
 		<p>Hi {{ user.username }}!</p>
-		<p>Please upload a file or enter text below</p>
+		<p>Please upload a file or enter your desired text below! </p>
 		<body> 
-			<form action="/result/" method="POST" class="post-form" enctype="multipart/form-data">
+			<form action="{% url 'home' %}" method="POST">
 				{% csrf_token %}
-				{{ form.as_p }}
-				Create and save the output to a file <input type="checkbox" name="output_file" value="Output File" > <br>
-				<input type="submit" value="Submit">
+				<p>Upload File:<p> <br>
+				<input type="file" name="uploadfile"> <br><br>
+				<p>Upload your text here! <p>
+				<textarea name='input_text' placeholder="Upload text for analysis here!" style= "width:100%"> </textarea> <br>
+				<p>Custom stopwords: <p>
+				 <textarea name='stopwords' placeholder="Add any words you would like to exclude from analysis here!" 
+					 style= "width:100%"> </textarea> <br>
+				 <br> Create and save the output to a file <input type="checkbox" name="output_file" value="Output File" > <br>
+				 <br> <input type="submit" value="Submit"> <br>
 			</form>
 		</body> 
   		<p><a href="{% url 'logout' %}">Logout</a></p>
