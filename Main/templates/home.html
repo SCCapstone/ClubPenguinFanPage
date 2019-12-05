@@ -12,6 +12,7 @@
 	{% if user.is_authenticated %}
 		<div id="login_status">
 		<p>Hi {{ user.username }}!</p>
+		<p>Please upload a file or enter text below</p>
 		<body> 
 			<form action="/result/" method="POST" class="post-form" enctype="multipart/form-data">
 				{% csrf_token %}

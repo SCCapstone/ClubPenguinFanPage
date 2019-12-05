@@ -7,6 +7,8 @@ import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer
 from nltk.stem.porter import PorterStemmer
 from .forms import InputTextForm
+#from .forms import UploadFileForm
+from .functions.functions import handle_uploaded_file 
 
 from subprocess import run,PIPE
 # def button(request):
@@ -16,9 +18,10 @@ def get_input_text(request):
     # if this is a POST request we need to process the form data
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
-        form = InputTextForm(request.POST)
+        form = InputTextForm(request.POST, request.FILES)
         # check whether it's valid:
         if form.is_valid():
+            handle_uploaded_file(request.FILES['file'])
             # process the data in form.cleaned_data as required
             # ...
             # redirect to a new URL:
@@ -54,6 +57,7 @@ def tfidf(text):
     
 
 def result(request):
+    #text = request.POST['analysis_text']
     text = ['the man went out for a walk',
             'the children sat around the fire',
             'fires are burning down homes',
