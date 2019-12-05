@@ -57,11 +57,10 @@ def tfidf(text):
     
 
 def result(request):
-    #text = request.POST['analysis_text']
-    text = ['the man went out for a walk',
+    txt = ['the man went out for a walk',
             'the children sat around the fire',
             'fires are burning down homes',
             'i shall walk to the grocery store tomorrow']
-    newtext = tfidf(text)
-    textout = '<br>'.join(text)
+    newtext = tfidf(txt)
+    textout = '<br>'.join(txt)
     return render(request, 'result.html', {'text': textout, 'newtext': newtext})
