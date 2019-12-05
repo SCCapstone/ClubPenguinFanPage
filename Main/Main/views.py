@@ -56,7 +56,7 @@ def tfidf(txt):
 
     ranking = pd.DataFrame(data, columns=['feat','rank'])
     ranking = ranking.sort_values('rank', ascending=False)
-    return ranking[['feat','rank']]
+    return ranking[['feat','rank']], ranking[['feat','rank']].to_html(index=False)
     
 
 def result(request):
@@ -65,9 +65,8 @@ def result(request):
             'fires are burning down homes',
             'i shall walk to the grocery store tomorrow']
     textout = '<br>'.join(txt)
-    newtext = tfidf(txt).to_html(index=False)
     filename = 'output-' + str(date.today()) + '.txt'
-    tfidf(txt).to_csv(filename, header=None, index=None, sep=' ', mode='a')
-    newtext = tfidf(txt)
+    tfidf(txt)[0].to_csv(filename, header=None, index=None, sep=' ', mode='a')
+    newtext = tfidf(txt)[1]
     textout = '<br>'.join(txt)
     return render(request, 'result.html', {'text': textout, 'newtext': newtext})
