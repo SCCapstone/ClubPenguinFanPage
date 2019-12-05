@@ -8,10 +8,31 @@ from sklearn.feature_extraction import text
 from sklearn.feature_extraction.text import TfidfVectorizer
 from nltk.stem.porter import PorterStemmer
 from datetime import date 
+from .forms import InputTextForm
+#from .forms import UploadFileForm
+from .functions.functions import handle_uploaded_file 
 
 from subprocess import run,PIPE
-def button(request):
-    return render(request, 'home.html')
+# def button(request):
+#     return render(request, 'home.html')
+
+def get_input_text(request):
+    # if this is a POST request we need to process the form data
+    if request.method == 'POST':
+        # create a form instance and populate it with data from the request:
+        form = InputTextForm(request.POST, request.FILES)
+        # check whether it's valid:
+        if form.is_valid():
+            handle_uploaded_file(request.FILES['file'])
+            # process the data in form.cleaned_data as required
+            # ...
+            # redirect to a new URL:
+            return HttpResponseRedirect('/result/')
+    # if a GET (or any other method) we'll create a blank form
+    else:
+        form = InputTextForm()
+    return render(request, 'home.html', {'form': form})
+
 
 # runs tf-idf algorithm, returns ranked list 
 def tfidf(txt):
@@ -47,4 +68,6 @@ def result(request):
     newtext = tfidf(txt).to_html(index=False)
     filename = 'output-' + str(date.today()) + '.txt'
     tfidf(txt).to_csv(filename, header=None, index=None, sep=' ', mode='a')
+    newtext = tfidf(txt)
+    textout = '<br>'.join(txt)
     return render(request, 'result.html', {'text': textout, 'newtext': newtext})
