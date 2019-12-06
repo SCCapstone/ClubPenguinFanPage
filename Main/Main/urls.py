@@ -19,17 +19,16 @@ from django.views.generic.base import TemplateView
 from django.conf.urls import url
 
 from . import views
-from .views import get_input_text
 
 urlpatterns = [
     path('admin/', admin.site.urls),
 	path('accounts/', include('accounts.urls')),
 	path('accounts/', include('django.contrib.auth.urls')),
 	path('', views.home, name='home'), 
-        path('result/', views.result, name='result'),
+    path('result/', views.result, name='result'),
 	path('recentlyused/', TemplateView.as_view(template_name='recentlyused.html'), name='recentlyused'),
 	path('resources/', TemplateView.as_view(template_name='resources.html'), name='resources'),
 	path('about/', TemplateView.as_view(template_name='about.html'), name='about'),
-    path('home/', TemplateView.as_view(template_name='home.html'), name='home'),    
+    path('home/', views.home, name='home'),
 
 ]

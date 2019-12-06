@@ -1,5 +1,6 @@
-from django.http import HttpResponse
-from django.shortcuts import render
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render, redirect
+from django.urls import reverse
 import sys
 import nltk, string, os, pandas as pd
 import string
@@ -17,14 +18,7 @@ from subprocess import run,PIPE
 #     return render(request, 'home.html')
 
 def home(request):
-    if request.method == 'POST':
-        upfile = request.POST.get("uploadfile")
-        txt = request.POST.get("input_text")
-        sw = request.POST.get("stopwords")
-        # unsure of the line below
-        return HttpResponseRedirect('/result/')
-    else:
-        return render(request, "home.html", txt, sw)
+    return render(request, "home.html")
 
 '''
 def get_input_text(request):
@@ -46,12 +40,13 @@ def get_input_text(request):
 '''
 
 # runs tf-idf algorithm, returns ranked list 
-def tfidf(txt):
+def tfidf(txt, sw):
     tokens = []
     s = ''
     for elem in txt:
         tokens.append(elem.lower().translate(string.punctuation))
-    user_stopwords = ['man']
+    #parse this
+    user_stopwords = sw_clean(sw)
     stopwords = text.ENGLISH_STOP_WORDS.union(user_stopwords)
     vectorizer = TfidfVectorizer(stop_words=stopwords)
     vectors = vectorizer.fit_transform(tokens)
@@ -67,21 +62,55 @@ def tfidf(txt):
 
     ranking = pd.DataFrame(data, columns=['feat','rank'])
     ranking = ranking.sort_values('rank', ascending=False)
-    return ranking[['feat','rank']], ranking[['feat','rank']].to_html(index=False)
+    return ranking[['feat','rank']][0:15], ranking[['feat','rank']][0:15].to_html(index=False)
     
 
-def result(request, intxt, insw):
-    txt = intxt
-    sw = insw
-    '''
-    txt = ['the man went out for a walk',
+def result(request):
+    if request.method == 'POST':
+        upfile = request.POST.get("uploadfile")
+        txt = request.POST.get("input_text")
+        sw = request.POST.get("stopwords")
+        stopwords = text.ENGLISH_STOP_WORDS.union(sw)
+        if txt is '':
+            txt = ['the man went out for a walk',
             'the children sat around the fire',
             'fires are burning down homes',
             'i shall walk to the grocery store tomorrow']
-    '''
+            textout = '<br>'.join(txt)
+            filename = 'output-' + str(date.today()) + '.txt'
+            tfidf(txt, sw)[0].to_csv(filename, header=None, index=None, sep=' ', mode='a')
+            newtext = tfidf(txt, sw)[1]
+            textout = '<br>'.join(txt) 
+            return render(request, 'result.html', {'text': textout, 'newtext': newtext})
+    else:
+        txt = ['the man went out for a walk',
+            'the children sat around the fire',
+            'fires are burning down homes',
+            'i shall walk to the grocery store tomorrow']
     textout = '<br>'.join(txt)
     filename = 'output-' + str(date.today()) + '.txt'
-    tfidf(txt)[0].to_csv(filename, header=None, index=None, sep=' ', mode='a')
-    newtext = tfidf(txt)[1]
+    txt = clean_up(txt)
+    tfidf(txt, sw)[0].to_csv(filename, header=None, index=None, sep=' ', mode='a')
+    newtext = tfidf(txt, sw)[1]
     textout = '<br>'.join(txt)
     return render(request, 'result.html', {'text': textout, 'newtext': newtext})
+
+
+#other methods for other stuff
+def clean_up(txt):
+    clean_text = txt
+    clean_list = clean_text.split("\r\n")
+    num_of_doc = len(clean_list)
+    return clean_list
+    
+def sw_clean(sw):
+    clean_sw = sw
+    sw_list = clean_sw.split(" ")
+    return sw_list
+
+#def read_file_text(file):
+
+#things to do (Ainsley)
+#-style project creation/recently used
+#-fonts of tfidf results and input at home
+#-upload file

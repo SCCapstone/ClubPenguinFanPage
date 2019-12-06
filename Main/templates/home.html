@@ -14,15 +14,15 @@
 		<p>Hi {{ user.username }}!</p>
 		<p>Please upload a file or enter your desired text below! </p>
 		<body> 
-			<form action="{% url 'home' %}" method="POST">
+			<form enctype="multipart/form-data" action="{% url 'result' %}" method="POST">
 				{% csrf_token %}
-				<p>Upload File:<p> <br>
-				<input type="file" name="uploadfile"> <br><br>
-				<p>Upload your text here! <p>
-				<textarea name='input_text' placeholder="Upload text for analysis here!" style= "width:100%"> </textarea> <br>
+				<p>Upload File:<p><br>
+				<input id="inp" type="file" name="uploadfile"><br><br>
+				<p>Upload your text here!<p>
+				<textarea name='input_text' placeholder="Upload text for analysis here!" style= "width:100%"  rows="10" cols="50"></textarea> <br>
 				<p>Custom stopwords: <p>
 				 <textarea name='stopwords' placeholder="Add any words you would like to exclude from analysis here!" 
-					 style= "width:100%"> </textarea> <br>
+					 style= "width:100%"></textarea> <br>
 				 <br> Create and save the output to a file <input type="checkbox" name="output_file" value="Output File" > <br>
 				 <br> <input type="submit" value="Submit"> <br>
 			</form>

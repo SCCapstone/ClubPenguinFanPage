@@ -15,10 +15,10 @@
 	  <h1>Text Penguin</h1>
 	  Hi {{ user.username }}!
 	  <p>
-	  	<br> Input text: <br>
+	  	<br><strong> Input text: </strong><br>
 	  	<br> {{ text | safe}} <br> 
-	  	<br> TF-IDF Results <br>
-		<br> {{ newtext | safe}} <br>
+	  	<br><strong>TF-IDF Results</strong><br>
+		<br> <div id="newtextdiv">{{ newtext | safe}} </div><br>
 	  </p>
 	  <p><a href="{% url 'logout' %}">Logout</a></p>
   </div>
