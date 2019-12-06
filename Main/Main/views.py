@@ -16,6 +16,17 @@ from subprocess import run,PIPE
 # def button(request):
 #     return render(request, 'home.html')
 
+def home(request):
+    if request.method == 'POST':
+        upfile = request.POST.get("uploadfile")
+        txt = request.POST.get("input_text")
+        sw = request.POST.get("stopwords")
+        # unsure of the line below
+        return HttpResponseRedirect('/result/')
+    else:
+        return render(request, "home.html", txt, sw)
+
+'''
 def get_input_text(request):
     # if this is a POST request we need to process the form data
     if request.method == 'POST':
@@ -32,7 +43,7 @@ def get_input_text(request):
     else:
         form = InputTextForm()
     return render(request, 'home.html', {'form': form})
-
+'''
 
 # runs tf-idf algorithm, returns ranked list 
 def tfidf(txt):
@@ -59,11 +70,15 @@ def tfidf(txt):
     return ranking[['feat','rank']], ranking[['feat','rank']].to_html(index=False)
     
 
-def result(request):
+def result(request, intxt, insw):
+    txt = intxt
+    sw = insw
+    '''
     txt = ['the man went out for a walk',
             'the children sat around the fire',
             'fires are burning down homes',
             'i shall walk to the grocery store tomorrow']
+    '''
     textout = '<br>'.join(txt)
     filename = 'output-' + str(date.today()) + '.txt'
     tfidf(txt)[0].to_csv(filename, header=None, index=None, sep=' ', mode='a')
