@@ -24,20 +24,22 @@
 {% block content %}
 
     <style>
-    textarea {
-    position:relative;
-    left:500px;
-    top:80px;
+    #formholder {
+        width: 40%;
+        margin: 40px auto;
+        background: red;
     }
     </style>
 
-    <form method=="post">
-        {% csrf_token %}
-        <textarea name = "textInput" cols="50" rows="20">
-        Enter text for your first document in the project!
-         </textarea>
-        <input type="submit" value="Submit">
-    </form>
+    <div id="formholder">
+        <form method="post" id="createprojectform" action="{% url 'createProject' %}">
+            {% csrf_token %}
+            <input type="text" placeholder="Title of Project" name="titleInput"><br>
+            <textarea name="textInput" cols="50" rows="20" placeholder="Input the text of your first document!">
+            </textarea>
+            <input type="submit" value="Submit">
+        </form>
+    </div>
 
     <div id="button">
 		<a href="/recentlyused" class="button">Back</a>

@@ -19,15 +19,31 @@
          margin: 0 auto;
          cursor: pointer;
          }
+         
       </style>
 {% endblock %}
 
 {% block content %}
-	<div id="placeholder">
+    {% if user.is_authenticated %}
+
+    	<div id="projectitles">
+    	    {% for project in proj_list %}
+    	        <a href="/recentlyused/{{ project.id }}/">
+        	        <div class="individualproject">
+        	            <h4 class="projecttitle">{{ project.title }}</h4>
+        	        </div>
+    	        </a>
+    	    {% endfor %}
+    	</div>
+    	
+	{% else %}
+    {% endif %}
+    <div id="placeholder">
 		<p>Here is Recently Used!</p>
 		<a href="/createProject" class="button">Create Project</a>
 	</div>
-	{% if user.is_authenticated %}
-	{% else %}
-{% endif %}
+	
+	<div id="NONOZONE">
+	    <a href="/deleteallobjects">Delete All Projects and Documents</a>
+	</div>
 {% endblock %}
