@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render
-import sys
+import sys, os
 import nltk, string, os, pandas as pd
 import string
 import numpy as np
@@ -66,7 +66,11 @@ def result(request):
             'fires are burning down homes',
             'i shall walk to the grocery store tomorrow']
     textout = '<br>'.join(txt)
-    filename = 'output-' + str(date.today()) + '.txt'
+    filename = 'output.txt'
+    try:
+        os.remove(filename)
+    except:
+        print('file not found exception')
     tfidf(txt)[0].to_csv(filename, header=None, index=None, sep=' ', mode='a')
     newtext = tfidf(txt)[1]
     textout = '<br>'.join(txt)
@@ -74,8 +78,8 @@ def result(request):
 
 
 def download_file(request):
-    fl_path = 'output-' + str(date.today()) + '.txt'
-    filename = 'output-' + str(date.today()) + '.txt'
+    fl_path = 'output.txt'
+    filename = 'output.txt'
 
     fl = open(fl_path, 'r')
     mime_type, _ = mimetypes.guess_type(fl_path)
