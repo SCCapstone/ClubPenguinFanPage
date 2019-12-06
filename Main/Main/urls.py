@@ -26,13 +26,13 @@ urlpatterns = [
 	path('accounts/', include('accounts.urls')),
 	path('accounts/', include('django.contrib.auth.urls')),
 	path('', get_input_text, name='home'),
-        path('result/', views.result, name='result'),
-	path('recentlyused/', TemplateView.as_view(template_name='recentlyused.html'), name='recentlyused'),
+    path('result/', views.result, name='result'),
+	path('recentlyused/', views.recentlyused, name='recentlyused'),
 	path('resources/', TemplateView.as_view(template_name='resources.html'), name='resources'),
 	path('about/', TemplateView.as_view(template_name='about.html'), name='about'),
-        path('home/', TemplateView.as_view(template_name='home.html'), name='home'),  
-        path('Content-Disposition/', views.download_file),  
-        path('createProject/',  views.createProject, name='createProject'),
-        path('recentlyused/<int:project_id>/', views.project_detail, name='project_detail'),
-        path('deleteallobjects/', views.delete_all_projects, name="delete_all_projects")
+    path('home/', TemplateView.as_view(template_name='home.html'), name='home'),  
+    path('Content-Disposition/', views.download_file),  
+    path('createProject/',  views.createProject, name='createProject'),
+    path('recentlyused/<int:project_id>/', views.project_detail, name='project_detail'),
+    path('deleteallobjects/', views.delete_all_projects, name="delete_all_projects")
 ]

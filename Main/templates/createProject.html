@@ -27,7 +27,6 @@
     #formholder {
         width: 40%;
         margin: 40px auto;
-        background: red;
     }
     </style>
 
@@ -36,7 +35,7 @@
             {% csrf_token %}
             <input type="text" placeholder="Title of Project" name="titleInput"><br>
             <textarea name="textInput" cols="50" rows="20" placeholder="Input the text of your first document!">
-            </textarea>
+            </textarea><br>
             <input type="submit" value="Submit">
         </form>
     </div>

@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404, redirect, render_to_response
+from django.shortcuts import render, get_object_or_404, redirect
 import pandas as pd
 import string
 from django.http import HttpResponse
@@ -111,11 +111,11 @@ def createProject(request):
         context = {
             'proj_list': project_list,
         }
-        return redirect("/recentlyused")
+        return redirect("recentlyused")
     else:
         return render(request, 'createProject.html')
     
-def recentlyused(request, new_context={}):
+def recentlyused(request):
         Project = apps.get_model('accounts', 'Project')
         Document = apps.get_model('accounts', 'Document')
         user = request.user
@@ -123,7 +123,6 @@ def recentlyused(request, new_context={}):
         context = {
             'proj_list': project_list,
         }
-        context.update(context)
         return render(request,"recentlyused.html",context=context)
 
 #def newProject(self, request):
