@@ -6,13 +6,44 @@
 
 {% block extra_head %}
 	<link rel="stylesheet" type="text/css" href="{% static 'Main/recentlyused.css' %}">
+	<style>
+         .button {
+         background-color: #1c87c9;
+         border: none;
+         color: white;
+         padding: 20px 20px;
+         text-align: center;
+         text-decoration: none;
+         display: inline-block;
+         font-size: 20px;
+         margin: 0 auto;
+         cursor: pointer;
+         }
+         
+      </style>
 {% endblock %}
 
 {% block content %}
-	<div id="placeholder">
-		<p>Here is Recently Used!</p>
-	</div>
-	{% if user.is_authenticated %}
+    {% if user.is_authenticated %}
+
+    	<div id="projectitles">
+    	    {% for project in proj_list %}
+    	        <a href="/recentlyused/{{ project.id }}/">
+        	        <div class="individualproject">
+        	            <h4 class="projecttitle">{{ project.title }}</h4>
+        	        </div>
+    	        </a>
+    	    {% endfor %}
+    	</div>
+    	
 	{% else %}
-{% endif %}
+    {% endif %}
+    <div id="placeholder">
+		<p>Here is Recently Used!</p>
+		<a href="/createProject" class="button">Create Project</a>
+	</div>
+	
+	<div id="NONOZONE">
+	    <a href="/deleteallobjects">Delete All Projects and Documents</a>
+	</div>
 {% endblock %}
