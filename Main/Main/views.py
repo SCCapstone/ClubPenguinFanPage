@@ -11,6 +11,7 @@ from datetime import date
 from .forms import InputTextForm
 #from .forms import UploadFileForm
 from .functions.functions import handle_uploaded_file 
+import mimetypes
 
 from subprocess import run,PIPE
 # def button(request):
@@ -70,3 +71,14 @@ def result(request):
     newtext = tfidf(txt)[1]
     textout = '<br>'.join(txt)
     return render(request, 'result.html', {'text': textout, 'newtext': newtext})
+
+
+def download_file(request):
+    fl_path = 'output-' + str(date.today()) + '.txt'
+    filename = 'output-' + str(date.today()) + '.txt'
+
+    fl = open(fl_path, 'r')
+    mime_type, _ = mimetypes.guess_type(fl_path)
+    response = HttpResponse(fl, content_type=mime_type)
+    response['Content-Disposition'] = "attachment; filename=%s" % filename
+    return response
