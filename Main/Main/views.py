@@ -1,11 +1,9 @@
 from django.shortcuts import render, get_object_or_404, redirect
-import pandas as pd
-import string
-from django.http import HttpResponse, HttpResponseRedirect
 from django.apps import apps
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render, redirect
 from django.urls import reverse
-import sys, os
-import nltk, string, os, pandas as pd
+import nltk, string, sys, os, pandas as pd
 import numpy as np
 from sklearn.feature_extraction import text
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -22,6 +20,9 @@ from subprocess import run,PIPE
 
 def home(request):
     return render(request, "home.html")
+
+def button(request):
+    return render(request, 'home.html')
 
 # runs tf-idf algorithm, returns ranked list 
 def tfidf(txt, sw):
@@ -46,7 +47,7 @@ def tfidf(txt, sw):
 
     ranking = pd.DataFrame(data, columns=['feat','rank'])
     ranking = ranking.sort_values('rank', ascending=False)
-    return ranking[['feat','rank']], ranking[['feat','rank']][0:15].to_html(index=False)
+    return ranking[['feat','rank']][0:15], ranking[['feat','rank']][0:15].to_html(index=False)
     
 
 def result(request):
@@ -71,7 +72,6 @@ def result(request):
             'the children sat around the fire',
             'fires are burning down homes',
             'i shall walk to the grocery store tomorrow']
-    textout = '<br>'.join(txt)
     filename = 'output.txt'
     try:
         os.remove(filename)
