@@ -1,10 +1,9 @@
 from django.shortcuts import render, get_object_or_404, redirect
-import pandas as pd
-import string
-from django.http import HttpResponse
 from django.apps import apps
-import sys, os
-import nltk, string, os, pandas as pd
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render, redirect
+from django.urls import reverse
+import nltk, string, sys, os, pandas as pd
 import numpy as np
 from sklearn.feature_extraction import text
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -19,34 +18,20 @@ from subprocess import run,PIPE
 # def button(request):
 #     return render(request, 'home.html')
 
-def get_input_text(request):
-    # if this is a POST request we need to process the form data
-    if request.method == 'POST':
-        # create a form instance and populate it with data from the request:
-        form = InputTextForm(request.POST, request.FILES)
-        # check whether it's valid:
-        if form.is_valid():
-            handle_uploaded_file(request.FILES['file'])
-            # process the data in form.cleaned_data as required
-            # ...
-            # redirect to a new URL:
-            return HttpResponseRedirect('/result/')
-    # if a GET (or any other method) we'll create a blank form
-    else:
-        form = InputTextForm()
-    return render(request, 'home.html', {'form': form})
+def home(request):
+    return render(request, "home.html")
 
 def button(request):
     return render(request, 'home.html')
 
-
 # runs tf-idf algorithm, returns ranked list 
-def tfidf(txt):
+def tfidf(txt, sw):
     tokens = []
     s = ''
     for elem in txt:
         tokens.append(elem.lower().translate(string.punctuation))
-    user_stopwords = ['man']
+    #parse this
+    user_stopwords = sw_clean(sw)
     stopwords = text.ENGLISH_STOP_WORDS.union(user_stopwords)
     vectorizer = TfidfVectorizer(stop_words=stopwords)
     vectors = vectorizer.fit_transform(tokens)
@@ -62,25 +47,41 @@ def tfidf(txt):
 
     ranking = pd.DataFrame(data, columns=['feat','rank'])
     ranking = ranking.sort_values('rank', ascending=False)
-    return ranking[['feat','rank']], ranking[['feat','rank']].to_html(index=False)
+    return ranking[['feat','rank']][0:15], ranking[['feat','rank']][0:15].to_html(index=False)
     
 
 def result(request):
-    txt = ['the man went out for a walk',
+    if request.method == 'POST':
+        upfile = request.POST.get("uploadfile")
+        txt = request.POST.get("input_text")
+        sw = request.POST.get("stopwords")
+        stopwords = text.ENGLISH_STOP_WORDS.union(sw)
+        if txt is '':
+            txt = ['the man went out for a walk',
             'the children sat around the fire',
             'fires are burning down homes',
             'i shall walk to the grocery store tomorrow']
-    textout = '<br>'.join(txt)
+            textout = '<br>'.join(txt)
+            filename = 'output-' + str(date.today()) + '.txt'
+            tfidf(txt, sw)[0].to_csv(filename, header=None, index=None, sep=' ', mode='a')
+            newtext = tfidf(txt, sw)[1]
+            textout = '<br>'.join(txt) 
+            return render(request, 'result.html', {'text': textout, 'newtext': newtext})
+    else:
+        txt = ['the man went out for a walk',
+            'the children sat around the fire',
+            'fires are burning down homes',
+            'i shall walk to the grocery store tomorrow']
     filename = 'output.txt'
     try:
         os.remove(filename)
     except:
         print('file not found exception')
-    tfidf(txt)[0].to_csv(filename, header=None, index=None, sep=' ', mode='a')
-    newtext = tfidf(txt)[1]
+    txt = clean_up(txt)
+    tfidf(txt, sw)[0].to_csv(filename, header=None, index=None, sep=' ', mode='a')
+    newtext = tfidf(txt, sw)[1]
     textout = '<br>'.join(txt)
     return render(request, 'result.html', {'text': textout, 'newtext': newtext})
-
 
 def download_file(request):
     fl_path = 'output.txt'
@@ -156,3 +157,22 @@ def delete_all_projects(self):
     Project.objects.all().delete()
     print("All project and document objects have been deleted")
     return redirect("/")
+
+#other methods for other stuff
+def clean_up(txt):
+    clean_text = txt
+    clean_list = clean_text.split("\r\n")
+    num_of_doc = len(clean_list)
+    return clean_list
+    
+def sw_clean(sw):
+    clean_sw = sw
+    sw_list = clean_sw.split(" ")
+    return sw_list
+
+#def read_file_text(file):
+
+#things to do (Ainsley)
+#-style project creation/recently used
+#-fonts of tfidf results and input at home
+#-upload file
