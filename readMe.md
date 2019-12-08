@@ -30,10 +30,16 @@ python3 manage.py runserver
 Deployment utilized [Heroku's](https://www.heroku.com/home) deployment platform.  The deployment can be found here: [Text Penguin](http://textpenguin.herokuapp.com/)
 
 Notes about deployment:
--download output file currently not functional in deployment, but works in local development environment.
--user must be logged in to create a project, otherwise error occurs
--upload file function not currently in production
--text must be entered with a new line separating each "document"
+* download output file currently not functional in deployment, but works in local development environment.
+* user must be logged in to create a project, otherwise error occurs
+* upload file function not currently in production
+* text must be entered with a new line separating each "document"
+
+Testing login:
+username: clubpenguin
+password: gamecocks
+
+PLEASE LOG OUT AFTER USAGE.  ONLY ONE PERSON MAY BE LOGGED INTO ACCOUNT AT A TIME.
 
 ## Testing
 
