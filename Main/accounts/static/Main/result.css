@@ -6,3 +6,12 @@
 	text-align: center;
 	background-color: white;
 }
+
+#newtextdiv {
+	width: 100px;
+	margin: 0 auto;
+}
+
+#tfidftitle {
+	text-align: center;
+}

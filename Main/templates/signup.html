@@ -1,12 +1,27 @@
 {% extends 'base.html' %}
+{% load static %}
 
-{% block title %}Sign Up{% endblock %}
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>{% block title %}Sign Up{% endblock %}</title>
+	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+	<link rel="stylesheet" type="text/css" href="{% static 'Main/nav.css' %}">
+ 	<link href="https://fonts.googleapis.com/css?family=Rajdhani|Roboto+Condensed|Roboto+Slab&display=swap" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="{% static 'Main/signup.css' %}">
+</head>
+<body>
 
 {% block content %}
+<div class="container">
   <h2>Sign up</h2>
-  <form method="post" id="signupform">
+  <form method="post" novalidate>
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit">Sign up</button>
   </form>
+<!--</div>-->
+</div>
 {% endblock %}

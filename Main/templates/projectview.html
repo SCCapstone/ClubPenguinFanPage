@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}Project View{% endblock %}
+
+{% block extra_head %}
+	<link rel="stylesheet" type="text/css" href="{% static 'Main/projectview.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="placeholder">
+        <h3 id="projecttitle">{{ title }}</h3>
+        {% for document in doc_list %}
+            <p class="documenttext">{{ document.text }}</p>
+        {% endfor %}
+    </div>
+    {% if user.is_authenticated %}
+	{% else %}
+    {% endif %}
+{% endblock %}

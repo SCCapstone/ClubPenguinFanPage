@@ -1,9 +1,8 @@
-<<<<<<< HEAD
 from django.contrib import admin
 
 # Register your models here.
-=======
+
 from django.contrib import admin
 
 # Register your models here.
->>>>>>> 5d307ab4db1164b647826e519903989db24a7518
+

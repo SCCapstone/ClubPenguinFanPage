@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+import dj_database_url
+import django_heroku
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -25,21 +27,21 @@ SECRET_KEY = '4a*!t_bm+!w3t*@1#7ttr@y9tab-&a4()umo3+k&^y)bd1d+cz'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-
-ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1', '6196c1bd34c2404f9d6c1e5ccddd9471.vfs.cloud9.us-east-2.amazonaws.com'] #aws one is ainsley
-
-
+ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1','6196c1bd34c2404f9d6c1e5ccddd9471.vfs.cloud9.us-east-2.amazonaws.com', 
+		'5a2bc80d8e0849f5b28cb96e3b6b4485.vfs.cloud9.us-east-2.amazonaws.com','textpenguin.herokuapp.com'] #aws one is ainsley
 
 # Application definition
 
 INSTALLED_APPS = [
+    'django_extensions',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-	'accounts.apps.AccountsConfig',
+    'accounts.apps.AccountsConfig',
+    'Main',
 ]
 
 MIDDLEWARE = [
@@ -50,6 +52,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'Main.urls'
@@ -76,10 +79,16 @@ WSGI_APPLICATION = 'Main.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
+DATABASES = {'default': dj_database_url.config()}
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'myproject',
+        'USER': 'myprojectuser',
+        'PASSWORD': 'password',
+        'HOST': 'localhost',
+        'PORT': '',
     }
 }
 
@@ -121,8 +130,19 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'accounts/static')
+STATICFILES_DIRS = ['accounts/static/Main',]		#  os.path.join(BASE_DIR,'static'),]
+STATICFILES_STORAGE = 'whitenoise.django.CompressedManifestStaticFilesStorage' # heroku
+
 
 LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
 
 EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
 EMAIL_FILE_PATH = os.path.join(BASE_DIR, "sent_emails")
+
+import dj_database_url 
+prod_db  =  dj_database_url.config(conn_max_age=500)
+DATABASES['default'].update(prod_db)
+
+django_heroku.settings(locals())
