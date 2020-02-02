@@ -6,3 +6,21 @@
 	text-align: center;
 	background-color: white;
 }
+
+button {
+	width: 200px;
+	height: 50px;
+	margin: 50px auto;
+	display: block;
+}
+
+#addDocDiv {
+	width: 500px;
+	height: 500px;
+	display: block;
+	margin: 100px auto;
+}
+
+.documentseparator {
+	text-align: center;
+}

@@ -9,9 +9,10 @@ from sklearn.feature_extraction import text
 from sklearn.feature_extraction.text import TfidfVectorizer
 from nltk.stem.porter import PorterStemmer
 from datetime import date 
-from .forms import InputTextForm
-#from .forms import UploadFileForm
-from .functions.functions import handle_uploaded_file 
+#WE NEED TO ABSOLUTE PATH THESE IMPORTS IF THEY'RE NEEDED
+    #from .forms import InputTextForm
+    #from .forms import UploadFileForm
+    #from .functions.functions import handle_uploaded_file 
 import mimetypes
 
 from subprocess import run,PIPE
@@ -157,12 +158,33 @@ def delete_all_projects(self):
     Project.objects.all().delete()
     print("All project and document objects have been deleted")
     return redirect("/")
+    
+#ADD DOCUMENT TO PROJECDT
+def add_document(request, project_id):
+    Project = apps.get_model('accounts', 'Project')
+    Document = apps.get_model('accounts', 'Document')
+    new_doc = request.POST.get('textInput')
+    
+    proj = Project.objects.get(pk=project_id)
+        
+    d = Document(project=proj, text=new_doc)
+    d.save()
+    
+    documents = Document.objects.filter(project=project_id)
+    title = proj.title
+    context= {
+        'doc_list': documents,
+        'project': proj,
+        'title': title,
+    }
+    return redirect("recentlyused")
 
 #other methods for other stuff
 def clean_up(txt):
     clean_text = txt
     clean_list = clean_text.split("\r\n")
     num_of_doc = len(clean_list)
+    print(clean_list)
     return clean_list
     
 def sw_clean(sw):

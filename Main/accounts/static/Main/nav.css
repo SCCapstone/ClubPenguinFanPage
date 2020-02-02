@@ -1,7 +1,7 @@
 .flex-column {
 	width: 16%;
 	max-width: 268px;
-	position: absolute;
+	position: fixed;
 	background-color: #C3E0E5;
 	top: 0;
 	left: 0;
