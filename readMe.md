@@ -49,7 +49,7 @@ All unit tests are found in unit_tests folder under the main directory.
 
 to run this test, simply navigate into the unit_tests directory and enter command:
 
-*python3 tfidftests.py
+*python3 tfidftests.py*
 
 Tests will return results automatically, as they've been designed using Python library unittests
 
