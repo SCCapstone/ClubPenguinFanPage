@@ -53,6 +53,20 @@ to run this test, simply navigate into the unit_tests directory and enter comman
 
 Tests will return results automatically, as they've been designed using Python library unittests
 
+------------------------------------------------------------------------------------------------
+
+All behavioral tests are found in the behavioral_tests folder under the main directory.
+
+All behavioral tests are found in behavioral_tests.py
+
+To run these tests you will need to download:
+* Selenium
+* Chromedriver
+* Google Chrome
+
+After your installation is complete, you can run the test using "python3 behavioral_tests.py"
+
+
 ## Authors
 
 |Name:                 |Gmail:                                |
