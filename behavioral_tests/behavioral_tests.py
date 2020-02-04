@@ -76,7 +76,7 @@ def incorrect_login():
 def test_suite():
 	num_passed = correct_login() + incorrect_login()
 	print("\n ... \n")
-	print "Passed Tests: " , num_passed , "out of", 2
+	print ("Passed Tests: " , num_passed , "out of", 2)
 
 
 
