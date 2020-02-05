@@ -184,7 +184,6 @@ def clean_up(txt):
     clean_text = txt
     clean_list = clean_text.split("\r\n")
     num_of_doc = len(clean_list)
-    print(clean_list)
     return clean_list
     
 def sw_clean(sw):
