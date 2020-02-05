@@ -45,7 +45,7 @@ PLEASE LOG OUT AFTER USAGE.  ONLY ONE PERSON MAY BE LOGGED INTO ACCOUNT AT A TIM
 
 To run unit tests, navigate to the directory with the manage.py file and enter command:
 
-`python3 tfidftests.py`
+`python3 manage.py test`
 
 Tests will return results automatically, as they've been deesigned with the Django testing capabilities.
 
