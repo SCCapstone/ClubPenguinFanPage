@@ -43,15 +43,11 @@ PLEASE LOG OUT AFTER USAGE.  ONLY ONE PERSON MAY BE LOGGED INTO ACCOUNT AT A TIM
 
 ## Testing
 
-All unit tests are found in unit_tests folder under the main directory.  
+To run unit tests, navigate to the directory with the manage.py file and enter command:
 
-* tf-idf tests are found in tfidftests.py
+`python3 tfidftests.py`
 
-to run this test, simply navigate into the unit_tests directory and enter command:
-
-*python3 tfidftests.py*
-
-Tests will return results automatically, as they've been designed using Python library unittests
+Tests will return results automatically, as they've been deesigned with the Django testing capabilities.
 
 ------------------------------------------------------------------------------------------------
 
