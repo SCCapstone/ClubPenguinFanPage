@@ -8,38 +8,74 @@
 	<link rel="stylesheet" type="text/css" href="{% static 'Main/projectview.css' %}">
 	<script>
 	$( document ).ready(function() {
-        $("#addDocDiv").hide();
+        $("#formholder").hide();
+        
+        choiceCheck();
+        
+        $('#inputtextradio').on("click", function(){choiceCheck()});
+        $('#inputfileradio').on("click", function(){choiceCheck()});
     });
     
 	function addDoc() {
 	    $("#addDocButton").hide();
-	    $("#addDocDiv").show();
+	    $("#formholder").show();
 	 }
+        
+      function choiceCheck() {
+          if (document.getElementById('inputtextradio').checked) {
+            document.getElementById("fileinput").value =  '';
+            document.getElementById('firstdocinput').style.display = 'block';
+            document.getElementById('fileinput').style.display = 'none';
+            $("#inputtextradio").prop("checked", true);
+          }
+          else if (document.getElementById('inputfileradio').checked) {
+            document.getElementById("firstdocinput").value = '';
+            document.getElementById('firstdocinput').style.display = 'none';
+            document.getElementById('fileinput').style.display = 'block';
+            $("#inputfileradio").prop("checked", true);
+          }
+          else {
+            document.getElementById('fileinput').style.display = 'none';
+            document.getElementById('firstdocinput').style.display = 'none';
+          }
+        }
 	</script>
 {% endblock %}
 
 {% block content %}
-    <div class="placeholder">
-        <h3 id="projecttitle">{{ title }}</h3>
+    <h3 id="projecttitle">{{ title }}</h3>
+    <div id="docs_container">
         {% for document in doc_list %}
-            <p class="documenttext">{{ document.text }}</p>
-            <span class="documentseparator">----------------------------------------</span>
-            <br><br>
+        <div class="document_and_analyze_button">
+            <span>
+                <a class="tfidflink" href="/analyzeDocTFIDF/{{ document.id }}">TF-IDF Analyze</a>
+                <a class="sentimentlink" href="/">Sentiment Analyze</a>
+            </span><br>
+            <div class="document">
+                <p class="documenttext">{{ document.text }}</p>
+            </div>
+        </div>
         {% endfor %}
     </div>
     <button id="addDocButton" onClick="addDoc()">Add another document</button>
-    <div id="addDoc"></div>
     {% if user.is_authenticated %}
 	{% else %}
     {% endif %}
     
-    <div id="addDocDiv">
-        <form method="post" id="addDocForm" action="/addDocument/{{ project.id }}/">
-                {% csrf_token %}
-                <textarea name="textInput" cols="50" rows="20" placeholder="Input the text of your first document!">
-                </textarea><br>
-                <input type="submit" value="Submit">
-         </form>
-     </div>
+     <div id="formholder">
+         <h2 id="add_doc_header">Add Document</h2>
+        <form method="post" enctype="multipart/form-data" id="createprojectform" action="/addDocument/{{ project.id }}/">
+            {% csrf_token %}
+            <span>
+                <input id="inputtextradio" type="radio" name="inputradio">
+                <label for="inputtextradio">Input Text</label>
+                <input id="inputfileradio" type="radio" name="inputradio">
+                <label for="inputfileradio">Input .txt File</label>
+            </span><br>
+            <textarea id="firstdocinput" name="textInput" cols="80" rows="20" placeholder="Input the text of an additional document!"></textarea><br>
+            <input id="fileinput" type="file" name="fileInput">
+            <input id="submitbuttoninput" type="submit" value="Submit">
+        </form>
+    </div>
      
 {% endblock %}

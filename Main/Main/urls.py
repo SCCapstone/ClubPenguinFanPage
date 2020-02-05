@@ -35,4 +35,5 @@ urlpatterns = [
         path('recentlyused/<int:project_id>/', views.project_detail, name='project_detail'),
         path('deleteallobjects/', views.delete_all_projects, name="delete_all_projects"),
     path('addDocument/<int:project_id>/', views.add_document, name="add_document"),
+    path('analyzeDocTFIDF/<int:document_id>', views.analyze_doc_tfidf, name="analyze_doc_tfidf"),
 ]
