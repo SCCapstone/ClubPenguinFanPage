@@ -6,8 +6,7 @@ from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support import expected_conditions as EC
 import time
 
-
-def correct_login():
+def setup():
 	driver = webdriver.Chrome()
 	driver.get("http://textpenguin.herokuapp.com/")
 
@@ -27,6 +26,15 @@ def correct_login():
 	login_btn = driver.find_element_by_id('loginsubmit')
 	login_btn.click()
 	time.sleep(1)
+	return driver
+
+
+def teardown():
+	driver.quit()
+
+
+def correct_login():
+	driver = setup()
 
 	login_status = driver.find_elements_by_id('login_status')
 
@@ -37,7 +45,7 @@ def correct_login():
 		print("Correct Login Failed ")
 		return 0
 
-	driver.quit()
+	teardown()
 
 
 def incorrect_login():
@@ -70,7 +78,7 @@ def incorrect_login():
 		print("Incorrect Login Passed ")
 		return 1
 
-	driver.quit()
+	teardown()
 
 
 def test_suite():
