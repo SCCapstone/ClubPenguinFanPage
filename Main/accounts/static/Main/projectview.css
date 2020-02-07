@@ -72,3 +72,27 @@ label {
 #createprojectform {
 	margin-bottom: 100px;
 }
+
+.tfidfbutton {
+	margin-bottom: 10px;
+	background-color: #1c87c9;
+    border: none;
+    color: white;
+    padding: 6px;
+}
+
+.swsinputbutton {
+	margin-bottom: 10px;
+	background-color: #1c87c9;
+    border: none;
+    color: white;
+    padding: 6px;
+}
+
+.swsinput {
+	padding: 4px;
+}
+
+.document_and_analyze_button {
+	margin-bottom: 40px;
+}

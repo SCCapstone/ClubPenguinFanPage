@@ -208,7 +208,7 @@ def analyze_doc_tfidf(request, document_id):
     doc = Document.objects.get(pk=document_id)
     txt = doc.text
     txt = clean_up(txt)
-    sw = ''
+    sw = request.POST.get('sws')
     newtext = tfidf(txt, sw)[1]
     textout = '<br>'.join(txt) 
     return render(request, 'result.html', {'text': textout, 'newtext': newtext})

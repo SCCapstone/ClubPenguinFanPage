@@ -9,11 +9,16 @@
 	<script>
 	$( document ).ready(function() {
         $("#formholder").hide();
+        $(".swinputform").hide();
         
         choiceCheck();
         
         $('#inputtextradio').on("click", function(){choiceCheck()});
         $('#inputfileradio').on("click", function(){choiceCheck()});
+        
+        $(".tfidfbutton").on("click", function(){
+                $(this).nextAll(".swinputform").first().toggle();
+        });
     });
     
 	function addDoc() {
@@ -39,6 +44,7 @@
             document.getElementById('firstdocinput').style.display = 'none';
           }
         }
+        
 	</script>
 {% endblock %}
 
@@ -47,10 +53,12 @@
     <div id="docs_container">
         {% for document in doc_list %}
         <div class="document_and_analyze_button">
-            <span>
-                <a class="tfidflink" href="/analyzeDocTFIDF/{{ document.id }}">TF-IDF Analyze</a>
-                <a class="sentimentlink" href="/">Sentiment Analyze</a>
-            </span><br>
+                <button class="tfidfbutton">TF-IDF Analyze</button><br>
+                <form method="post" enctype="multipart/form-data" class="swinputform" action="/analyzeDocTFIDF/{{ document.id }}">
+                    {% csrf_token %}
+                    <input type="text" name="sws" class="swsinput" placeholder="input custom stop-words">
+                    <input class="swsinputbutton" type="submit" value="Analyze">
+                </form>
             <div class="document">
                 <p class="documenttext">{{ document.text }}</p>
             </div>
