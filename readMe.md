@@ -56,8 +56,8 @@ All behavioral tests are found in the behavioral_tests folder under the main dir
 All behavioral tests are found in behavioral_tests.py
 
 To run these tests you will need to download:
-* Selenium
-* Chromedriver
+* Selenium WebDriver (https://selenium.dev/)
+* Chromedriver (https://chromedriver.chromium.org/getting-started)
 * Google Chrome
 
 After your installation is complete, you can run the test using "python3 behavioral_tests.py"
