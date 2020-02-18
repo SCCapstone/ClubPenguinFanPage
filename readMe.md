@@ -60,7 +60,7 @@ To run these tests you will need to download:
 * Chromedriver (https://chromedriver.chromium.org/getting-started)
 * Google Chrome
 
-After your installation is complete, you can run the test using "python3 behavioral_tests.py"
+After your installation is complete, you can run the test using `python3 behavioral_tests.py`
 
 
 ## Authors
