@@ -25,7 +25,7 @@
 
 {% block content %}
     {% if user.is_authenticated %}
-
+    <h2 id="recentlyusedheader">Recently Used</h2>
     	<div id="projectitles">
     	    {% for project in proj_list %}
     	        <a href="/recentlyused/{{ project.id }}/">
@@ -39,7 +39,6 @@
 	{% else %}
     {% endif %}
     <div id="placeholder">
-		<p>Here is Recently Used!</p>
 		<a href="/createProject" class="button">Create Project</a>
 	</div>
 	

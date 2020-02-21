@@ -1,13 +1,4 @@
-.placeholder {
-	width: 40%;
-	margin: 50px auto;
-	border: solid black 1px;
-	padding: 10px 20px;
-	text-align: center;
-	background-color: white;
-}
-
-button {
+#addDocButton {
 	width: 200px;
 	height: 50px;
 	margin: 50px auto;
@@ -21,6 +12,87 @@ button {
 	margin: 100px auto;
 }
 
-.documentseparator {
+.document {
+	width: 400px;
+	height: 500px;
+	margin: 10px auto;
+	background: white;
+	padding: 10px;
+	text-overflow: ellipsis;
+	overflow: auto;
+}
+
+#projecttitle {
+	width: 500px;
+	margin: 0 auto;
 	text-align: center;
+	margin: 40px auto;
+	color: white;
+	font-size: 30px;
+}
+
+#docs_container {
+	width: 80%;
+	margin-left: 350px;
+}
+
+#formholder {
+	width: 50%;
+	margin-left: 45%;
+	margin-top: 50px;
+}
+
+label {
+    color: white;
+    margin-right: 40px;
+    font-size: 18px;
+    font-weight: normal;
+    margin-bottom: 30px;
+}
+
+#fileinput {
+   margin-bottom: 60px;
+   color: white;
+   font-size: 15px;
+}
+
+#add_doc_header {
+	color: white;
+}
+
+.document_and_analyze_button {
+	display: inline-block;
+	vertical-align: center;
+}
+
+.sentimentlink {
+	margin-left: 160px;
+}
+
+#createprojectform {
+	margin-bottom: 100px;
+}
+
+.tfidfbutton {
+	margin-bottom: 10px;
+	background-color: #1c87c9;
+    border: none;
+    color: white;
+    padding: 6px;
+}
+
+.swsinputbutton {
+	margin-bottom: 10px;
+	background-color: #1c87c9;
+    border: none;
+    color: white;
+    padding: 6px;
+}
+
+.swsinput {
+	padding: 4px;
+}
+
+.document_and_analyze_button {
+	margin-bottom: 40px;
 }

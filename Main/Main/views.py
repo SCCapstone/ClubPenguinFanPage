@@ -100,20 +100,41 @@ def createProject(request):
     if request.method == 'POST':
         text = request.POST.get("textInput")
         title = request.POST.get("titleInput")
-        user = request.user
         
-        p = Project(owner=user, title=title)
-        p.save()
-        
-        d = Document(project=p, text=text)
-        d.save()
-        
-        #might break here because p is only saved right before making document go to it
-        project_list=Project.objects.filter(owner=user.id)
-        context = {
-            'proj_list': project_list,
-        }
-        return redirect("recentlyused")
+        if len(request.FILES) != 0:
+            file = request.FILES['fileInput']
+            user = request.user
+            
+            #parse txt from files
+            
+            txt = file.read()
+            
+            p = Project(owner=user, title=title)
+            p.save()
+            
+            d = Document(project=p, text=txt)
+            d.save()
+            
+            project_list=Project.objects.filter(owner=user.id)
+            context = {
+                'proj_list': project_list,
+            }
+            return redirect("recentlyused")
+        elif text is not None:
+            user = request.user
+            
+            p = Project(owner=user, title=title)
+            p.save()
+            
+            d = Document(project=p, text=text)
+            d.save()
+            
+            #might break here because p is only saved right before making document go to it
+            project_list=Project.objects.filter(owner=user.id)
+            context = {
+                'proj_list': project_list,
+            }
+            return redirect("recentlyused")
     else:
         return render(request, 'createProject.html')
     
@@ -163,22 +184,36 @@ def delete_all_projects(self):
 def add_document(request, project_id):
     Project = apps.get_model('accounts', 'Project')
     Document = apps.get_model('accounts', 'Document')
-    new_doc = request.POST.get('textInput')
-    
     proj = Project.objects.get(pk=project_id)
-        
-    d = Document(project=proj, text=new_doc)
-    d.save()
-    
-    documents = Document.objects.filter(project=project_id)
-    title = proj.title
-    context= {
-        'doc_list': documents,
-        'project': proj,
-        'title': title,
-    }
-    return redirect("recentlyused")
+    if request.method == 'POST':
+        text = request.POST.get("textInput")
+        if len(request.FILES) != 0:
+            file = request.FILES['fileInput']
+            user = request.user
+            
+            #parse txt from files
+            
+            txt = file.read()
+            
+            d=Document(project=proj, text=txt)
+            d.save()
+        elif text is not None:
+            d = Document(project=proj, text=text)
+            d.save()
 
+    return redirect("project_detail", project_id=project_id)
+
+def analyze_doc_tfidf(request, document_id):
+    Document = apps.get_model('accounts', 'Document')
+    doc = Document.objects.get(pk=document_id)
+    txt = doc.text
+    txt = clean_up(txt)
+    sw = request.POST.get('sws')
+    newtext = tfidf(txt, sw)[1]
+    textout = '<br>'.join(txt) 
+    return render(request, 'result.html', {'text': textout, 'newtext': newtext})
+    
+    
 #other methods for other stuff
 def clean_up(txt):
     clean_text = txt
@@ -190,6 +225,7 @@ def sw_clean(sw):
     clean_sw = sw
     sw_list = clean_sw.split(" ")
     return sw_list
+    
 
 #def read_file_text(file):
 
