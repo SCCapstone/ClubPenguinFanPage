@@ -8,12 +8,21 @@ import numpy as np
 from sklearn.feature_extraction import text
 from sklearn.feature_extraction.text import TfidfVectorizer
 from nltk.stem.porter import PorterStemmer
-from datetime import date 
+from collections import defaultdict
+from datetime import date
 #WE NEED TO ABSOLUTE PATH THESE IMPORTS IF THEY'RE NEEDED
     #from .forms import InputTextForm
     #from .forms import UploadFileForm
-    #from .functions.functions import handle_uploaded_file 
+    #from .functions.functions import handle_uploaded_file
 import mimetypes
+from gensim import corpora
+from gensim import models
+nltk.download('punkt')
+nltk.download('stopwords')
+nltk.download('averaged_perceptron_tagger')
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize, sent_tokenize
+
 
 from subprocess import run,PIPE
 # def button(request):
@@ -25,15 +34,14 @@ def home(request):
 def button(request):
     return render(request, 'home.html')
 
-# runs tf-idf algorithm, returns ranked list 
+# runs tf-idf algorithm, returns ranked list
 def tfidf(txt, sw):
     tokens = []
     s = ''
     for elem in txt:
         tokens.append(elem.lower().translate(string.punctuation))
     #parse this
-    user_stopwords = sw_clean(sw)
-    stopwords = text.ENGLISH_STOP_WORDS.union(user_stopwords)
+    stopwords = make_sw_list(sw)
     vectorizer = TfidfVectorizer(stop_words=stopwords)
     vectors = vectorizer.fit_transform(tokens)
     feature_names = vectorizer.get_feature_names()
@@ -49,39 +57,107 @@ def tfidf(txt, sw):
     ranking = pd.DataFrame(data, columns=['feat','rank'])
     ranking = ranking.sort_values('rank', ascending=False)
     return ranking[['feat','rank']][0:15], ranking[['feat','rank']][0:15].to_html(index=False)
-    
+
+def lda(txt, sw, noOfTopics):
+    documents = []
+    ignoreList = []
+    punctList = []
+    punctList = [".", ",", "?", "!", ";", ":", "\"", "'",
+                "…", "–", "--", "[","]", "’"]
+    # user inputted stopwords go here
+    stop_words = ['for', 'a', 'of', 'the', 'and', 'to', 'in']
+    ignoreList += text.ENGLISH_STOP_WORDS.union(stop_words)
+    s = ""
+    # a bit would be considered each paragraph/document, a token would be
+    # considered a word in that paragraph
+    for bit in txt:
+        s = ""
+        for token in bit.split():
+            for i in range(0, len(token)):
+                # checks if any of the characters in the word are punctuation,
+                # removes it if so
+                if(token[i] in punctList):
+                    token = token.replace(token[i], ' ')
+            token = token.replace(" ", "")
+            if token.lower() not in ignoreList:
+                s += token + " "
+        documents.append(s)
+    stoplist = make_sw_list(sw)
+    texts = [[word for word in document.lower().split() if word not in stoplist]
+             for document in documents]
+    # remove words that appear only once
+    frequency = defaultdict(int)
+    for t in texts:
+        for token in t:
+            frequency[token] += 1
+
+    texts = [[token for token in t if frequency[token] > 1]
+              for t in texts]
+    dictionary = corpora.Dictionary(texts)
+    corpus = [dictionary.doc2bow(t) for t in texts]
+
+    tfidf = models.TfidfModel(corpus)  # step 1 -- initialize a model
+    corpus_tfidf = tfidf[corpus]
+
+    lda = models.LdaModel(corpus_tfidf, id2word=dictionary, num_topics=noOfTopics)  # initialize an LDA transformation
+    corpus_lda = lda[corpus_tfidf]  # create a double wrapper over the original corpus: bow->tfidf->fold-in-lsi
+    f = open("output.txt", "w")
+    s = ''
+    for i in range(noOfTopics):
+        s = "Topic " + str(i+1) + "\n"
+        f.write(s)
+        print(s)
+        # topic = lsi.print_topic(i, x)
+        # where x = number of words per topic if desired
+        topic = lda.print_topic(i)
+        for t in topic.split('+'):
+            t = t.replace(" ", "").replace('*', " ")
+            f.write(t + "\n")
+            print(t)
+    f.close()
+
+def pos(txt, sw):
+    cnt = 1
+    for doc in txt:
+        tokenized = sent_tokenize(doc)
+        stop_words = make_sw_list(sw)
+        if tokenized != []:
+            print("Document " + str(cnt))
+            for i in tokenized:
+                wordsList = nltk.word_tokenize(i)
+                wordsList = [w for w in wordsList if not w in stop_words]
+                tagged = nltk.pos_tag(wordsList)
+                print(tagged)
+            cnt += 1
 
 def result(request):
     if request.method == 'POST':
         upfile = request.POST.get("uploadfile")
         txt = request.POST.get("input_text")
         sw = request.POST.get("stopwords")
-        stopwords = text.ENGLISH_STOP_WORDS.union(sw)
         if txt is '':
-            txt = ['the man went out for a walk',
-            'the children sat around the fire',
-            'fires are burning down homes',
-            'i shall walk to the grocery store tomorrow']
+            txt = 'the man went out for a walk \n the children sat around the fire \n fires are burning down homes \n i shall walk to the grocery store tomorrow \n'
             textout = '<br>'.join(txt)
             filename = 'output-' + str(date.today()) + '.txt'
             tfidf(txt, sw)[0].to_csv(filename, header=None, index=None, sep=' ', mode='a')
             newtext = tfidf(txt, sw)[1]
-            textout = '<br>'.join(txt) 
+            textout = '<br>'.join(txt)
             return render(request, 'result.html', {'text': textout, 'newtext': newtext})
     else:
-        txt = ['the man went out for a walk',
-            'the children sat around the fire',
-            'fires are burning down homes',
-            'i shall walk to the grocery store tomorrow']
+        txt = ''
+        sw = []
     filename = 'output.txt'
     try:
         os.remove(filename)
     except:
         print('file not found exception')
     txt = clean_up(txt)
+    print(txt)
     tfidf(txt, sw)[0].to_csv(filename, header=None, index=None, sep=' ', mode='a')
     newtext = tfidf(txt, sw)[1]
     textout = '<br>'.join(txt)
+    lda(txt, sw, 5)
+    pos(txt, sw)
     return render(request, 'result.html', {'text': textout, 'newtext': newtext})
 
 def download_file(request):
@@ -100,21 +176,21 @@ def createProject(request):
     if request.method == 'POST':
         text = request.POST.get("textInput")
         title = request.POST.get("titleInput")
-        
+
         if len(request.FILES) != 0:
             file = request.FILES['fileInput']
             user = request.user
-            
+
             #parse txt from files
-            
+
             txt = file.read()
-            
+
             p = Project(owner=user, title=title)
             p.save()
-            
+
             d = Document(project=p, text=txt)
             d.save()
-            
+
             project_list=Project.objects.filter(owner=user.id)
             context = {
                 'proj_list': project_list,
@@ -122,13 +198,13 @@ def createProject(request):
             return redirect("recentlyused")
         elif text is not None:
             user = request.user
-            
+
             p = Project(owner=user, title=title)
             p.save()
-            
+
             d = Document(project=p, text=text)
             d.save()
-            
+
             #might break here because p is only saved right before making document go to it
             project_list=Project.objects.filter(owner=user.id)
             context = {
@@ -137,7 +213,7 @@ def createProject(request):
             return redirect("recentlyused")
     else:
         return render(request, 'createProject.html')
-    
+
 def recentlyused(request):
         Project = apps.get_model('accounts', 'Project')
         Document = apps.get_model('accounts', 'Document')
@@ -157,7 +233,7 @@ def newProject(self, request):
         if request.POST.get('docText'):
             print(request.POST.get('textInput'))
     return render(request, 'createProject.html')
-    
+
 def project_detail(request, project_id):
     Project = apps.get_model('accounts', 'Project')
     Document = apps.get_model('accounts', 'Document')
@@ -170,7 +246,7 @@ def project_detail(request, project_id):
         'title': title,
     }
     return render(request, "projectview.html", context=context)
-    
+
 #DELETE ALL PROJECTS AND DOCUMENTS
 def delete_all_projects(self):
     Project = apps.get_model('accounts', 'Project')
@@ -179,7 +255,7 @@ def delete_all_projects(self):
     Project.objects.all().delete()
     print("All project and document objects have been deleted")
     return redirect("/")
-    
+
 #ADD DOCUMENT TO PROJECDT
 def add_document(request, project_id):
     Project = apps.get_model('accounts', 'Project')
@@ -190,11 +266,11 @@ def add_document(request, project_id):
         if len(request.FILES) != 0:
             file = request.FILES['fileInput']
             user = request.user
-            
+
             #parse txt from files
-            
+
             txt = file.read()
-            
+
             d=Document(project=proj, text=txt)
             d.save()
         elif text is not None:
@@ -210,22 +286,25 @@ def analyze_doc_tfidf(request, document_id):
     txt = clean_up(txt)
     sw = request.POST.get('sws')
     newtext = tfidf(txt, sw)[1]
-    textout = '<br>'.join(txt) 
+    textout = '<br>'.join(txt)
     return render(request, 'result.html', {'text': textout, 'newtext': newtext})
-    
-    
+
+
 #other methods for other stuff
 def clean_up(txt):
     clean_text = txt
     clean_list = clean_text.split("\r\n")
     num_of_doc = len(clean_list)
     return clean_list
-    
+
 def sw_clean(sw):
     clean_sw = sw
     sw_list = clean_sw.split(" ")
     return sw_list
-    
+
+def make_sw_list(sw):
+    user_stopwords = sw_clean(sw)
+    return text.ENGLISH_STOP_WORDS.union(sw)
 
 #def read_file_text(file):
 
