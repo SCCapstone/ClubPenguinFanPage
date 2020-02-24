@@ -12,3 +12,40 @@
 	text-align: center;
 }
 
+#inputfileradio {
+	margin-left: 7%;
+}
+
+#firstdocinput {
+	display: block;
+	margin: 0 auto;
+	margin-top: 3%;
+}
+
+#fileinput {
+	display: block;
+	margin: 10% auto;
+}
+
+#tfidfsw {
+	width: 80%;
+	margin-top: 5%;
+	overflow-x: scroll;
+}
+
+#submitbuttoninput {
+	background-color: #1c87c9;
+    border: none;
+         color: white;
+         padding: 2%;
+         text-align: center;
+         text-decoration: none;
+         display: inline-block;
+         font-size: 20px;
+         margin: 0 auto;
+         cursor: pointer;
+}
+
+body {
+	font-family: 'Rajdhani', serif;
+}

@@ -62,7 +62,7 @@ label {
 
 .document_and_analyze_button {
 	display: inline-block;
-	vertical-align: center;
+	vertical-align: middle;
 }
 
 .sentimentlink {
