@@ -126,13 +126,11 @@ def pos(txt, sw):
         tokenized = sent_tokenize(doc)
         stop_words = make_sw_list(sw)
         if tokenized != []:
-            print("Document " + str(cnt))
             outputstring = outputstring + "Document" + str(cnt) + "\n"
             for i in tokenized:
                 wordsList = nltk.word_tokenize(i)
                 wordsList = [w for w in wordsList if not w in stop_words]
                 tagged = nltk.pos_tag(wordsList)
-                print(tagged)
                 for tag in tagged:
                     outputstring = outputstring + tag[0] + ": " + tag[1] + "\n"
             cnt += 1
