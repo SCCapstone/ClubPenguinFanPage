@@ -8,12 +8,20 @@ import numpy as np
 from sklearn.feature_extraction import text
 from sklearn.feature_extraction.text import TfidfVectorizer
 from nltk.stem.porter import PorterStemmer
+from collections import defaultdict
 from datetime import date 
 #WE NEED TO ABSOLUTE PATH THESE IMPORTS IF THEY'RE NEEDED
     #from .forms import InputTextForm
     #from .forms import UploadFileForm
     #from .functions.functions import handle_uploaded_file 
 import mimetypes
+from gensim import corpora
+from gensim import models
+nltk.download('punkt')
+nltk.download('stopwords')
+nltk.download('averaged_perceptron_tagger')
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize, sent_tokenize
 
 from subprocess import run,PIPE
 # def button(request):
@@ -32,9 +40,8 @@ def tfidf(txt, sw):
     for elem in txt:
         tokens.append(elem.lower().translate(string.punctuation))
     #parse this
-    user_stopwords = sw_clean(sw)
-    stopwords = text.ENGLISH_STOP_WORDS.union(user_stopwords)
-    vectorizer = TfidfVectorizer(stop_words=stopwords)
+    #user_stopwords = sw_clean(sw)
+    vectorizer = TfidfVectorizer(stop_words=sw)
     vectors = vectorizer.fit_transform(tokens)
     feature_names = vectorizer.get_feature_names()
 
@@ -50,39 +57,132 @@ def tfidf(txt, sw):
     ranking = ranking.sort_values('rank', ascending=False)
     return ranking[['feat','rank']][0:15], ranking[['feat','rank']][0:15].to_html(index=False)
     
+def lda(txt, sw, noOfTopics):
+    outputstring = ""
+    documents = []
+    ignoreList = []
+    punctList = []
+    punctList = [".", ",", "?", "!", ";", ":", "\"", "'",
+                "…", "–", "--", "[","]", "’"]
+    # user inputted stopwords go here
+    stop_words = ['for', 'a', 'of', 'the', 'and', 'to', 'in']
+    ignoreList += text.ENGLISH_STOP_WORDS.union(stop_words)
+    s = ""
+    # a bit would be considered each paragraph/document, a token would be
+    # considered a word in that paragraph
+    for bit in txt:
+        s = ""
+        for token in bit.split():
+            for i in range(0, len(token)):
+                # checks if any of the characters in the word are punctuation,
+                # removes it if so
+                if(token[i] in punctList):
+                    token = token.replace(token[i], ' ')
+            token = token.replace(" ", "")
+            if token.lower() not in ignoreList:
+                s += token + " "
+        documents.append(s)
+    stoplist = make_sw_list(sw)
+    texts = [[word for word in document.lower().split() if word not in stoplist]
+             for document in documents]
+    # remove words that appear only once
+    frequency = defaultdict(int)
+    for t in texts:
+        for token in t:
+            frequency[token] += 1
 
+    texts = [[token for token in t if frequency[token] > 1]
+              for t in texts]
+    dictionary = corpora.Dictionary(texts)
+    corpus = [dictionary.doc2bow(t) for t in texts]
+
+    tfidf = models.TfidfModel(corpus)  # step 1 -- initialize a model
+    corpus_tfidf = tfidf[corpus]
+
+    lda = models.LdaModel(corpus_tfidf, id2word=dictionary, num_topics=noOfTopics)  # initialize an LDA transformation
+    corpus_lda = lda[corpus_tfidf]  # create a double wrapper over the original corpus: bow->tfidf->fold-in-lsi
+    f = open("output.txt", "w")
+    s = ''
+    noOfTopics = int(noOfTopics)
+    for i in range(noOfTopics):
+        s = "Topic " + str(i+1) + "\n"
+        f.write(s)
+        outputstring = outputstring + s + "\n"
+        # topic = lsi.print_topic(i, x)
+        # where x = number of words per topic if desired
+        topic = lda.print_topic(i)
+        for t in topic.split('+'):
+            t = t.replace(" ", "").replace('*', " ")
+            f.write(t + "\n")
+            outputstring = outputstring + t + "\n"
+    f.close()
+    return outputstring
+
+#treating each letter as a document, but STOPWORDS WORKING
+def pos(txt, sw):
+    cnt = 1
+    outputstring = ""
+    for doc in txt:
+        tokenized = sent_tokenize(doc)
+        stop_words = make_sw_list(sw)
+        if tokenized != []:
+            print("Document " + str(cnt))
+            outputstring = outputstring + "Document" + str(cnt) + "\n"
+            for i in tokenized:
+                wordsList = nltk.word_tokenize(i)
+                wordsList = [w for w in wordsList if not w in stop_words]
+                tagged = nltk.pos_tag(wordsList)
+                print(tagged)
+                for tag in tagged:
+                    outputstring = outputstring + tag[0] + ": " + tag[1] + "\n"
+            cnt += 1
+    return outputstring
+    
+
+#COMPLICATED WORK HERE!!!!!!!
 def result(request):
     if request.method == 'POST':
-        upfile = request.POST.get("uploadfile")
-        txt = request.POST.get("input_text")
-        sw = request.POST.get("stopwords")
-        stopwords = text.ENGLISH_STOP_WORDS.union(sw)
-        if txt is '':
-            txt = ['the man went out for a walk',
-            'the children sat around the fire',
-            'fires are burning down homes',
-            'i shall walk to the grocery store tomorrow']
-            textout = '<br>'.join(txt)
-            filename = 'output-' + str(date.today()) + '.txt'
-            tfidf(txt, sw)[0].to_csv(filename, header=None, index=None, sep=' ', mode='a')
-            newtext = tfidf(txt, sw)[1]
-            textout = '<br>'.join(txt) 
-            return render(request, 'result.html', {'text': textout, 'newtext': newtext})
+        algorithm = request.POST.get("algorithm")
+        if len(request.FILES) != 0:
+            file = request.FILES['fileInput']
+            user = request.user
+            txt = file.read()
+            txt=str(txt,'utf-8')
+        input_text = request.POST.get("textInput")
+        if input_text != '':
+            txt = input_text
+        sw = request.POST.get("sws")
+        num_of_topics = request.POST.get("ldarange")
+        if algorithm == 'tfidf':
+            textout, newtext = tfidfprocess(txt, sw)
+            context = {
+                'text': textout, 
+                'newtext': newtext, 
+                'algorithm': 'tfidf'
+            }
+            return render(request, 'result.html', context = context)
+        if algorithm == 'pos': 
+           outputstring = posprocess(txt, sw)
+           context = {
+               'text': txt,
+               'outputstring': outputstring,
+               'algorithm': 'pos'
+           }
+           return render(request, 'result.html', context= context)
+        if algorithm == 'lda':
+            outputstring = ldaprocess(txt, sw, num_of_topics)
+            context = {
+                'text': txt,
+                'outputstring': outputstring,
+                'algorithm': 'lda'
+            }
+            return render(request, 'result.html', context=context)
     else:
         txt = ['the man went out for a walk',
             'the children sat around the fire',
             'fires are burning down homes',
             'i shall walk to the grocery store tomorrow']
-    filename = 'output.txt'
-    try:
-        os.remove(filename)
-    except:
-        print('file not found exception')
-    txt = clean_up(txt)
-    tfidf(txt, sw)[0].to_csv(filename, header=None, index=None, sep=' ', mode='a')
-    newtext = tfidf(txt, sw)[1]
-    textout = '<br>'.join(txt)
-    return render(request, 'result.html', {'text': textout, 'newtext': newtext})
+    return render(request, 'result.html')
 
 def download_file(request):
     fl_path = 'output.txt'
@@ -108,6 +208,7 @@ def createProject(request):
             #parse txt from files
             
             txt = file.read()
+            txt=str(txt,'utf-8')
             
             p = Project(owner=user, title=title)
             p.save()
@@ -194,6 +295,7 @@ def add_document(request, project_id):
             #parse txt from files
             
             txt = file.read()
+            txt=str(txt,'utf-8')
             
             d=Document(project=proj, text=txt)
             d.save()
@@ -207,11 +309,14 @@ def analyze_doc_tfidf(request, document_id):
     Document = apps.get_model('accounts', 'Document')
     doc = Document.objects.get(pk=document_id)
     txt = doc.text
-    txt = clean_up(txt)
     sw = request.POST.get('sws')
-    newtext = tfidf(txt, sw)[1]
-    textout = '<br>'.join(txt) 
-    return render(request, 'result.html', {'text': textout, 'newtext': newtext})
+    textout, newtext = tfidfprocess(txt, sw)
+    context = {
+        'text': textout, 
+        'newtext': newtext, 
+        'algorithm': 'tfidf'
+    }
+    return render(request, 'result.html', context = context)
     
     
 #other methods for other stuff
@@ -226,10 +331,36 @@ def sw_clean(sw):
     sw_list = clean_sw.split(" ")
     return sw_list
     
+def make_sw_list(sw):
+    user_stopwords = sw_clean(sw)
+    return text.ENGLISH_STOP_WORDS.union(sw)
+    
+def tfidfprocess(txt, sw):
+    txt = clean_up(txt)
+    sws = make_sw_list(sw)
+    newtext = tfidf(txt, sws)[1]
+    textout = '<br>'.join(txt)
+    return textout, newtext
+   
+#needs work 
+def posprocess(txt, sw):
+    txt = clean_up(txt)
+    outputstring = pos(txt, sw)
+    return outputstring
+    
+def ldaprocess(txt, sw, numberoftopics):
+    txt = clean_up(txt)
+    outputstring = lda(txt, sw, numberoftopics)
+    return outputstring
+    
 
 #def read_file_text(file):
 
 #things to do (Ainsley)
-#-style project creation/recently used
-#-fonts of tfidf results and input at home
-#-upload file
+#-for upload file, error cleaning
+#-for sending project document to tf-idf, not printing
+
+
+#ERRORS TO CREATE MESSAGES FOR:
+#-in case all words are stopwords
+#-in case blank text submitted/nofile submitted

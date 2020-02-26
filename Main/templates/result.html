@@ -17,10 +17,19 @@
 	  <p>
 	  	<br><strong> Input text: </strong><br>
 	  	<br> {{ text | safe}} <br> 
-		<br><strong>TF-IDF Results</strong><br>
-                <br> <div id="newtextdiv">{{ newtext | safe}} </div><br>
-		<a  href="http://127.0.0.1:8000/Content-Disposition/" download> Download Document </a>
 	  </p>
+	  {% if algorithm == 'tfidf' %}
+	  		<h3>TF-IDF Results:</h3>
+	  		{{ newtext | safe }}
+	  {% endif %}
+		{% if algorithm == 'lda' %}
+				<h3>Latent Direchlet Results:</h3>
+				{{ outputstring | safe }}
+		{% endif %}
+		{% if algorithm == 'pos' %}
+				<h3>Part-of-Speech Results:</h3>
+				{{ outputstring | safe }}
+		{% endif %}
 	  <p><a href="{% url 'logout' %}">Logout</a></p>
   </div>
 </body>
