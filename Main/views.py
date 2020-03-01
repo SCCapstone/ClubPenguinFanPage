@@ -291,7 +291,7 @@ def createProject(request):
             context = {
                 'proj_list': project_list,
             }
-            return redirect("recentlyused")
+            return redirect("/recentlyused")
         elif text is not None:
             user = request.user
 
@@ -306,7 +306,7 @@ def createProject(request):
             context = {
                 'proj_list': project_list,
             }
-            return redirect("recentlyused")
+            return redirect("/recentlyused")
     else:
         return render(request, 'createProject.html')
 
