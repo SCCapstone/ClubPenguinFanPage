@@ -4,4 +4,10 @@
 	border: solid black 1px;
 	padding: 70px 20px;
 	background-color: white;
+	font-family: 'Rajdhani', serif;
+	font-size: 17px;
+}
+
+h3 {
+	font-family: 'Roboto Slab', serif;
 }

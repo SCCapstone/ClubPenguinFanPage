@@ -7,8 +7,6 @@
 
 #projectitles {
     width: 70%;
-    margin-left: 400px;
-    
 }
 
 .individualproject {
@@ -20,6 +18,7 @@
 	display: inline-block;
 	vertical-align: middle;
 	overflow: auto;
+	font-family: 'Rajdhani', serif;
 }
 
 .projecttitle {
@@ -46,4 +45,5 @@
 	color: white;
 	margin-top: 50px;
 	margin-bottom: 60px;
+	font-family: 'Roboto Slab', serif;
 }

@@ -1,5 +1,5 @@
 #login_status {
-	width: 40%;
+	width: 60%;
 	margin: 50px auto;
 	border: solid black 1px;
 	padding: 10px 20px;
@@ -12,6 +12,10 @@
 	text-align: center;
 }
 
+#algorithm {
+	width: 40%;
+}
+
 #inputfileradio {
 	margin-left: 7%;
 }
@@ -20,6 +24,7 @@
 	display: block;
 	margin: 0 auto;
 	margin-top: 3%;
+	width: 95%;
 }
 
 #fileinput {

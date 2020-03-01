@@ -105,7 +105,7 @@ def lda(txt, sw, noOfTopics):
     s = ''
     noOfTopics = int(noOfTopics)
     for i in range(noOfTopics):
-        s = "Topic " + str(i+1) + "\n"
+        s = "\nTopic " + str(i+1) + "\n"
         f.write(s)
         outputstring = outputstring + s + "\n"
         # topic = lsi.print_topic(i, x)
@@ -118,41 +118,97 @@ def lda(txt, sw, noOfTopics):
     f.close()
     return outputstring
 
-#treating each letter as a document, but STOPWORDS WORKING
 def pos(txt, sw):
     cnt = 1
     outputstring = ""
+    freq_output_string = ""
+    tags_dict = {
+    "CC": "coordinating conjunction",
+    "CD": "cardinal digit",
+    "DT": "determiner",
+    "EX": "existential there",
+    "FW": "foreign word",
+    "IN": "preposition/subordinating conjunction",
+    "JJ": "adjective",
+    "JJR": "adjective, comparative",
+    "JJS": "adjective, superlative",
+    "LS": "list marker",
+    "MD": "modal",
+    "NN": "noun, singular",
+    "NNS": "noun plural",
+    "NNP": "proper noun, singular",
+    "NNPS": "proper noun, plural",
+    "PDT": "predeterminer",
+    "POS": "possessive ending",
+    "PRP": "personal pronoun",
+    "PRP$": "possessive pronoun",
+    "RB": "adverb",
+    "RBR": "adverb, comparative",
+    "RBS": "adverb, superlative",
+    "RP": "particle",
+    "TO": "to",
+    "UH": "interjection",
+    "VB": "verb, base form",
+    "VBD": "verb, past tense",
+    "VBG": "verb, gerund/present participle",
+    "VBN": "verb, past participle",
+    "VBP": "verb, present tense",
+    "VBZ": "verb, third person",
+    "WDT": "wh-determiner",
+    "WP": "wh-pronoun",
+    "WP$": "possessive wh-pronoun",
+    "WRB": "wh-abverb",
+    }
     for doc in txt:
         tokenized = sent_tokenize(doc)
         stop_words = make_sw_list(sw)
+        d = defaultdict(int)
+        freq_string = ''
         if tokenized != []:
-            print("Document " + str(cnt))
-            outputstring = outputstring + "Document" + str(cnt) + "\n"
+            outputstring = outputstring + "\nDocument " + str(cnt) + "\n"
             for i in tokenized:
                 wordsList = nltk.word_tokenize(i)
                 wordsList = [w for w in wordsList if not w in stop_words]
                 tagged = nltk.pos_tag(wordsList)
-                print(tagged)
                 for tag in tagged:
+                    d[tag[1]] += 1
                     outputstring = outputstring + tag[0] + ": " + tag[1] + "\n"
+        if d != {}:
+            freq_string += "Document " + str(cnt) + "\n"
+            for tag in d:
+                if tag in tags_dict:
+                    freq_string += tag + ' (' + tags_dict[tag] + '): ' + str(d.get(tag)) + '\n'
+                else:
+                    freq_string += tag + ': ' + str(d.get(tag)) + '\n'
+            freq_output_string = freq_output_string + freq_string + " \n\n"
             cnt += 1
-    return outputstring
+    return outputstring, freq_output_string
     
+#write results to file, save file, allow for download, delete file
 
-#COMPLICATED WORK HERE!!!!!!!
 def result(request):
     if request.method == 'POST':
         algorithm = request.POST.get("algorithm")
+        input_text = request.POST.get("textInput")
+        if len(request.FILES) == 0 and input_text == '':
+            context = {
+                'output_error_text': "<br>You didn't enter any text or files!<br><br>"
+            }
+            return render(request, 'result.html', context = context)
         if len(request.FILES) != 0:
             file = request.FILES['fileInput']
             user = request.user
             txt = file.read()
             txt=str(txt,'utf-8')
-        input_text = request.POST.get("textInput")
         if input_text != '':
             txt = input_text
         sw = request.POST.get("sws")
         num_of_topics = request.POST.get("ldarange")
+        filename = 'output-' + str(date.today()) + '.txt'
+        try:
+            os.remove(filename)
+        except: 
+            print('file not found exception')
         if algorithm == 'tfidf':
             textout, newtext = tfidfprocess(txt, sw)
             context = {
@@ -162,17 +218,32 @@ def result(request):
             }
             return render(request, 'result.html', context = context)
         if algorithm == 'pos': 
-           outputstring = posprocess(txt, sw)
+           outputstring, output_freq_string = posprocess(txt, sw)
+#change outputstring to formatted with txt file
+           file1 = open(filename,"w+") 
+           file1.write(outputstring)
+           file1.close() 
+           freq_display_str = output_freq_string.replace("\n", "<br>")
+           txt = clean_up(txt)
+           textout = '<br>'.join(txt)
            context = {
-               'text': txt,
+               'text': textout,
                'outputstring': outputstring,
-               'algorithm': 'pos'
+               'algorithm': 'pos',
+               'output_freq_string': output_freq_string,
+               'freq_display_str': freq_display_str,
            }
            return render(request, 'result.html', context= context)
         if algorithm == 'lda':
             outputstring = ldaprocess(txt, sw, num_of_topics)
+#change outputstring to formatted with txt file, also add for frequencies 
+            file1 = open(filename,"w+") 
+            file1.write(outputstring)
+            file1.close() 
+            txt = clean_up(txt)
+            textout = '<br>'.join(txt)
             context = {
-                'text': txt,
+               'text': textout,
                 'outputstring': outputstring,
                 'algorithm': 'lda'
             }
@@ -185,13 +256,13 @@ def result(request):
     return render(request, 'result.html')
 
 def download_file(request):
-    fl_path = 'output.txt'
-    filename = 'output.txt'
+    fl_path = 'output-' + str(date.today()) + '.txt'
+    filename = 'output-' + str(date.today()) + '.txt'
 
     fl = open(fl_path, 'r')
     mime_type, _ = mimetypes.guess_type(fl_path)
     response = HttpResponse(fl, content_type=mime_type)
-    response['Content-Disposition'] = "attachment; filename=%s" % filename
+    response['Content-Disposition'] = 'attachment; filename="%s"' %filename
     return response
 
 def createProject(request):
@@ -308,6 +379,11 @@ def add_document(request, project_id):
 def analyze_doc_tfidf(request, document_id):
     Document = apps.get_model('accounts', 'Document')
     doc = Document.objects.get(pk=document_id)
+    filename = 'output-' + str(date.today()) + '.txt'
+    try:
+        os.remove(filename)
+    except:
+        print('file not found exception')
     txt = doc.text
     sw = request.POST.get('sws')
     textout, newtext = tfidfprocess(txt, sw)
@@ -333,11 +409,14 @@ def sw_clean(sw):
     
 def make_sw_list(sw):
     user_stopwords = sw_clean(sw)
-    return text.ENGLISH_STOP_WORDS.union(sw)
+    stopwords = text.ENGLISH_STOP_WORDS.union(user_stopwords)
+    return stopwords
     
 def tfidfprocess(txt, sw):
     txt = clean_up(txt)
     sws = make_sw_list(sw)
+    filename = 'output-' + str(date.today()) + '.txt'
+    tfidf(txt, sws)[0].to_csv(filename, header=None, index=None, sep=' ', mode='a')
     newtext = tfidf(txt, sws)[1]
     textout = '<br>'.join(txt)
     return textout, newtext
@@ -353,14 +432,15 @@ def ldaprocess(txt, sw, numberoftopics):
     outputstring = lda(txt, sw, numberoftopics)
     return outputstring
     
+#TODO (Ainsley):
+#error message in case all text entered consists of stopwords
+#remove delete all button and replace with delete buttons for projects and documents
+#route TF-IDF for multiple docs to alg
+#route LDA for multiple docs to alg
+#route LDA for single doc to alg
+#route POS for single doc to alg
+#route POS for multiple docs to alg
+#fix font on about page
+#fix font on resources page
+#css overflow on resources and about
 
-#def read_file_text(file):
-
-#things to do (Ainsley)
-#-for upload file, error cleaning
-#-for sending project document to tf-idf, not printing
-
-
-#ERRORS TO CREATE MESSAGES FOR:
-#-in case all words are stopwords
-#-in case blank text submitted/nofile submitted

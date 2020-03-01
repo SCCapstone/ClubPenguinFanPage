@@ -57,9 +57,8 @@
 {% block content %}
 	{% if user.is_authenticated %}
 		<div id="login_status">
-		<p>Hi {{ user.username }}!</p><br>
-		<body> 
-			<form enctype="multipart/form-data" action="{% url 'result' %}" method="POST">
+			<p>Hi {{ user.username }}!</p><br>
+			<form id="algform" enctype="multipart/form-data" action="{% url 'result' %}" method="POST">
 				{% csrf_token %}
 				<h4 id="algorithmchoicetitle">Choose your text-analysis algorithm:</h4>
 	            <select id="algorithm" name="algorithm">
@@ -88,7 +87,7 @@
   					<option value="4">4</option>
   					<option value="5">5</option>
   					<option value="6">6</option>
-		        </select><br><br>
+		        </select><br><br><br><br>
 				<input id="submitbuttoninput" type="submit" value="Submit">
 			</form>
 		</body> 

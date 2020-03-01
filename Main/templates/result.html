@@ -14,21 +14,32 @@
   <div id="resultscontents">
 	  <h1>Text Penguin</h1>
 	  Hi {{ user.username }}!
-	  <p>
-	  	<br><strong> Input text: </strong><br>
-	  	<br> {{ text | safe}} <br> 
-	  </p>
-	  {% if algorithm == 'tfidf' %}
-	  		<h3>TF-IDF Results:</h3>
-	  		{{ newtext | safe }}
-	  {% endif %}
-		{% if algorithm == 'lda' %}
+	  {% if output_error_text %}
+	  	<p>{{ output_error_text | safe }}</p>
+	  {% else %}
+		  <p>
+		  	<br><strong> Input text: </strong><br>
+		  	<br> {{ text | safe}} <br> 
+		  </p>
+		  {% if algorithm == 'tfidf' %}
+		  		<h3>TF-IDF Results:</h3>
+		  		<div id="tfidfresults">{{ newtext | safe }}</div><br><br>
+		  		<a href="/Content-Disposition/" download>Download TF-IDF Output</a>
+		  		<br><br>
+		  {% endif %}
+			{% if algorithm == 'lda' %}
 				<h3>Latent Direchlet Results:</h3>
-				{{ outputstring | safe }}
-		{% endif %}
-		{% if algorithm == 'pos' %}
+				{{ outputstring | safe }}<br><br>
+				<a href="/Content-Disposition/" download>Download LDA Output</a>
+				<br><br>
+			{% endif %}
+			{% if algorithm == 'pos' %}
 				<h3>Part-of-Speech Results:</h3>
-				{{ outputstring | safe }}
+				{{ freq_display_str | safe }}<br><br>
+				<a href="/Content-Disposition/" download>Download Full P-O-S Results</a>
+				<a href="/Content-Disposition" download>Download P-O-S Frequencies</a>
+				<br><br>
+			{% endif %}
 		{% endif %}
 	  <p><a href="{% url 'logout' %}">Logout</a></p>
   </div>

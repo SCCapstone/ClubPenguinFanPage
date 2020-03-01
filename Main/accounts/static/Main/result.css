@@ -1,10 +1,12 @@
 #resultscontents {
-	width: 40%;
+	width: 60%;
 	margin: 50px auto;
 	border: solid black 1px;
 	padding: 10px 20px;
 	text-align: center;
 	background-color: white;
+	font-family: 'Rajdhani', serif;
+	font-size: 15px;
 }
 
 #newtextdiv {
@@ -14,4 +16,14 @@
 
 #tfidftitle {
 	text-align: center;
+}
+
+h3 {
+	font-family: 'Roboto Slab', serif;;
+}
+
+#tfidfresults {
+	margin: 0 auto;
+	text-align: center;
+	width: 20%;
 }

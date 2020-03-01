@@ -20,6 +20,8 @@
 	padding: 10px;
 	text-overflow: ellipsis;
 	overflow: auto;
+	font-family: 'Rajdhani', serif;
+	font-size: 15px;
 }
 
 #projecttitle {
@@ -29,11 +31,11 @@
 	margin: 40px auto;
 	color: white;
 	font-size: 30px;
+	font-family: 'Roboto Slab', serif;
 }
 
 #docs_container {
 	width: 80%;
-	margin-left: 350px;
 }
 
 #formholder {
@@ -48,16 +50,19 @@ label {
     font-size: 18px;
     font-weight: normal;
     margin-bottom: 30px;
+    font-family: 'Rajdhani', serif;
 }
 
 #fileinput {
    margin-bottom: 60px;
    color: white;
    font-size: 15px;
+   font-family: 'Rajdhani', serif;
 }
 
 #add_doc_header {
 	color: white;
+	font-family: 'Roboto Slab', serif;
 }
 
 .document_and_analyze_button {
@@ -79,6 +84,7 @@ label {
     border: none;
     color: white;
     padding: 6px;
+    font-family: 'Rajdhani', serif;
 }
 
 .swsinputbutton {
@@ -87,10 +93,12 @@ label {
     border: none;
     color: white;
     padding: 6px;
+    font-family: 'Rajdhani', serif;
 }
 
 .swsinput {
 	padding: 4px;
+	font-family: 'Rajdhani', serif;
 }
 
 .document_and_analyze_button {
