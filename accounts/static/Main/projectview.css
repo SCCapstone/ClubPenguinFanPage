@@ -1,0 +1,106 @@
+#addDocButton {
+	width: 200px;
+	height: 50px;
+	margin: 50px auto;
+	display: block;
+}
+
+#addDocDiv {
+	width: 500px;
+	height: 500px;
+	display: block;
+	margin: 100px auto;
+}
+
+.document {
+	width: 400px;
+	height: 500px;
+	margin: 10px auto;
+	background: white;
+	padding: 10px;
+	text-overflow: ellipsis;
+	overflow: auto;
+	font-family: 'Rajdhani', serif;
+	font-size: 15px;
+}
+
+#projecttitle {
+	width: 500px;
+	margin: 0 auto;
+	text-align: center;
+	margin: 40px auto;
+	color: white;
+	font-size: 30px;
+	font-family: 'Roboto Slab', serif;
+}
+
+#docs_container {
+	width: 80%;
+}
+
+#formholder {
+	width: 50%;
+	margin-left: 45%;
+	margin-top: 50px;
+}
+
+label {
+    color: white;
+    margin-right: 40px;
+    font-size: 18px;
+    font-weight: normal;
+    margin-bottom: 30px;
+    font-family: 'Rajdhani', serif;
+}
+
+#fileinput {
+   margin-bottom: 60px;
+   color: white;
+   font-size: 15px;
+   font-family: 'Rajdhani', serif;
+}
+
+#add_doc_header {
+	color: white;
+	font-family: 'Roboto Slab', serif;
+}
+
+.document_and_analyze_button {
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.sentimentlink {
+	margin-left: 160px;
+}
+
+#createprojectform {
+	margin-bottom: 100px;
+}
+
+.tfidfbutton {
+	margin-bottom: 10px;
+	background-color: #1c87c9;
+    border: none;
+    color: white;
+    padding: 6px;
+    font-family: 'Rajdhani', serif;
+}
+
+.swsinputbutton {
+	margin-bottom: 10px;
+	background-color: #1c87c9;
+    border: none;
+    color: white;
+    padding: 6px;
+    font-family: 'Rajdhani', serif;
+}
+
+.swsinput {
+	padding: 4px;
+	font-family: 'Rajdhani', serif;
+}
+
+.document_and_analyze_button {
+	margin-bottom: 40px;
+}

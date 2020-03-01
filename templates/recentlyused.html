@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}Home{% endblock %}
+
+{% block extra_head %}
+	<link rel="stylesheet" type="text/css" href="{% static 'Main/recentlyused.css' %}">
+	<style>
+         .button {
+         background-color: #1c87c9;
+         border: none;
+         color: white;
+         padding: 20px 20px;
+         text-align: center;
+         text-decoration: none;
+         display: inline-block;
+         font-size: 20px;
+         margin: 0 auto;
+         cursor: pointer;
+         font-family: 'Rajdhani', serif;
+         }
+         
+      </style>
+{% endblock %}
+
+{% block content %}
+    {% if user.is_authenticated %}
+    <h2 id="recentlyusedheader">Projects</h2>
+    	<div id="projectitles">
+    	    {% for project in proj_list %}
+    	        <a href="/projects/{{ project.id }}/">
+        	        <div class="individualproject">
+        	            <h4 class="projecttitle">{{ project.title }}</h4>
+        	        </div>
+    	        </a>
+    	    {% endfor %}
+    	</div>
+    	
+	{% else %}
+    {% endif %}
+    <div id="placeholder">
+		<a href="/createProject" class="button">Create Project</a>
+	</div>
+	
+	<div id="NONOZONE">
+	    <a href="/deleteallobjects">Delete All</a>
+	</div>
+{% endblock %}

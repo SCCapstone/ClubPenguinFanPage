@@ -1,0 +1,49 @@
+#placeholder {
+	width: 40%;
+	margin: 50px auto;
+	padding: 10px 20px;
+	text-align: center;
+}
+
+#projectitles {
+    width: 70%;
+}
+
+.individualproject {
+	width: 200px;
+	height: 200px;
+	margin: 10px auto;
+	background: white;
+	padding: 10px;
+	display: inline-block;
+	vertical-align: middle;
+	overflow: auto;
+	font-family: 'Rajdhani', serif;
+}
+
+.projecttitle {
+	color: black;
+	text-align: center;
+}
+
+#NONOZONE {
+	background-color: red;
+	width: 100px;
+	position: absolute;
+	bottom: 0px;
+	right: 0px;
+}
+
+#NONOZONE a {
+	color: black;
+	text-decoration: none;
+}
+
+#recentlyusedheader {
+	width: 100%;
+	text-align: center;
+	color: white;
+	margin-top: 50px;
+	margin-bottom: 60px;
+	font-family: 'Roboto Slab', serif;
+}

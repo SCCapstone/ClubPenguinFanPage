@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}Home{% endblock %}
+
+{% block extra_head %}
+	<link rel="stylesheet" type="text/css" href="{% static 'Main/resources.css' %}">
+{% endblock %}
+
+{% block content %}
+
+	<style>
+		#placeholder {
+			text-align: left;
+		}
+
+		h2 {
+			font-size: 250%;
+			text-align: center;
+			color: white;
+			font-family: 'Roboto Slab', serif;
+		}
+
+		p1 {
+			font-size: 180%;
+			font-style: bold;
+			font-family: 'Rajdhani', serif;
+		}
+
+		p2 {
+			font-size: 130%;
+			font-family: 'Rajdhani', serif;
+		}
+
+		p3 {
+			font-size: 130%;
+			font-family: 'Rajdhani', serif;
+		}
+	</style>
+
+	<h2>Resources</h2>
+
+	<div id="placeholder">
+
+		<p1><br>Links To Algorithms: </p1>
+
+		<ul>
+			<p2><li>TF-IDF (Term Frequency - Inverse Document Frequency) :
+				<a href="http://www.tfidf.com/">TF-IDF</a></p2></ul></li>
+		</ul>
+
+		<p1><br>Links To Libraries: </p1>
+
+		<p3>
+		<ul>
+			<li><a href="https://github.com/nltk/nltk/blob/develop/LICENSE.txt">NLTK</a></li>
+			<li><a href="https://radimrehurek.com/gensim/about.html">GenSim</a></li>
+			<li><a href="https://www.scipy.org/scipylib/license.html">SciPy</a></li>
+			<li><a href="https://github.com/sloria/TextBlob/blob/dev/LICENSE">TextBlob</a></li>
+		</ul>
+		</p3>
+	</div>
+	{% if user.is_authenticated %}
+
+	{% else %}
+	{% endif %}
+{% endblock %}

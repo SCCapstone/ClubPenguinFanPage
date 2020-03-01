@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}createproject{% endblock %}
+
+{% block extra_head %}
+	<link rel="stylesheet" type="text/css" href="{% static 'Main/createProject.css' %}">
+	<script>
+      $(document).ready(function(){
+        $("#inputtextradio").prop("checked", true);
+        choiceCheck();
+        
+        $('#inputtextradio').on("click", function(){choiceCheck()});
+        $('#inputfileradio').on("click", function(){choiceCheck()});
+        
+      function choiceCheck() {
+          if (document.getElementById('inputtextradio').checked) {
+            document.getElementById("fileinput").value =  '';
+            document.getElementById('firstdocinput').style.display = 'block';
+            document.getElementById('fileinput').style.display = 'none';
+            $("#inputtextradio").prop("checked", true);
+          }
+          else if (document.getElementById('inputfileradio').checked) {
+            document.getElementById("firstdocinput").value = '';
+            document.getElementById('firstdocinput').style.display = 'none';
+            document.getElementById('fileinput').style.display = 'block';
+            $("#inputfileradio").prop("checked", true);
+          }
+          else {
+            document.getElementById('fileinput').style.display = 'none';
+            document.getElementById('firstdocinput').style.display = 'none';
+          }
+        }
+      });
+    </script>
+{% endblock %}
+
+{% block content %}
+    <h2 id="createaprojectheader">Create Project</h3>
+    <div id="formholder">
+        <form method="post" enctype="multipart/form-data" id="createprojectform" action="{% url 'createProject' %}">
+            {% csrf_token %}
+            <input id="titleinput" type="text" placeholder="Title of Project" name="titleInput" required><br>
+            <span>
+                <input id="inputtextradio" type="radio" name="inputradio">
+                <label for="inputtextradio">Input Text</label>
+                <input id="inputfileradio" type="radio" name="inputradio">
+                <label for="inputfileradio">Input .txt File</label>
+            </span><br>
+            <textarea id="firstdocinput" name="textInput" cols="80" rows="20" placeholder="Input the text of your first document!"></textarea><br>
+            <input id="fileinput" type="file" name="fileInput">
+            <input id="submitbuttoninput" type="submit" value="Submit">
+        </form>
+    </div>
+
+    <div id="button">
+		<a href="/recentlyused" class="button">Back</a>
+    </div>
+{% if user.is_authenticated %}
+{% else %}
+{% endif %}
+{% endblock %}

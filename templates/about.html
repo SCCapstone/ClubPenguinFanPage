@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}Home{% endblock %}
+
+{% block extra_head %}
+	<link rel="stylesheet" type="text/css" href="{% static 'Main/about.css' %}">
+{% endblock %}
+
+{% block content %}
+	<style>
+		h3 {
+			font-size: 250%;
+			color: white;
+			text-align: center;
+		}
+		#creators {
+			border-collapse: collapse;
+  			width: 50%;
+		}
+		#creators td, #creators th {
+			border: 1px solid #ddd;
+  			padding: 8px;
+		}
+		table, td {
+  			border: 1px solid black;
+		}
+		#creators th {
+ 			 padding-top: 12px;
+ 			 padding-bottom: 12px;
+ 			 text-align: left;
+ 			 background-color: #C3E0E5;
+ 			 color: #403939;
+		}
+		#creators tr:nth-child(even){background-color: #f2f2f2;}
+
+		#creators tr:hover {background-color: #ddd;}
+		p1 {
+			font-size: 130%;
+		}
+		p2 {
+			font-size: 110%;
+		}
+	</style>
+	<h3>About</h3>
+	<div id="placeholder">
+	<p1>Creators: <br></p1>
+		<table id="creators">
+			<tr>
+				<th>Name</th>
+    			<th>Email</th>
+  			</tr>
+			<tr>
+    			<td>Ainsley McWaters</td>
+    			<td>mcwatera@gmail.com</td>
+			</tr>
+			<tr>
+    			<td>Matthew O'Neill</td>
+    			<td>matthew.oneill71@gmail.com</td>
+			</tr>
+			<tr>
+    			<td>Samyu Comandur</td>
+    			<td>samyuktha.comandur@gmail.com</td>
+			</tr>
+			<tr>
+    			<td>Suzie Prentice</td>
+    			<td>suzanneprentice26@gmail.com</td>
+			</tr>
+			<tr>
+    			<td>Steven Maxwell</td>
+    			<td>maxwellstevene@gmail.com</td>
+			</tr>
+		</table>
+		<p2><br>Welcome to our Capstone project! We aim to provide a resource that allows
+		users to easily create projects of text documents and
+		run processing algorithms. In our proof of concept phase,
+		users can create a project of documents, or download and
+		upload files. Users are currently able to run only the TF-IDF
+		algorithm. You can track our progress at our <a href="https://github.com/SCCapstone/ClubPenguinFanPage">github</a>!</p2>
+	</div>
+	{% if user.is_authenticated %}
+	{% else %}
+	{% endif %}
+{% endblock %}
