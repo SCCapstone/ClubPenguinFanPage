@@ -19,12 +19,26 @@
 
 {% block content %}
 <div class="container">
-  <h2>Sign up</h2>
+  <h2 style = "color:white">Sign up</h2>
   <form method="post" novalidate>
     {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Sign up</button>
+	{% for field in form %}
+	<p style = "color=white">
+		<p style = "color:white">{{ field.label_tag }}</p>
+		{{ field }}
+		{% if field.help_text %}
+			<small style="color:white">{{ field.help_text }}</small>
+		{% endif %}
+		{% for error in fields.error %}
+			<p style="color:red">{{ error }}</p>
+		{% endfor %}
+	</p>
+	{% endfor %}
+    <button type="submit" href = "{% url 'login' %}">Sign Up</button>
+	<br>
+	<a href="{% url 'login' %}">Login</a>
   </form>
 <!--</div>-->
 </div>
 {% endblock %}
+</body>
