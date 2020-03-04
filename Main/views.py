@@ -394,6 +394,19 @@ def analyze_doc_tfidf(request, document_id):
     }
     return render(request, 'result.html', context = context)
 
+def delete_project(request, project_id):
+    Project = apps.get_model('accounts', 'Project')
+    Document = apps.get_model('accounts', 'Document')
+    docs = Document.objects.filter(project_id = project_id)
+    project = Project.objects.get(pk = project_id)
+    docs.delete()
+    project.delete()
+    user = request.user
+    project_list=Project.objects.filter(owner=user.id)
+    context = {
+        'proj_list': project_list,
+    }
+    return render(request,"recentlyused.html",context=context)
 
 #other methods for other stuff
 def clean_up(txt):
