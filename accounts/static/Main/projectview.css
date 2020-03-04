@@ -104,3 +104,34 @@ label {
 .document_and_analyze_button {
 	margin-bottom: 40px;
 }
+
+#edittitle {
+	font-size: 11px;
+	margin-left: 5%;
+}
+
+#edittitle:hover {
+    color: blue;
+}
+
+#editprojecttitleform {
+	display: block;
+	width: 30%;
+	margin: 1% 45%;
+	font-family: 'Rajdhani', serif;
+	font-size: 15px;
+}
+
+#newtitlesubmit {
+	margin-bottom: 10px;
+	background-color: #1c87c9;
+    border: none;
+    color: white;
+    padding: 6px;
+    font-family: 'Rajdhani', serif;
+}
+
+#newtitleinput {
+	padding: 4px;
+	font-family: 'Rajdhani', serif;
+}

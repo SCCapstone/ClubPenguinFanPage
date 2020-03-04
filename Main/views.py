@@ -385,6 +385,12 @@ def analyze_doc_tfidf(request, document_id):
     except:
         print('file not found exception')
     txt = doc.text
+    check_txt = txt.replace(' ', '')
+    if check_txt == '':
+        context = {
+            'output_error_text': "<br>The document is empty!<br><br>"
+        }
+    return render(request, 'result.html', context = context)
     sw = request.POST.get('sws')
     textout, newtext = tfidfprocess(txt, sw)
     context = {
@@ -397,7 +403,7 @@ def analyze_doc_tfidf(request, document_id):
 def delete_project(request, project_id):
     Project = apps.get_model('accounts', 'Project')
     Document = apps.get_model('accounts', 'Document')
-    docs = Document.objects.filter(project_id = project_id)
+    docs = Document.objects.filter(project = project_id)
     project = Project.objects.get(pk = project_id)
     docs.delete()
     project.delete()
@@ -407,6 +413,24 @@ def delete_project(request, project_id):
         'proj_list': project_list,
     }
     return render(request,"recentlyused.html",context=context)
+    
+def edit_project_title(request, project_id):
+    if request.method == 'POST':
+        new_name = request.POST.get("newtitleinput")
+        Project = apps.get_model('accounts', 'Project')
+        Document = apps.get_model('accounts', 'Document')
+        Project.objects.filter(pk=project_id).update(title=new_name)
+        documents = Document.objects.filter(project=project_id)
+        proj = Project.objects.get(pk=project_id)
+        title = proj.title
+        context= {
+            'doc_list': documents,
+            'project': proj,
+            'title': title,
+        }
+        return render(request, "projectview.html", context=context)
+
+    
 
 #other methods for other stuff
 def clean_up(txt):

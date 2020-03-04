@@ -37,4 +37,5 @@ urlpatterns = [
     path('addDocument/<int:project_id>/', views.add_document, name="add_document"),
     path('analyzeDocTFIDF/<int:document_id>', views.analyze_doc_tfidf, name="analyze_doc_tfidf"),
     path('deleteProject/<int:project_id>/', views.delete_project, name='delete_project'),
+    path('editProjectTitle/<int:project_id>/', views.edit_project_title, name="edit_project_title"),
 ]
