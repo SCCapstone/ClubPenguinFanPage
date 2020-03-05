@@ -26,7 +26,7 @@ urlpatterns = [
 	path('accounts/', include('django.contrib.auth.urls')),
 	path('', views.home, name='home'),
     path('result/', views.result, name='result'),
-	path('recentlyused/', views.recentlyused, name='projects'),
+	path('recentlyused/', views.recentlyused, name='recentlyused'),
 	path('resources/', TemplateView.as_view(template_name='resources.html'), name='resources'),
 	path('about/', TemplateView.as_view(template_name='about.html'), name='about'),
     path('home/', TemplateView.as_view(template_name='home.html'), name='home'),  
@@ -38,4 +38,5 @@ urlpatterns = [
     path('analyzeDocTFIDF/<int:document_id>', views.analyze_doc_tfidf, name="analyze_doc_tfidf"),
     path('deleteProject/<int:project_id>/', views.delete_project, name='delete_project'),
     path('editProjectTitle/<int:project_id>/', views.edit_project_title, name="edit_project_title"),
+    path('deleteDocument/<int:document_id>/', views.delete_document, name="delete_document"),
 ]

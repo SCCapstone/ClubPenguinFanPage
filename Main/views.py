@@ -400,6 +400,7 @@ def analyze_doc_tfidf(request, document_id):
     }
     return render(request, 'result.html', context = context)
 
+#change to redirect
 def delete_project(request, project_id):
     Project = apps.get_model('accounts', 'Project')
     Document = apps.get_model('accounts', 'Document')
@@ -412,8 +413,9 @@ def delete_project(request, project_id):
     context = {
         'proj_list': project_list,
     }
-    return render(request,"recentlyused.html",context=context)
-    
+    return redirect("recentlyused")
+
+#change to redirect 
 def edit_project_title(request, project_id):
     if request.method == 'POST':
         new_name = request.POST.get("newtitleinput")
@@ -428,7 +430,33 @@ def edit_project_title(request, project_id):
             'project': proj,
             'title': title,
         }
-        return render(request, "projectview.html", context=context)
+        return redirect("project_detail", project_id = proj.id)
+  
+#change to redirect      
+def delete_document(request, document_id):
+    Project = apps.get_model('accounts', 'Project')
+    Document = apps.get_model('accounts', 'Document')
+    doc = Document.objects.get(pk=document_id)
+    proj = doc.project
+    proj_id = proj.id
+    doc.delete()
+    docs_after = Document.objects.filter(project=proj_id)
+    if len(docs_after) > 0:
+        title = proj.title
+        context= {
+            'doc_list': docs_after,
+            'project': proj,
+            'title': title,
+        }
+        return redirect("project_detail", project_id = proj_id)
+    else:
+        proj.delete()
+        user = request.user
+        project_list=Project.objects.filter(owner=user.id)
+        context = {
+            'proj_list': project_list,
+        }
+        return redirect("recentlyused")
 
     
 

@@ -66,7 +66,10 @@
     <div id="docs_container">
         {% for document in doc_list %}
         <div class="document_and_analyze_button">
-                <button class="tfidfbutton">TF-IDF Analyze</button><br>
+                <button class="tfidfbutton">TF-IDF Analyze</button>
+                <button class="posbutton">P-O-S Analyze</button>
+                <button class="ldaanalyze">LDA Analyze</button>
+                <a href="/deleteDocument/{{ document.id }}" onclick="return confirm('Delete?');">X</a>
                 <form method="post" enctype="multipart/form-data" class="swinputform" action="/analyzeDocTFIDF/{{ document.id }}">
                     {% csrf_token %}
                     <input type="text" name="sws" class="swsinput" placeholder="input custom stop-words">
@@ -75,6 +78,7 @@
             <div class="document">
                 <p class="documenttext">{{ document.text }}</p>
             </div>
+            <p id="doceditlink">[ Edit ]</p>
         </div>
         {% endfor %}
     </div>
