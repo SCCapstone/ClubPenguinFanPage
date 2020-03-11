@@ -47,3 +47,20 @@
 	margin-bottom: 60px;
 	font-family: 'Roboto Slab', serif;
 }
+
+.projectstuff {
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.deleteprojbutton {
+	margin-left: 90%;
+	background-color: #1c87c9;
+    border: none;
+    color: white;
+    padding-left: 7px;
+    padding-right: 7px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    font-family: 'Rajdhani', serif;
+}

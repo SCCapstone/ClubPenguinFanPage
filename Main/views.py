@@ -457,6 +457,17 @@ def delete_document(request, document_id):
             'proj_list': project_list,
         }
         return redirect("recentlyused")
+        
+def edit_document(request, document_id):
+    if request.method == 'POST':
+        new_text = request.POST.get("editdocinput")
+        Project = apps.get_model('accounts', 'Project')
+        Document = apps.get_model('accounts', 'Document')
+        Document.objects.filter(pk=document_id).update(text=new_text)
+        doc = Document.objects.get(pk=document_id)
+        proj = doc.project
+        proj_id = proj.id
+        return redirect("project_detail", project_id = proj.id)
 
     
 

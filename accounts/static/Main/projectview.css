@@ -40,7 +40,7 @@
 
 #formholder {
 	width: 50%;
-	margin-left: 45%;
+	margin-left: 30%;
 	margin-top: 50px;
 }
 
@@ -134,4 +134,81 @@ label {
 #newtitleinput {
 	padding: 4px;
 	font-family: 'Rajdhani', serif;
+}
+
+.posbutton {
+	margin-bottom: 10px;
+	background-color: #1c87c9;
+    border: none;
+    color: white;
+    padding: 6px;
+    font-family: 'Rajdhani', serif;
+}
+
+.ldabutton {
+	margin-bottom: 10px;
+	background-color: #1c87c9;
+    border: none;
+    color: white;
+    padding: 6px;
+    font-family: 'Rajdhani', serif;
+}
+
+.deletedocbutton {
+	margin-bottom: 10px;
+	background-color: #1c87c9;
+    border: none;
+    color: white;
+    padding: 7px;
+    font-family: 'Rajdhani', serif;
+    margin-left: 20%;
+}
+
+.doceditlink {
+	font-family: 'Rajdhani', serif;
+	color: white;
+}
+
+.editdocarea {
+	width: 400px;
+	height: 500px;
+	margin: 10px auto;
+	background: white;
+	padding: 10px;
+	text-overflow: ellipsis;
+	overflow: auto;
+	font-family: 'Rajdhani', serif;
+	font-size: 15px;
+}
+
+.doceditcancellink {
+	font-family: 'Rajdhani', serif;
+	color: white;
+}
+
+.submiteditdoc {
+	background-color: #1c87c9;
+    border: none;
+    color: white;
+    padding: 10px 10px;
+    text-align: center;
+    font-size: 15px;
+}
+
+#addDocButton {
+	background-color: #1c87c9;
+    border: none;
+    color: white;
+    padding: 10px 10px;
+    text-align: center;
+    font-size: 15px;
+}
+
+#submitbuttoninput {
+	background-color: #1c87c9;
+    border: none;
+    color: white;
+    padding: 10px 10px;
+    text-align: center;
+    font-size: 15px;
 }

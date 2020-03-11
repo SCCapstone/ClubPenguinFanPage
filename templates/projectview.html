@@ -12,6 +12,10 @@
         $(".swinputform").hide();
         $("#editprojecttitleform").hide();
         $("#edittitle").show();
+        $(".posswinputform").hide();
+        $(".doceditform").hide();
+        $(".doceditcancellink").hide();
+        $("#inputtextradio").prop("checked", true);
         
         choiceCheck();
         
@@ -20,11 +24,39 @@
         
         $(".tfidfbutton").on("click", function(){
                 $(this).nextAll(".swinputform").first().toggle();
+                $(this).nextAll(".posswinputform").first().hide();
+        });
+        
+        $(".posbutton").on("click", function(){
+           $(this).nextAll(".posswinputform").first().toggle(); 
+           $(this).nextAll(".swinputform").first().hide();
         });
         
         $("#edittitle").on("click", function() {
             $("#edittitle").hide();
             $("#editprojecttitleform").show();
+        });
+        
+        $(".doceditlink").on("click", function(){
+           $(this).nextAll(".doceditform").first().toggle();
+           $(this).toggle();
+           $(this).nextAll(".document").toggle();
+           $(this).nextAll(".doceditcancellink").toggle();
+           $(this).prevAll(".tfidfbutton").toggle();
+           $(this).prevAll(".posbutton").toggle();
+           $(this).prevAll(".ldabutton").toggle();
+           $(this).prevAll(".deletedocbutton").toggle();
+        });
+        
+        $(".doceditcancellink").on("click", function(){
+           $(this).nextAll(".doceditform").first().toggle();
+           $(this).toggle();
+           $(this).nextAll(".document").toggle();
+           $(this).prevAll(".doceditlink").first().toggle();
+           $(this).prevAll(".tfidfbutton").toggle();
+           $(this).prevAll(".posbutton").toggle();
+           $(this).prevAll(".ldabutton").toggle();
+           $(this).prevAll(".deletedocbutton").toggle();
         });
     });
     
@@ -68,17 +100,28 @@
         <div class="document_and_analyze_button">
                 <button class="tfidfbutton">TF-IDF Analyze</button>
                 <button class="posbutton">P-O-S Analyze</button>
-                <button class="ldaanalyze">LDA Analyze</button>
-                <a href="/deleteDocument/{{ document.id }}" onclick="return confirm('Delete?');">X</a>
+                <button class="ldabutton">LDA Analyze</button>
+                <a class="deletedocbutton" href="/deleteDocument/{{ document.id }}" onclick="return confirm('Delete?');">X</a>
                 <form method="post" enctype="multipart/form-data" class="swinputform" action="/analyzeDocTFIDF/{{ document.id }}">
                     {% csrf_token %}
-                    <input type="text" name="sws" class="swsinput" placeholder="input custom stop-words">
+                    <input type="text" name="sws" class="swsinput" placeholder="TF-IDF custom stop-words">
                     <input class="swsinputbutton" type="submit" value="Analyze">
                 </form>
+                <form method="post" enctype="multipart/form-data" class="posswinputform" action="/analyzeDocPOS/{{ document.id }}">
+                    {% csrf_token %}
+                    <input type="text" name="sws" class="swsinput" placeholder="P-O-S custom stop-words">
+                    <input class="swsinputbutton" type="submit" value="Analyze">
+                </form>
+            <p class="doceditlink">[ Edit ]</p>
+            <p class="doceditcancellink">[ Cancel ]</p>
             <div class="document">
                 <p class="documenttext">{{ document.text }}</p>
             </div>
-            <p id="doceditlink">[ Edit ]</p>
+            <form method="post" enctype="multipart/form-data" class="doceditform" action="/editDocument/{{ document.id }}/">
+                {% csrf_token %}
+                <textarea class="editdocarea" name="editdocinput" cols="54" rows="23">{{ document.text }}</textarea><br>
+                <input class="submiteditdoc" type="submit">
+            </form>
         </div>
         {% endfor %}
     </div>

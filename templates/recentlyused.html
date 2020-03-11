@@ -24,7 +24,7 @@
       </style>
     <script>
         $( document ).ready(function() {
-           $("#deleteprojbutton").on("click", function(){
+           $(".deleteprojbutton").on("click", function(){
                return confirm("Do you want to delete this project?");
            }); 
         });
@@ -36,12 +36,14 @@
     <h2 id="recentlyusedheader">Projects</h2>
     	<div id="projectitles">
     	    {% for project in proj_list %}
-    	        <a id="deleteprojbutton" href="/deleteProject/{{ project.id }}/">X</a><br>
+    	    <div class="projectstuff">
+    	        <a class="deleteprojbutton" href="/deleteProject/{{ project.id }}/">X</a><br>
     	        <a href="/recentlyused/{{ project.id }}/">
         	        <div class="individualproject">
         	            <h4 class="projecttitle">{{ project.title }}</h4>
         	        </div>
     	        </a>
+    	    </div>
     	    {% endfor %}
     	</div>
     <div id="placeholder">
