@@ -99,6 +99,7 @@ label {
 .swsinput {
 	padding: 4px;
 	font-family: 'Rajdhani', serif;
+	margin-bottom: 2%;
 }
 
 .document_and_analyze_button {
@@ -108,10 +109,6 @@ label {
 #edittitle {
 	font-size: 11px;
 	margin-left: 5%;
-}
-
-#edittitle:hover {
-    color: blue;
 }
 
 #editprojecttitleform {
@@ -211,4 +208,34 @@ label {
     padding: 10px 10px;
     text-align: center;
     font-size: 15px;
+}
+
+.ldasubmitbutton {
+	margin-bottom: 10px;
+	background-color: #1c87c9;
+    border: none;
+    color: white;
+    padding: 6px;
+    font-family: 'Rajdhani', serif;
+}
+
+.numoftopicslabel {
+	color: white;
+    font-size: 18px;
+    font-weight: normal;
+    font-family: 'Rajdhani', serif;
+    margin-right: 2%;
+}
+
+.numoftopics {
+	margin-right: 2%;
+}
+
+select {
+	padding: 6px;
+}
+
+#edittitlecancel {
+	font-size: 11px;
+	margin-left: 5%;
 }

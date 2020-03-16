@@ -16,25 +16,42 @@
         $(".doceditform").hide();
         $(".doceditcancellink").hide();
         $("#inputtextradio").prop("checked", true);
+        $(".ldainputform").hide();
+        $("#edittitlecancel").hide();
         
         choiceCheck();
         
         $('#inputtextradio').on("click", function(){choiceCheck()});
         $('#inputfileradio').on("click", function(){choiceCheck()});
         
+        $(".ldabutton").on("click", function(){
+           $(this).nextAll(".ldainputform").first().show();
+           $(".swinputform").hide();
+           $(".posswinputform").hide();
+        });
+        
         $(".tfidfbutton").on("click", function(){
-                $(this).nextAll(".swinputform").first().toggle();
-                $(this).nextAll(".posswinputform").first().hide();
+            $(this).nextAll(".swinputform").first().show();
+            $(".posswinputform").hide();
+            $(".ldainputform").hide();
         });
         
         $(".posbutton").on("click", function(){
-           $(this).nextAll(".posswinputform").first().toggle(); 
-           $(this).nextAll(".swinputform").first().hide();
+           $(this).nextAll(".posswinputform").first().show();
+           $(".swinputform").hide();
+           $(".ldainputform").hide();
         });
-        
+    
         $("#edittitle").on("click", function() {
             $("#edittitle").hide();
             $("#editprojecttitleform").show();
+            $("#edittitlecancel").show();
+        });
+        
+        $("#edittitlecancel").on("click", function() {
+           $("#edittitle").show();
+           $("#editprojecttitleform").hide();
+           $("#edittitlecancel").hide();
         });
         
         $(".doceditlink").on("click", function(){
@@ -46,6 +63,9 @@
            $(this).prevAll(".posbutton").toggle();
            $(this).prevAll(".ldabutton").toggle();
            $(this).prevAll(".deletedocbutton").toggle();
+           $(".swinputform").hide();
+           $(".posswinputform").hide();
+           $(".ldainputform").hide();
         });
         
         $(".doceditcancellink").on("click", function(){
@@ -88,7 +108,7 @@
 {% endblock %}
 
 {% block content %}
-    <h3 id="projecttitle">{{ title }}<span id="edittitle">      [Edit]</span></h3>
+    <h3 id="projecttitle">{{ title }}<span id="edittitle">      [Edit]</span><span id="edittitlecancel">      [Cancel]</span></h3>
     <form method="post" enctype="multipart/form-data" id="editprojecttitleform" action="/editProjectTitle/{{ project.id }}/">
         {% csrf_token %}
         <input type="text" id="newtitleinput" placeholder="Project Title" name="newtitleinput" required>
@@ -111,6 +131,21 @@
                     {% csrf_token %}
                     <input type="text" name="sws" class="swsinput" placeholder="P-O-S custom stop-words">
                     <input class="swsinputbutton" type="submit" value="Analyze">
+                </form>
+                <form method="post" enctype="multipart/form-data" class="ldainputform" action="/analyzeDocLDA/{{ document.id }}">
+                    {% csrf_token %}
+                    <input type="text" name="sws" class="swsinput" placeholder="LDA custom stop-words"><br>
+                    <label for="numoftopics" class="numoftopicslabel"># of Topics:</label>
+                    <select name="numoftopics" class="numoftopics">
+                        <option name="1">1</option>
+                        <option name="2">2</option>
+                        <option name="3">3</option>
+                        <option name="4">4</option>
+                        <option name="5">5</option>
+                        <option name="6">6</option>
+                        <option name="7">7</option>
+                    </select>
+                    <input class="ldasubmitbutton" type="submit" value="Analyze">
                 </form>
             <p class="doceditlink">[ Edit ]</p>
             <p class="doceditcancellink">[ Cancel ]</p>
