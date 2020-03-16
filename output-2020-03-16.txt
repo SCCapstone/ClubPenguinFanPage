@@ -1,23 +1,27 @@
 
 Topic 1
+
 0.277 "testing"
 0.243 "dolore"
 0.241 "ut"
 0.239 "dolor"
 
 Topic 2
+
 0.732 "testing"
 0.091 "ut"
 0.089 "dolore"
 0.088 "dolor"
 
 Topic 3
+
 0.278 "testing"
 0.242 "ut"
 0.241 "dolore"
 0.240 "dolor"
 
 Topic 4
+
 0.356 "ut"
 0.269 "dolor"
 0.266 "dolore"

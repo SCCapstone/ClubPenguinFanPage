@@ -174,7 +174,7 @@ def pos(txt, sw):
                     d[tag[1]] += 1
                     outputstring = outputstring + tag[0] + ": " + tag[1] + "\n"
         if d != {}:
-            freq_string += "Document " + str(cnt) + "\n"
+            freq_string += "\r\nDocument " + str(cnt) + "\n"
             for tag in d:
                 if tag in tags_dict:
                     freq_string += tag + ' (' + tags_dict[tag] + '): ' + str(d.get(tag)) + '\n'
@@ -454,7 +454,7 @@ def analyze_doc_lda(request, document_id):
         outputstring = ldaprocess(txt, sw, num_of_topics)
     except ValueError:
         context = {
-            'output_error_text': "The text you input does not contain enough unique terms for LDA!",
+            'output_error_text': "<br><br>The text you input does not contain enough unique terms for LDA!",
         }
         return render(request, 'result.html', context=context)
 #change outputstring to formatted with txt file, also add for frequencies 
@@ -463,6 +463,7 @@ def analyze_doc_lda(request, document_id):
     file1.close() 
     txt = clean_up(txt)
     textout = '<br>'.join(txt)
+    outputstring = outputstring.replace("\n", "<br>")
     context = {
         'text': textout,
         'outputstring': outputstring,
@@ -539,9 +540,123 @@ def edit_document(request, document_id):
         proj = doc.project
         proj_id = proj.id
         return redirect("project_detail", project_id = proj.id)
+        
+def multi_tfidf(request, project_id):
+    Project = apps.get_model('accounts', 'Project')
+    Document = apps.get_model('accounts', 'Document')
+    proj = Project.objects.get(pk=project_id)
+    docs = Document.objects.filter(project=proj)
+    entire_text = ""
+    for doc in docs:
+        text = doc.text
+        entire_text = entire_text + text + "\r\n"
+    check_txt = entire_text.replace(' ', '')
+    if check_txt == '':
+        context = {
+            'output_error_text': "<br>The document is empty!<br><br>"
+        }
+        return render(request, 'result.html', context = context)
+    sw = request.POST.get('sws')
+    textout, newtext = tfidfprocess(entire_text, sw)
+    '''
+    filename = 'output-' + str(date.today()) + '.txt'
+    try:
+        os.remove(filename)
+    except:
+        print('file not found exception')
+    '''
+    context = {
+        'text': textout,
+        'newtext': newtext,
+        'algorithm': 'tfidf'
+    }
+    return render(request, 'result.html', context = context)
+    
+def multi_pos(request, project_id):
+    Project = apps.get_model('accounts', 'Project')
+    Document = apps.get_model('accounts', 'Document')
+    filename = 'output-' + str(date.today()) + '.txt'
+    try:
+        os.remove(filename)
+    except:
+        print('file not found exception')
+    proj = Project.objects.get(pk=project_id)
+    docs = Document.objects.filter(project=proj)
+    entire_text = ""
+    for doc in docs:
+        text = doc.text
+        entire_text = entire_text + text + "\r\n"
+    check_txt = entire_text.replace(' ', '')
+    if check_txt == '':
+        context = {
+            'output_error_text': "<br>The document is empty!<br><br>"
+        }
+        return render(request, 'result.html', context = context)
+    sw = request.POST.get('sws')
+    outputstring, output_freq_string = posprocess(entire_text, sw)
+#change outputstring to formatted with txt file
+    file1 = open(filename,"w+") 
+    file1.write(outputstring)
+    file1.close() 
+    freq_display_str = output_freq_string.replace("\n", "<br>")
+    txt = clean_up(entire_text)
+    textout = '<br><br>'.join(txt)
+    context = {
+        'text': textout,
+        'outputstring': outputstring,
+        'algorithm': 'pos',
+        'output_freq_string': output_freq_string,
+        'freq_display_str': freq_display_str,
+    }
+    return render(request, 'result.html', context= context)
+    
+def multi_lda(request, project_id):
+    Project = apps.get_model('accounts', 'Project')
+    Document = apps.get_model('accounts', 'Document')
+    filename = 'output-' + str(date.today()) + '.txt'
+    try:
+        os.remove(filename)
+    except:
+        print('file not found exception')
+    proj = Project.objects.get(pk=project_id)
+    docs = Document.objects.filter(project=proj)
+    entire_text = ""
+    for doc in docs:
+        text = doc.text
+        entire_text = entire_text + text + "\r\n"
+    check_txt = entire_text.replace(' ', '')
+    if check_txt == '':
+        context = {
+            'output_error_text': "<br>The document is empty!<br><br>"
+        }
+        return render(request, 'result.html', context = context)
+    sw = request.POST.get('sws')
+    num_of_topics = request.POST.get('numoftopics')
+    try:
+        outputstring = ldaprocess(entire_text, sw, num_of_topics)
+    except ValueError:
+        context = {
+            'output_error_text': "<br><br>The text you input does not contain enough unique terms for LDA!",
+        }
+        return render(request, 'result.html', context=context)
+#change outputstring to formatted with txt file, also add for frequencies 
+    file1 = open(filename,"w+") 
+    file1.write(outputstring)
+    file1.close() 
+    txt = clean_up(entire_text)
+    textout = '<br><br>'.join(txt)
+    outputstring = outputstring.replace("\n", "<br>")
+    context = {
+        'text': textout,
+        'outputstring': outputstring,
+        'algorithm': 'lda'
+    }
+    return render(request, 'result.html', context=context)
 
     
+        
 
+    
 #other methods for other stuff
 def clean_up(txt):
     clean_text = txt

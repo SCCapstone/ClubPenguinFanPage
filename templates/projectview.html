@@ -18,6 +18,9 @@
         $("#inputtextradio").prop("checked", true);
         $(".ldainputform").hide();
         $("#edittitlecancel").hide();
+        $(".tfidfmultiform").hide();
+        $(".posmultiform").hide();
+        $(".ldamultiform").hide();
         
         choiceCheck();
         
@@ -78,6 +81,24 @@
            $(this).prevAll(".ldabutton").toggle();
            $(this).prevAll(".deletedocbutton").toggle();
         });
+        
+        $("#tfidfmultidocbutton").on("click", function(){
+           $(".tfidfmultiform").show();
+           $(".posmultiform").hide();
+           $(".ldamultiform").hide();
+        });
+        
+        $("#posmultidocbutton").on("click", function(){
+           $(".posmultiform").show();
+           $(".tfidfmultiform").hide();
+           $(".ldamultiform").hide();
+        });
+        
+        $("#ldamultidocbutton").on("click", function(){
+           $(".ldamultiform").show();
+           $(".posmultiform").hide();
+           $(".tfidfmultiform").hide();
+        });
     });
     
 	function addDoc() {
@@ -108,13 +129,44 @@
 {% endblock %}
 
 {% block content %}
+    {% if user.is_authenticated %}
     <h3 id="projecttitle">{{ title }}<span id="edittitle">      [Edit]</span><span id="edittitlecancel">      [Cancel]</span></h3>
     <form method="post" enctype="multipart/form-data" id="editprojecttitleform" action="/editProjectTitle/{{ project.id }}/">
         {% csrf_token %}
         <input type="text" id="newtitleinput" placeholder="Project Title" name="newtitleinput" required>
         <input type="submit" id="newtitlesubmit">
     </form>
-    <br><br>
+    <div id="multidocanalyzediv">
+        <h5 id="multidocheader">Analyze Project</h5>
+        <button class="multidocbutton" id="tfidfmultidocbutton">Analyze Project - TF-IDF</button><br>
+        <button class="multidocbutton" id="posmultidocbutton">Analyze Project - P-O-S</button><br>
+        <button class="multidocbutton" id="ldamultidocbutton">Analyze Project - LDA</button><br>
+        <form method="post" enctype="multipart/form-data" class="tfidfmultiform" action="/tfidfMultiAnalyze/{{ project.id }}/">
+                    {% csrf_token %}
+                    <input type="text" name="sws" class="swsinput" placeholder="TF-IDF custom stop-words">
+                    <input class="swsinputbutton" type="submit" value="Analyze">
+       </form>
+       <form method="post" enctype="multipart/form-data" class="posmultiform" action="/posMultiAnalyze/{{ project.id }}/">
+                    {% csrf_token %}
+                    <input type="text" name="sws" class="swsinput" placeholder="P-O-S custom stop-words">
+                    <input class="swsinputbutton" type="submit" value="Analyze">
+       </form>
+       <form method="post" enctype="multipart/form-data" class="ldamultiform" action="/ldaMultiAnalyze/{{ project.id }}/">
+                    {% csrf_token %}
+                    <input type="text" name="sws" class="swsinput" placeholder="LDA custom stop-words"><br>
+                    <label for="numoftopics" class="numoftopicslabel"># of Topics:</label>
+                    <select name="numoftopics" class="numoftopics">
+                        <option name="1">1</option>
+                        <option name="2">2</option>
+                        <option name="3">3</option>
+                        <option name="4">4</option>
+                        <option name="5">5</option>
+                        <option name="6">6</option>
+                        <option name="7">7</option>
+                    </select>
+                    <input class="ldasubmitbutton" type="submit" value="Analyze">
+       </form>
+    </div><br>
     <div id="docs_container">
         {% for document in doc_list %}
         <div class="document_and_analyze_button">
@@ -161,9 +213,6 @@
         {% endfor %}
     </div>
     <button id="addDocButton" onClick="addDoc()">Add another document</button>
-    {% if user.is_authenticated %}
-	{% else %}
-    {% endif %}
     
      <div id="formholder">
          <h2 id="add_doc_header">Add Document</h2>
@@ -180,5 +229,7 @@
             <input id="submitbuttoninput" type="submit" value="Submit">
         </form>
     </div>
+    {% else %}
+    {% endif %}
      
 {% endblock %}

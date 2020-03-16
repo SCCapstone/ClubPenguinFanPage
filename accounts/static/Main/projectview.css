@@ -239,3 +239,25 @@ select {
 	font-size: 11px;
 	margin-left: 5%;
 }
+
+.multidocbutton {
+	margin-bottom: 10px;
+	background-color: #1c87c9;
+    border: none;
+    color: white;
+    padding: 6px;
+    font-family: 'Rajdhani', serif;
+}
+
+#multidocheader {
+	color: white;
+	font-size: 20px;
+	font-family: 'Roboto Slab', serif;
+	margin-bottom: 20px;
+}
+
+#multidocanalyzediv {
+	width: 95%;
+	text-align: right;
+}
+

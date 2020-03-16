@@ -42,4 +42,7 @@ urlpatterns = [
     path('editProjectTitle/<int:project_id>/', views.edit_project_title, name="edit_project_title"),
     path('deleteDocument/<int:document_id>/', views.delete_document, name="delete_document"),
     path('editDocument/<int:document_id>/', views.edit_document, name="edit_document"),
+    path('tfidfMultiAnalyze/<int:project_id>/', views.multi_tfidf, name="multi_tfidf"),
+    path('posMultiAnalyze/<int:project_id>/', views.multi_pos, name="multi_pos"),
+    path('ldaMultiAnalyze/<int:project_id>/', views.multi_lda, name="multi_lda"),
 ]
