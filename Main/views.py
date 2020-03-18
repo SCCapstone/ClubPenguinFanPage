@@ -583,8 +583,11 @@ def multi_pos(request, project_id):
     proj = Project.objects.get(pk=project_id)
     docs = Document.objects.filter(project=proj)
     entire_text = ""
+    present_text = ""
     for doc in docs:
         text = doc.text
+        present_text = present_text + text + "\r\n"
+        text = text.replace("\r\n", "")
         entire_text = entire_text + text + "\r\n"
     check_txt = entire_text.replace(' ', '')
     if check_txt == '':
@@ -599,7 +602,7 @@ def multi_pos(request, project_id):
     file1.write(outputstring)
     file1.close() 
     freq_display_str = output_freq_string.replace("\n", "<br>")
-    txt = clean_up(entire_text)
+    txt = clean_up(present_text)
     textout = '<br><br>'.join(txt)
     context = {
         'text': textout,
