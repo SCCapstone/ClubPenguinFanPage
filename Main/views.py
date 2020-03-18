@@ -553,8 +553,13 @@ def multi_tfidf(request, project_id):
     proj = Project.objects.get(pk=project_id)
     docs = Document.objects.filter(project=proj)
     entire_text = ""
-    for doc in docs:
+    present_text = ""
+    i = 0
+    for doc in docs: 
+        i = i + 1
         text = doc.text
+        present_text = present_text + "<strong>Document " + str(i) + "</strong>\r\n" + text + "\r\n"
+        text = text.replace("\r\n", "")
         entire_text = entire_text + text + "\r\n"
     check_txt = entire_text.replace(' ', '')
     if check_txt == '':
@@ -571,8 +576,10 @@ def multi_tfidf(request, project_id):
     except:
         print('file not found exception')
     '''
+    txt = clean_up(present_text)
+    present_text = '<br><br>'.join(txt)
     context = {
-        'text': textout,
+        'text': present_text,
         'newtext': newtext,
         'algorithm': 'tfidf'
     }
@@ -590,9 +597,11 @@ def multi_pos(request, project_id):
     docs = Document.objects.filter(project=proj)
     entire_text = ""
     present_text = ""
+    i = 0
     for doc in docs:
+        i = i + 1
         text = doc.text
-        present_text = present_text + text + "\r\n"
+        present_text = present_text + "<strong>Document " + str(i) + "</strong>\r\n" + text + "\r\n"
         text = text.replace("\r\n", "")
         entire_text = entire_text + text + "\r\n"
     check_txt = entire_text.replace(' ', '')
@@ -630,8 +639,13 @@ def multi_lda(request, project_id):
     proj = Project.objects.get(pk=project_id)
     docs = Document.objects.filter(project=proj)
     entire_text = ""
+    present_text = ""
+    i = 0 
     for doc in docs:
+        i = i + 1
         text = doc.text
+        present_text = present_text + "<strong>Document " + str(i) + "</strong>\r\n" + text + "\r\n"
+        text = text.replace("\r\n", "")
         entire_text = entire_text + text + "\r\n"
     check_txt = entire_text.replace(' ', '')
     if check_txt == '':
@@ -652,7 +666,7 @@ def multi_lda(request, project_id):
     file1 = open(filename,"w+") 
     file1.write(outputstring)
     file1.close() 
-    txt = clean_up(entire_text)
+    txt = clean_up(present_text)
     textout = '<br><br>'.join(txt)
     outputstring = outputstring.replace("\n", "<br>")
     context = {
@@ -705,13 +719,8 @@ def ldaprocess(txt, sw, numberoftopics):
 
     
 #TODO (Ainsley):
-#error message in case all text entered consists of stopwords
-#remove delete all button and replace with delete buttons for projects and documents
-#route TF-IDF for multiple docs to alg
-#route LDA for multiple docs to alg
-#route LDA for single doc to alg
-#route POS for single doc to alg
-#route POS for multiple docs to alg
+#error message in case all text entered consists of stopwords (single, multi, and input)
 #fix font on about page
 #fix font on resources page
 #css overflow on resources and about
+#css work on submit/back button on project creation page
