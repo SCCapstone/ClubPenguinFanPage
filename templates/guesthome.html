@@ -1,0 +1,103 @@
+{% extends 'guest_base.html' %}
+
+{% load static %}
+
+{% block title %}Home{% endblock %}
+
+{% block extra_head %}
+	<link rel="stylesheet" type="text/css" href="{% static 'Main/home.css' %}">
+	<script>
+	$(document).ready(function(){
+		$("#fileinput").hide();
+		$("#ldarange").hide();
+		$("#numoftopicstext").hide();
+		$("#inputtextradio").prop("checked", true);
+
+		//TODO: WHEN HMTL FORM SENT, CHECK 1) which algorithm 2) file or text upload 3) stop words 4) how many topics if lda 5) then send to appropriate algorithm
+
+		choiceCheck();
+
+        $('#inputtextradio').on("click", function(){choiceCheck()});
+        $('#inputfileradio').on("click", function(){choiceCheck()});
+
+        $("#algorithm").change(function(){choiceCheck2()});
+
+        function choiceCheck() {
+          if (document.getElementById('inputtextradio').checked) {
+            document.getElementById("fileinput").value =  '';
+            document.getElementById('firstdocinput').style.display = 'block';
+            document.getElementById('fileinput').style.display = 'none';
+            $("#inputtextradio").prop("checked", true);
+          }
+          else if (document.getElementById('inputfileradio').checked) {
+            document.getElementById("firstdocinput").value = '';
+            document.getElementById('firstdocinput').style.display = 'none';
+            document.getElementById('fileinput').style.display = 'block';
+            $("#inputfileradio").prop("checked", true);
+          }
+          else {
+            document.getElementById('fileinput').style.display = 'none';
+            document.getElementById('firstdocinput').style.display = 'none';
+          }
+        }
+
+        function choiceCheck2() {
+        	if($("#algorithm").val() == "lda") {
+        		$("#ldarange").show();
+        		$("#numoftopicstext").show();
+        	} else {
+        		$("#ldarange").hide();
+        		$("#numoftopicstext").hide();
+        	}
+        }
+    });
+	</script>
+{% endblock %}
+
+{% block content %}
+	{% if user.is_authenticated %}
+		<div id="login_status">
+			<p>Hi {{ user.username }}!</p><br>
+			<form id="algform" enctype="multipart/form-data" action="{% url 'result' %}" method="POST">
+				{% csrf_token %}
+				<h4 id="algorithmchoicetitle">Choose your text-analysis algorithm:</h4>
+	            <select id="algorithm" name="algorithm">
+  					<option value="tfidf">TF-IDF</option>
+  					<option value="lda">Latent Direchlet Allocation</option>
+  					<option value="pos">Part-of-Speech Tagger</option>
+				</select>
+				<div id="parameters"><br>
+					<h4>Text Input</h4>
+					<span>
+		                <input id="inputtextradio" type="radio" name="inputradio">
+		                <label for="inputtextradio">Input Text</label>
+		                <input id="inputfileradio" type="radio" name="inputradio">
+		                <label for="inputfileradio">Input .txt File</label>
+	            	</span><br>
+		            <textarea id="firstdocinput" name="textInput" cols="80" rows="20" placeholder="Input the text of document!"></textarea><br>
+		            <input id="fileinput" type="file" name="fileInput">
+		            <input id="tfidfsw" type="text" name="sws" placeholder="Stopwords, separated by space">
+				</div>
+				<br>
+				<h5 id="numoftopicstext">Number of Topics:</h5>
+		        <select id="ldarange" name="ldarange">
+		        	<option value="1">1</option>
+  					<option value="2">2</option>
+  					<option value="3">3</option>
+  					<option value="4">4</option>
+  					<option value="5">5</option>
+  					<option value="6">6</option>
+		        </select><br><br><br><br>
+				<input id="submitbuttoninput" type="submit" value="Submit">
+			</form>
+		</body>
+		<br><br><br><br>
+  		<p><a href="{% url 'logout' %}">Logout</a></p>
+		</div>
+	{% else %}
+  <div id="login_status">
+  	<p>You are not logged in</p>
+  	<a href="{% url 'login' %}">Login</a>
+  </div>
+{% endif %}
+{% endblock %}
