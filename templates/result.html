@@ -45,8 +45,36 @@
 </body>
 {% else %}
 <body>
-  <p>You are not logged in</p>
-  <a href="{% url 'login' %}">Login</a>
+  <div id="resultscontents2">
+	  <h1>Text Penguin</h1>
+	  Hi Guest!
+	  {% if output_error_text %}
+	  	<p>{{ output_error_text | safe }}</p>
+	  {% else %}
+		  <p>
+		  	<br><strong> Input text: </strong><br>
+		  	<br> {{ text | safe}} <br>
+		  </p>
+		  {% if algorithm == 'tfidf' %}
+		  		<h3>TF-IDF Results:</h3>
+		  		<div id="tfidfresults2">{{ newtext | safe }}</div><br><br>
+		  		<a href="/Content-Disposition/" download>Download TF-IDF Output</a>
+		  		<br><br>
+		  {% endif %}
+			{% if algorithm == 'lda' %}
+				<h3>Latent Dirichlet Results:</h3>
+				{{ outputstring | safe }}<br><br>
+				<a href="/Content-Disposition/" download>Download LDA Output</a>
+				<br><br>
+			{% endif %}
+			{% if algorithm == 'pos' %}
+				<h3>Part-of-Speech Results:</h3>
+				{{ freq_display_str | safe }}<br><br>
+				<a href="/Content-Disposition/" download>Download Full P-O-S Results</a>
+				<br><br>
+			{% endif %}
+		{% endif %}
+  </div>
 </body>
 {% endif %}
 {% endblock %}

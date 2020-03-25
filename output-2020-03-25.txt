@@ -1,0 +1,10 @@
+
+Document 1
+dog: NN
+dog: NN
+cat: NN
+
+Document 2
+cat: NN
+dog: NN
+horse: NN

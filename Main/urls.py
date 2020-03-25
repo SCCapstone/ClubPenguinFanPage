@@ -28,6 +28,8 @@ urlpatterns = [
     path('result/', views.result, name='result'),
 	path('recentlyused/', views.recentlyused, name='recentlyused'),
 	path('resources/', TemplateView.as_view(template_name='resources.html'), name='resources'),
+    path('guestresources/', TemplateView.as_view(template_name='guestresources.html'), name='guestresources'),
+    path('guestabout/', TemplateView.as_view(template_name='guestabout.html'), name='guestabout'),
 	path('about/', TemplateView.as_view(template_name='about.html'), name='about'),
     path('home/', TemplateView.as_view(template_name='home.html'), name='home'),
     path('guesthome/', TemplateView.as_view(template_name='guesthome.html'), name='guesthome'),
