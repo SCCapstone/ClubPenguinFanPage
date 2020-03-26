@@ -1,4 +1,8 @@
-{% extends 'base.html' %}
+{% if user.is_authenticated %}
+	{% include 'base.html' %}
+{% else %}
+	{% include 'guest_base.html' %}
+{% endif %}
 
 {% load static %}
 
