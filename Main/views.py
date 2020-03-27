@@ -3,7 +3,7 @@ from django.apps import apps
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse
-import nltk, string, sys, os, pandas as pd
+import nltk, string, sys, os, re, glob, pandas as pd
 import numpy as np
 from sklearn.feature_extraction import text
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -205,12 +205,21 @@ def result(request):
         sw = request.POST.get("sws")
         num_of_topics = request.POST.get("ldarange")
         filename = 'output-' + str(date.today()) + '.txt'
-        try:
-            os.remove(filename)
-        except: 
-            print('file not found exception')
+        filepath = "/" + "(^output-.*$)"
+        fileList = glob.glob(filepath)
+        for filePath in fileList:
+            try:
+                os.remove(filePath)
+            except OSError:
+                print("Error while deleting file")
         if algorithm == 'tfidf':
-            textout, newtext = tfidfprocess(txt, sw)
+            try:
+                textout, newtext = tfidfprocess(txt, sw)
+            except ValueError:
+                context = {
+                    'output_error_text': "<br><br>The text you input likely contains only stopwords. Try again.",
+                }
+                return render(request, 'result.html', context=context)
             context = {
                 'text': textout,
                 'newtext': newtext,
@@ -218,22 +227,22 @@ def result(request):
             }
             return render(request, 'result.html', context = context)
         if algorithm == 'pos': 
-           outputstring, output_freq_string = posprocess(txt, sw)
+            outputstring, output_freq_string = posprocess(txt, sw)
 #change outputstring to formatted with txt file
-           file1 = open(filename,"w+") 
-           file1.write(outputstring)
-           file1.close() 
-           freq_display_str = output_freq_string.replace("\n", "<br>")
-           txt = clean_up(txt)
-           textout = '<br>'.join(txt)
-           context = {
+            file1 = open(filename,"w+") 
+            file1.write(outputstring)
+            file1.close() 
+            freq_display_str = output_freq_string.replace("\n", "<br>")
+            txt = clean_up(txt)
+            textout = '<br>'.join(txt)
+            context = {
                'text': textout,
                'outputstring': outputstring,
                'algorithm': 'pos',
                'output_freq_string': output_freq_string,
                'freq_display_str': freq_display_str,
-           }
-           return render(request, 'result.html', context= context)
+            }
+            return render(request, 'result.html', context= context)
         if algorithm == 'lda':
             try:
                 outputstring = ldaprocess(txt, sw, num_of_topics)
@@ -386,10 +395,13 @@ def analyze_doc_tfidf(request, document_id):
     Document = apps.get_model('accounts', 'Document')
     doc = Document.objects.get(pk=document_id)
     filename = 'output-' + str(date.today()) + '.txt'
-    try:
-        os.remove(filename)
-    except:
-        print('file not found exception')
+    filepath = "/" + "(^output-.*$)"
+    fileList = glob.glob(filepath)
+    for filePath in fileList:
+        try:
+            os.remove(filePath)
+        except OSError:
+            print("Error while deleting file")
     txt = doc.text
     check_txt = txt.replace(' ', '')
     if check_txt == '':
@@ -398,7 +410,13 @@ def analyze_doc_tfidf(request, document_id):
         }
         return render(request, 'result.html', context = context)
     sw = request.POST.get('sws')
-    textout, newtext = tfidfprocess(txt, sw)
+    try:
+        textout, newtext = tfidfprocess(txt, sw)
+    except ValueError:
+        context = {
+            'output_error_text': "<br><br>The text you input likely contains only stopwords. Try again.",
+        }
+        return render(request, 'result.html', context=context)
     context = {
         'text': textout,
         'newtext': newtext,
@@ -410,10 +428,13 @@ def analyze_doc_pos(request, document_id):
     Document = apps.get_model('accounts', 'Document')
     doc = Document.objects.get(pk=document_id)
     filename = 'output-' + str(date.today()) + '.txt'
-    try:
-        os.remove(filename)
-    except:
-        print('file not found exception')
+    filepath = "/" + "(^output-.*$)"
+    fileList = glob.glob(filepath)
+    for filePath in fileList:
+        try:
+            os.remove(filePath)
+        except OSError:
+            print("Error while deleting file")
     txt = doc.text
     check_txt = txt.replace(' ', '')
     if check_txt == '':
@@ -444,10 +465,13 @@ def analyze_doc_lda(request, document_id):
     doc = Document.objects.get(pk=document_id)
     filename = 'output-' + str(date.today()) + '.txt'
     num_of_topics = request.POST.get("numoftopics")
-    try:
-        os.remove(filename)
-    except:
-        print('file not found exception')
+    filepath = "/" + "(^output-.*$)"
+    fileList = glob.glob(filepath)
+    for filePath in fileList:
+        try:
+            os.remove(filePath)
+        except OSError:
+            print("Error while deleting file")
     txt = doc.text
     check_txt = txt.replace(' ', '')
     if check_txt == '':
@@ -568,7 +592,13 @@ def multi_tfidf(request, project_id):
         }
         return render(request, 'result.html', context = context)
     sw = request.POST.get('sws')
-    textout, newtext = tfidfprocess(entire_text, sw)
+    try:
+        textout, newtext = tfidfprocess(entire_text, sw)
+    except ValueError:
+        context = {
+            'output_error_text': "<br><br>The text you input likely contains only stopwords. Try again.",
+        }
+        return render(request, 'result.html', context=context)
     '''
     filename = 'output-' + str(date.today()) + '.txt'
     try:
@@ -589,10 +619,13 @@ def multi_pos(request, project_id):
     Project = apps.get_model('accounts', 'Project')
     Document = apps.get_model('accounts', 'Document')
     filename = 'output-' + str(date.today()) + '.txt'
-    try:
-        os.remove(filename)
-    except:
-        print('file not found exception')
+    filepath = "/" + "(^output-.*$)"
+    fileList = glob.glob(filepath)
+    for filePath in fileList:
+        try:
+            os.remove(filePath)
+        except OSError:
+            print("Error while deleting file")
     proj = Project.objects.get(pk=project_id)
     docs = Document.objects.filter(project=proj)
     entire_text = ""
@@ -632,10 +665,13 @@ def multi_lda(request, project_id):
     Project = apps.get_model('accounts', 'Project')
     Document = apps.get_model('accounts', 'Document')
     filename = 'output-' + str(date.today()) + '.txt'
-    try:
-        os.remove(filename)
-    except:
-        print('file not found exception')
+    filepath = "/" + "(^output-.*$)"
+    fileList = glob.glob(filepath)
+    for filePath in fileList:
+        try:
+            os.remove(filePath)
+        except OSError:
+            print("Error while deleting file")
     proj = Project.objects.get(pk=project_id)
     docs = Document.objects.filter(project=proj)
     entire_text = ""
@@ -701,7 +737,7 @@ def tfidfprocess(txt, sw):
     txt = clean_up(txt)
     sws = make_sw_list(sw)
     filename = 'output-' + str(date.today()) + '.txt'
-    tfidf(txt, sws)[0].to_csv(filename, header=None, index=None, sep=' ', mode='a')
+    tfidf(txt, sws)[0].to_csv(filename, header=None, index=None, sep=' ', mode='w')
     newtext = tfidf(txt, sws)[1]
     textout = '<br>'.join(txt)
     return textout, newtext

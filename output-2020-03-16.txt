@@ -1,6 +1,0 @@
-
-Topic 1
-
-0.368 "ut"
-0.316 "dolor"
-0.316 "dolore"
