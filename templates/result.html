@@ -1,8 +1,4 @@
-{% if user.is_authenticated %}
-	{% include 'base.html' %}
-{% else %}
-	{% include 'guest_base.html' %}
-{% endif %}
+{% extends base %}
 
 {% load static %}
 
@@ -49,7 +45,7 @@
 </body>
 {% else %}
 <body>
-  <div id="resultscontents2">
+  <div id="resultscontents">
 	  <h1>Text Penguin</h1>
 	  Hi Guest!
 	  {% if output_error_text %}
@@ -61,7 +57,7 @@
 		  </p>
 		  {% if algorithm == 'tfidf' %}
 		  		<h3>TF-IDF Results:</h3>
-		  		<div id="tfidfresults2">{{ newtext | safe }}</div><br><br>
+		  		<div id="tfidfresults">{{ newtext | safe }}</div><br><br>
 		  		<a href="/Content-Disposition/" download>Download TF-IDF Output</a>
 		  		<br><br>
 		  {% endif %}

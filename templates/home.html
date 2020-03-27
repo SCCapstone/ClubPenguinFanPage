@@ -12,16 +12,16 @@
 		$("#ldarange").hide();
 		$("#numoftopicstext").hide();
 		$("#inputtextradio").prop("checked", true);
-		
+
 		//TODO: WHEN HMTL FORM SENT, CHECK 1) which algorithm 2) file or text upload 3) stop words 4) how many topics if lda 5) then send to appropriate algorithm
-		
+
 		choiceCheck();
-        
+
         $('#inputtextradio').on("click", function(){choiceCheck()});
         $('#inputfileradio').on("click", function(){choiceCheck()});
-        
+
         $("#algorithm").change(function(){choiceCheck2()});
-        
+
         function choiceCheck() {
           if (document.getElementById('inputtextradio').checked) {
             document.getElementById("fileinput").value =  '';
@@ -40,7 +40,7 @@
             document.getElementById('firstdocinput').style.display = 'none';
           }
         }
-        
+
         function choiceCheck2() {
         	if($("#algorithm").val() == "lda") {
         		$("#ldarange").show();
@@ -90,7 +90,6 @@
 		        </select><br><br><br><br>
 				<input id="submitbuttoninput" type="submit" value="Submit">
 			</form>
-		</body> 
 		<br><br><br><br>
   		<p><a href="{% url 'logout' %}">Logout</a></p>
 		</div>

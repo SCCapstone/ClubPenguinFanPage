@@ -56,27 +56,33 @@
 
 {% block content %}
 	{% if user.is_authenticated %}
-		<div id="login_status2">
+		<div id="login_status">
 			<p>Hi {{ user.username }}!</p><br>
+
+		</div>
+	{% else %}
+
+		<div id="login_status">
+			<p>Hi Guest!</p><br>
 			<form id="algform" enctype="multipart/form-data" action="{% url 'result' %}" method="POST">
 				{% csrf_token %}
 				<h4 id="algorithmchoicetitle">Choose your text-analysis algorithm:</h4>
-	            <select id="algorithm" name="algorithm">
-  					<option value="tfidf">TF-IDF</option>
-  					<option value="lda">Latent Direchlet Allocation</option>
-  					<option value="pos">Part-of-Speech Tagger</option>
-				</select>
+				<select id="algorithm" name="algorithm">
+					<option value="tfidf">TF-IDF</option>
+					<option value="lda">Latent Direchlet Allocation</option>
+					<option value="pos">Part-of-Speech Tagger</option>
+					</select>
 				<div id="parameters"><br>
 					<h4>Text Input</h4>
-					<span>
-		                <input id="inputtextradio" type="radio" name="inputradio">
-		                <label for="inputtextradio">Input Text</label>
-		                <input id="inputfileradio" type="radio" name="inputradio">
-		                <label for="inputfileradio">Input .txt File</label>
-	            	</span><br>
-		            <textarea id="firstdocinput" name="textInput" cols="80" rows="20" placeholder="Input the text of document!"></textarea><br>
-		            <input id="fileinput" type="file" name="fileInput">
-		            <input id="tfidfsw" type="text" name="sws" placeholder="Stopwords, separated by space">
+						<span>
+		                	<input id="inputtextradio" type="radio" name="inputradio">
+		                	<label for="inputtextradio">Input Text</label>
+		                	<input id="inputfileradio" type="radio" name="inputradio">
+		                	<label for="inputfileradio">Input .txt File</label>
+	            		</span><br>
+		            	<textarea id="firstdocinput" name="textInput" cols="80" rows="20" placeholder="Input the text of document!"></textarea><br>
+		            	<input id="fileinput" type="file" name="fileInput">
+		            	<input id="tfidfsw" type="text" name="sws" placeholder="Stopwords, separated by space">
 				</div>
 				<br>
 				<h5 id="numoftopicstext">Number of Topics:</h5>
@@ -90,45 +96,6 @@
 		        </select><br><br><br><br>
 				<input id="submitbuttoninput" type="submit" value="Submit">
 			</form>
-		</body>
-		<br><br><br><br>
-		</div>
-	{% else %}
- 	<p>Hi Guest!</p><br>
-		<form id="algform2" enctype="multipart/form-data" action="{% url 'result' %}" method="POST">
-			{% csrf_token %}
-			<h4 id="algorithmchoicetitle2">Choose your text-analysis algorithm:</h4>
-			<select id="algorithm2" name="algorithm">
-				<option value="tfidf">TF-IDF</option>
-				<option value="lda">Latent Direchlet Allocation</option>
-				<option value="pos">Part-of-Speech Tagger</option>
-				</select>
-			<div id="parameters2"><br>
-					<h4>Text Input</h4>
-					<span>
-		                <input id="inputtextradio2" type="radio" name="inputradio">
-		                <label for="inputtextradio">Input Text</label>
-		                <input id="inputfileradio2" type="radio" name="inputradio">
-		                <label for="inputfileradio">Input .txt File</label>
-	            	</span><br>
-		            <textarea id="firstdocinput2" name="textInput" cols="80" rows="20" placeholder="Input the text of document!"></textarea><br>
-		            <input id="fileinput2" type="file" name="fileInput">
-		            <input id="tfidfsw2" type="text" name="sws" placeholder="Stopwords, separated by space">
-				</div>
-				<br>
-				<h5 id="numoftopicstext2">Number of Topics:</h5>
-		        <select id="ldarange2" name="ldarange">
-		        	<option value="1">1</option>
-  					<option value="2">2</option>
-  					<option value="3">3</option>
-  					<option value="4">4</option>
-  					<option value="5">5</option>
-  					<option value="6">6</option>
-		        </select><br><br><br><br>
-				<input id="submitbuttoninput2" type="submit" value="Submit">
-			</form>
-		</body>
-		<br><br><br><br>
-		</div>
+			</div>
 {% endif %}
 {% endblock %}

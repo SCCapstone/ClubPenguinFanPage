@@ -187,6 +187,11 @@ def pos(txt, sw):
 #write results to file, save file, allow for download, delete file
 
 def result(request):
+    if request.user.is_authenticated:
+        base = "base.html"
+    else:
+        base = "guest_base.html"
+
     if request.method == 'POST':
         algorithm = request.POST.get("algorithm")
         input_text = request.POST.get("textInput")
@@ -212,6 +217,7 @@ def result(request):
         if algorithm == 'tfidf':
             textout, newtext = tfidfprocess(txt, sw)
             context = {
+                'base': base,
                 'text': textout,
                 'newtext': newtext,
                 'algorithm': 'tfidf'
@@ -227,6 +233,7 @@ def result(request):
            txt = clean_up(txt)
            textout = '<br>'.join(txt)
            context = {
+               'base': base,
                'text': textout,
                'outputstring': outputstring,
                'algorithm': 'pos',
@@ -249,6 +256,7 @@ def result(request):
             txt = clean_up(txt)
             textout = '<br>'.join(txt)
             context = {
+                'base': base,
                'text': textout,
                 'outputstring': outputstring,
                 'algorithm': 'lda'
