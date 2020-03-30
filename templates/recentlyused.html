@@ -50,6 +50,8 @@
 		<a href="/createProject" class="button">Create Project</a>
 	</div>
 	{% else %}
-	<p>Please log in to create/view your projects!</p>
+	<p id="notloggedin">Please log in to create/view your projects!<br><br>
+	    <a href="{% url 'login' %}">Login</a>
+	</p>
     {% endif %}
 {% endblock %}
