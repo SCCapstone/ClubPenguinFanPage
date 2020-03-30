@@ -756,7 +756,4 @@ def ldaprocess(txt, sw, numberoftopics):
     
 #TODO (Ainsley):
 #error message in case all text entered consists of stopwords (single, multi, and input)
-#fix font on about page
-#fix font on resources page
-#css overflow on resources and about
 #css work on submit/back button on project creation page

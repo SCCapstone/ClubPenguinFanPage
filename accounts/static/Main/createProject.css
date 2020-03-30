@@ -5,9 +5,7 @@
     padding: 20px 20px;
     text-align: center;
     font-size: 20px;
-    position: absolute;
-    left: 75%;
-    bottom: 100px;
+    margin-left: 80%;
 }
 
 #formholder {

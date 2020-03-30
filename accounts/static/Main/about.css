@@ -6,6 +6,7 @@
 	background-color: white;
 	font-family: 'Rajdhani', serif;
 	font-size: 17px;
+	overflow: auto;
 }
 
 h3 {

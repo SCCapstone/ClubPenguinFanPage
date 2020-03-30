@@ -64,3 +64,15 @@
     padding-bottom: 3px;
     font-family: 'Rajdhani', serif;
 }
+
+#notloggedin {
+	width: 50%;
+	height: 10%;
+	background-color: white;
+	margin: 10% 20%;
+	text-align: center;
+	padding: 5% 1%;
+	overflow: auto;
+	font-family: 'Rajdhani', serif;
+	font-size: 20px;
+}
