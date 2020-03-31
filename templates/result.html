@@ -1,4 +1,4 @@
-{% extends base %}
+{% extends base|default:"base.html" %}
 
 {% load static %}
 
@@ -19,7 +19,7 @@
 	  {% else %}
 		  <p>
 		  	<br><strong> Input text: </strong><br>
-		  	<br> {{ text | safe}} <br> 
+		  	<br> {{ text | safe}} <br>
 		  </p>
 		  {% if algorithm == 'tfidf' %}
 		  		<h3>TF-IDF Results:</h3>
