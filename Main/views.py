@@ -76,6 +76,10 @@ def tfidf(txt, sw):
     txt_hl = ''
     for para in txt:
         for word in para.split():
+            if word.startswith('<strong>'):
+                word = '<br><br>' + word
+            if word.endswith('</strong>'):
+                word = word + '<br>'
             clean_word = word.translate(str.maketrans('', '', string.punctuation)).lower()
             if clean_word in top15_words:
                 for freq in top15_freqs_sort:
@@ -643,7 +647,8 @@ def multi_tfidf(request, project_id):
         return render(request, 'result.html', context = context)
     sw = request.POST.get('sws')
     try:
-        textout, newtext = tfidfprocess(entire_text, sw)
+        newtext = tfidfprocess(entire_text, sw)[1]
+        textout = tfidfprocess(present_text, sw)[0]
     except ValueError:
         context = {
             'output_error_text': "<br><br>The text you input likely contains only stopwords. Try again.",
@@ -659,7 +664,7 @@ def multi_tfidf(request, project_id):
     txt = clean_up(present_text)
     present_text = '<br><br>'.join(txt)
     context = {
-        'text': present_text,
+        'text': textout,
         'newtext': newtext,
         'algorithm': 'tfidf'
     }
@@ -744,7 +749,6 @@ def multi_lda(request, project_id):
     try:
         outputstring = ldaprocess(entire_text, sw, num_of_topics)[0]
         textout = ldaprocess(present_text, sw, num_of_topics)[1]
-        print(textout)
     except ValueError:
         context = {
             'output_error_text': "<br><br>The text you input does not contain enough unique terms for LDA!",
