@@ -70,7 +70,7 @@ def tfidf(txt, sw):
     top15_freqs_sort = sorted(top15_freqs)
 
     col1 = Color("#DFFDFE")
-    colors = list(col1.range_to(Color("#01B5F1"),len(top15_freqs_sort)))
+    colors = list(col1.range_to(Color("#26267A"),len(top15_freqs_sort)))
     colors = [str(c) for c in colors]
     print(colors)
 
@@ -86,14 +86,21 @@ def tfidf(txt, sw):
             if clean_word in top15_words:
                 for freq in top15_freqs_sort:
                     if top15[clean_word] == freq:
-                        word = '<span style="background-color:' + colors[top15_freqs_sort.index(freq)] + '">' + word + '</span>'
+                        if top15_freqs_sort.index(freq) >= len(colors) / 2:
+                            word = '<span style="color:white;background-color:' + colors[top15_freqs_sort.index(freq)] + '">' + word + '</span>'
+                        else:
+                            word = '<span style="background-color:' + colors[top15_freqs_sort.index(freq)] + '">' + word + '</span>'
             txt_hl += word + ' '
             outputstring += "<table style='padding:15px;margin-left:auto;margin-right:auto;'>"
 
     top15 = ranking[['feat','rank']][0:15]
     for i in range(len(top15)):
-        outputstring += '<tr> <td style="background-color:' + colors[top15_freqs_sort.index(top15.iloc[i,1])] + '">' + top15.iloc[i,0] + '</td>'
-        outputstring += '<td style="background-color:' + colors[top15_freqs_sort.index(top15.iloc[i,1])] + '">' +str(round(top15.iloc[i,1],4)) + '</td></tr>'
+        if top15_freqs_sort.index(top15.iloc[i,1]) >= len(colors) / 2:
+            outputstring += '<tr> <td style="color:white;background-color:' + colors[top15_freqs_sort.index(top15.iloc[i,1])] + '">' + top15.iloc[i,0] + '</td>'
+            outputstring += '<td style="color:white;background-color:' + colors[top15_freqs_sort.index(top15.iloc[i,1])] + '">' +str(round(top15.iloc[i,1],4)) + '</td></tr>'
+        else:
+            outputstring += '<tr> <td style="background-color:' + colors[top15_freqs_sort.index(top15.iloc[i,1])] + '">' + top15.iloc[i,0] + '</td>'
+            outputstring += '<td style="background-color:' + colors[top15_freqs_sort.index(top15.iloc[i,1])] + '">' +str(round(top15.iloc[i,1],4)) + '</td></tr>'
     outputstring += "</table>"
 
     return ranking[['feat','rank']][0:15], outputstring, txt_hl
@@ -144,8 +151,8 @@ def lda(txt, sw, noOfTopics):
     corpus_lda = lda[corpus_tfidf]  # create a double wrapper over the original corpus: bow->tfidf->fold-in-lsi
     noOfTopics = int(noOfTopics)
 
-    col1 = Color("LightBlue")
-    colors = list(col1.range_to(Color("DeepSkyBlue"),noOfTopics))
+    col1 = Color("#C5E9EE")
+    colors = list(col1.range_to(Color("#709FCF"),noOfTopics))
     colors = [str(c) for c in colors]
 
     topic_contents = []
@@ -185,7 +192,7 @@ def lda(txt, sw, noOfTopics):
 def pos(txt, sw):
     cnt = 1
     outputstring = ""
-    freq_output_string = ""
+    file_string = ''
     tags_dict = {
     "CC": "coordinating conjunction",
     "CD": "cardinal digit",
@@ -233,6 +240,12 @@ def pos(txt, sw):
     "?": "question mark",
     "!": "exclamation mark"
     }
+
+    col1 = Color("#DFFDFE")
+    colors = list(col1.range_to(Color("#26267A"),4))
+    colors = [str(c) for c in colors]
+    print(colors)
+
     doc = ''
     for t in txt:
         if t != '':
@@ -240,7 +253,11 @@ def pos(txt, sw):
     tokenized = sent_tokenize(doc)
     stop_words = make_sw_list(sw)
     d = defaultdict(int)
-    freq_string = ''
+    output_string = "The highlighting denotes <span style=background-color:" + colors[0] + ">nouns</span>, "
+    output_string += "<span style=background-color:" + colors[1] + ">verbs</span>, "
+    output_string += "<span style=color:white;background-color:" + colors[2] + ">adjectives</span>, and "
+    output_string += "<span style=color:white;background-color:" + colors[3] + ">adverbs</span>, respectively."
+    output_string += "<table style='margin-left:auto;margin-right:auto;'>"
     txt_hl = doc
     for i in tokenized:
         wordsList = nltk.word_tokenize(i)
@@ -248,28 +265,47 @@ def pos(txt, sw):
         tagged = nltk.pos_tag(wordsList)
         for tag in tagged:
                 d[tag[1]] += 1
-                outputstring = outputstring + tag[0] + ": " + tag[1] + "\n"
                 if tag[1].startswith('N'):
-                    s = '<span style="background-color:' + 'red' + '">' + tag[0] + '</span>'
+                    s = '<span style="background-color:' + colors[0] + '">' + tag[0] + '</span>'
                     txt_hl = re.sub(r'\b'+tag[0]+r'\b', s, txt_hl)
                 elif tag[1].startswith('V'):
-                    s = '<span style="background-color:' + 'blue' + '">' + tag[0] + '</span>'
+                    s = '<span style="background-color:' + colors[1] + '">' + tag[0] + '</span>'
                     txt_hl = re.sub(r'\b'+tag[0]+r'\b', s, txt_hl)
                 elif tag[1].startswith('J'):
-                    s = '<span style="background-color:' + 'green' + '">' + tag[0] + '</span>'
+                    s = '<span style="color:white;background-color:' + colors[2] + '">' + tag[0] + '</span>'
                     txt_hl = re.sub(r'\b'+tag[0]+r'\b', s, txt_hl)
                 elif tag[1].startswith('R'):
-                    s = '<span style="background-color:' + 'yellow' + '">' + tag[0] + '</span>'
+                    s = '<span style="color:white;background-color:' + colors[3] + '">' + tag[0] + '</span>'
                     txt_hl = re.sub(r'\b'+tag[0]+r'\b', s, txt_hl)
+                file_string += tag[0] + "_" + tag[1] + "\n"
+
     if d != {}:
+        data = []
         for tag in d:
-            if tag in tags_dict:
-                freq_string += tag + ' [' + tags_dict[tag] + ']: ' + str(d.get(tag)) + '\n'
+            data.append( ((tag, d.get(tag))) )
+
+        counts = pd.DataFrame(data, columns=['pos','cnt'])
+        df = counts.sort_values('cnt', ascending=False)
+        sort = df.values.tolist()
+        for tag_info in sort:
+            if tag_info[0] in tags_dict:
+                if tag_info[0].startswith('N'):
+                    fmt_tag = '<td style="background-color:' + colors[0] + '">' + tags_dict[tag_info[0]] + '</td>'
+                elif tag_info[0].startswith('V'):
+                    fmt_tag = '<td style="background-color:' + colors[1] + '">' + tags_dict[tag_info[0]] + '</td>'
+                elif tag_info[0].startswith('J'):
+                    fmt_tag = '<td style="color:white;background-color:' + colors[2] + '">' + tags_dict[tag_info[0]] + '</td>'
+                elif tag_info[0].startswith('R'):
+                    fmt_tag = '<td style="color:white;background-color:' + colors[3] + '">' + tags_dict[tag_info[0]] + '</td>'
+                else:
+                    fmt_tag = '<td>' + tags_dict[tag_info[0]] + '</td>'
+                output_string += '<tr> <td>' + tag_info[0] + fmt_tag + '<td>' + str(tag_info[1])
             else:
-                freq_string += tag + ': ' + str(d.get(tag)) + '\n'
-        freq_output_string = freq_output_string + freq_string + " \n"
-        cnt += 1
-    return outputstring, freq_output_string, txt_hl
+                output_string += '<tr> <td>' + tag_info[0] + '<td> <td>' + str(tag_info[1])
+
+    output_string +=  "</table>"
+    cnt += 1
+    return output_string, file_string, txt_hl
 
 #write results to file, save file, allow for download, delete file
 
@@ -320,20 +356,17 @@ def result(request):
             }
             return render(request, 'result.html', context = context)
         if algorithm == 'pos':
-            outputstring, output_freq_string = posprocess(txt, sw)
+            outputstring, file_string, textout = posprocess(txt, sw)
             #change outputstring to formatted with txt file
             file1 = open(filename,"w+")
-            file1.write(outputstring)
+            file1.write(file_string)
             file1.close()
-            freq_display_str = output_freq_string.replace("\n", "<br>")
-            txt = clean_up(txt)
-            textout = posprocess(txt, sw)
+            freq_display_str = outputstring.replace("\n", "<br>")
             context = {
                'base': base,
                'text': textout,
                'outputstring': outputstring,
                'algorithm': 'pos',
-               'output_freq_string': output_freq_string,
                'freq_display_str': freq_display_str,
             }
             return render(request, 'result.html', context= context)
@@ -536,20 +569,16 @@ def analyze_doc_pos(request, document_id):
         }
         return render(request, 'result.html', context = context)
     sw = request.POST.get('sws')
-    outputstring = posprocess(txt, sw)[0]
-    output_freq_string = posprocess(txt, sw)[1]
+    outputstring, file_string, textout = posprocess(txt, sw)
 #change outputstring to formatted with txt file
     file1 = open(filename,"w+")
-    file1.write(outputstring)
+    file1.write(file_string)
     file1.close()
-    freq_display_str = output_freq_string.replace("\n", "<br>")
-    #txt = clean_up(txt)
-    textout = posprocess(txt, sw)[2]
+    freq_display_str = outputstring.replace("\n", "<br>")
     context = {
         'text': textout,
         'outputstring': outputstring,
         'algorithm': 'pos',
-        'output_freq_string': output_freq_string,
         'freq_display_str': freq_display_str,
     }
     return render(request, 'result.html', context= context)
@@ -728,9 +757,9 @@ def multi_pos(request, project_id):
     for doc in docs:
         i = i + 1
         text = doc.text
-        present_text += "<br><br> <strong>Document " + str(i) + "</strong> <br> "
-        out = posprocess(text, sw)[2]
-        present_text += out
+        #present_text += "<br><br> <strong>Document " + str(i) + "</strong> <br> "
+        #out = posprocess(text, sw)[1]
+        #present_text += out
         text = text.replace("\r\n", "")
         entire_text = entire_text + text + "\r\n"
     check_txt = entire_text.replace(' ', '')
@@ -739,20 +768,17 @@ def multi_pos(request, project_id):
             'output_error_text': "<br>The document is empty!<br><br>"
         }
         return render(request, 'result.html', context = context)
-    outputstring = posprocess(entire_text, sw)[0]
-    output_freq_string = posprocess(entire_text, sw)[1]
+    outputstring, file_string, textout = posprocess(entire_text, sw)
 #change outputstring to formatted with txt file
     file1 = open(filename,"w+")
-    file1.write(outputstring)
+    file1.write(file_string)
     file1.close()
-    freq_display_str = output_freq_string.replace("\n", "<br>")
+    freq_display_str = outputstring.replace("\n", "<br>")
     #textout = present_text
-    textout = posprocess(entire_text, sw)[2]
     context = {
         'text': textout,
         'outputstring': outputstring,
         'algorithm': 'pos',
-        'output_freq_string': output_freq_string,
         'freq_display_str': freq_display_str,
     }
     return render(request, 'result.html', context= context)
@@ -840,8 +866,8 @@ def tfidfprocess(txt, sw):
 #needs work
 def posprocess(txt, sw):
     txt = clean_up(txt)
-    outputstring, output_freq_string, textout = pos(txt, sw)
-    return outputstring, output_freq_string, textout
+    outputstring, file_string, textout = pos(txt, sw)
+    return outputstring, file_string, textout
 
 def ldaprocess(txt, sw, numberoftopics):
     txt = clean_up(txt)
