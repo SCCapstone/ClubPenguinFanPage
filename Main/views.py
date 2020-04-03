@@ -69,11 +69,13 @@ def tfidf(txt, sw):
     top15_freqs = [float(i) for i in top15_freqs]
     top15_freqs_sort = sorted(top15_freqs)
 
-    col1 = Color("LightBlue")
-    colors = list(col1.range_to(Color("DeepSkyBlue"),len(top15_freqs_sort)))
+    col1 = Color("#DFFDFE")
+    colors = list(col1.range_to(Color("#01B5F1"),len(top15_freqs_sort)))
     colors = [str(c) for c in colors]
+    print(colors)
 
     txt_hl = ''
+    outputstring = ''
     for para in txt:
         for word in para.split():
             if word.startswith('<strong>'):
@@ -86,7 +88,15 @@ def tfidf(txt, sw):
                     if top15[clean_word] == freq:
                         word = '<span style="background-color:' + colors[top15_freqs_sort.index(freq)] + '">' + word + '</span>'
             txt_hl += word + ' '
-    return ranking[['feat','rank']][0:15], ranking[['feat','rank']][0:15].to_html(index=False), txt_hl
+            outputstring += "<table style='padding:15px;margin-left:auto;margin-right:auto;'>"
+
+    top15 = ranking[['feat','rank']][0:15]
+    for i in range(len(top15)):
+        outputstring += '<tr> <td style="background-color:' + colors[top15_freqs_sort.index(top15.iloc[i,1])] + '">' + top15.iloc[i,0] + '</td>'
+        outputstring += '<td style="background-color:' + colors[top15_freqs_sort.index(top15.iloc[i,1])] + '">' +str(round(top15.iloc[i,1],4)) + '</td></tr>'
+    outputstring += "</table>"
+
+    return ranking[['feat','rank']][0:15], outputstring, txt_hl
 
 def lda(txt, sw, noOfTopics):
     outputstring = ""
@@ -132,8 +142,6 @@ def lda(txt, sw, noOfTopics):
 
     lda = models.LdaModel(corpus_tfidf, id2word=dictionary, num_topics=noOfTopics)  # initialize an LDA transformation
     corpus_lda = lda[corpus_tfidf]  # create a double wrapper over the original corpus: bow->tfidf->fold-in-lsi
-    f = open("output.txt", "w")
-    s = ''
     noOfTopics = int(noOfTopics)
 
     col1 = Color("LightBlue")
@@ -141,21 +149,24 @@ def lda(txt, sw, noOfTopics):
     colors = [str(c) for c in colors]
 
     topic_contents = []
+    file_string = ""
     for i in range(noOfTopics):
         s = '<span style="background-color:' + colors[i] + '">' + "\nTopic " + str(i+1) + "\n"+ '</span>'
-        f.write(s)
+        file_string += "\nTopic " + str(i+1) + "\n"
         outputstring = outputstring + s + "\n"
         # topic = lsi.print_topic(i, x)
         # where x = number of words per topic if desired
         words = []
         topic = lda.print_topic(i)
+        outputstring += "<table style='padding:15px;margin-left:auto;margin-right:auto;'>"
         for t in topic.split('+'):
             t = t.replace(" ", "").replace('*', " ")
             w = (re.sub(r"[0-9.\"]+", '', t)).strip(' ')
             words.append(w)
-            outputstring = outputstring + t + "\n"
+            outputstring += "<tr> <td>" + t.split(" ")[1].strip('"') + "<td>" + t.split(" ")[0] + "</tr>"
+            file_string += t + "\n"
         topic_contents.append(words)
-    f.close()
+        outputstring += "</table>"
 
     txt_hl = ''
     for para in txt:
@@ -169,9 +180,12 @@ def lda(txt, sw, noOfTopics):
                 if clean_word in topic:
                     word = '<span style="background-color:' + colors[topic_contents.index(topic)] + '">' + word + '</span>'
             txt_hl += word + ' '
-    return outputstring, txt_hl
+    return outputstring, file_string, txt_hl
 
 def pos(txt, sw):
+    cnt = 1
+    outputstring = ""
+    freq_output_string = ""
     tags_dict = {
     "CC": "coordinating conjunction",
     "CD": "cardinal digit",
@@ -208,31 +222,54 @@ def pos(txt, sw):
     "WP": "wh-pronoun",
     "WP$": "possessive wh-pronoun",
     "WRB": "wh-abverb",
+    ",":"comma",
+    ".":"period",
+    "''": "quotation marks",
+    "``": "line break",
+    "(": "open parenthesis",
+    ")": "closed parenthesis",
+    ":": "colon",
+    ";": "semi-colon",
+    "?": "question mark",
+    "!": "exclamation mark"
     }
-    for doc in txt:
-        tokenized = sent_tokenize(doc)
-        stop_words = make_sw_list(sw)
-        d = defaultdict(int)
-        freq_string = ''
-        if tokenized != []:
-            outputstring = outputstring + "\nDocument " + str(cnt) + "\n"
-            for i in tokenized:
-                wordsList = nltk.word_tokenize(i)
-                wordsList = [w for w in wordsList if not w in stop_words]
-                tagged = nltk.pos_tag(wordsList)
-                for tag in tagged:
-                    d[tag[1]] += 1
-                    outputstring = outputstring + tag[0] + ": " + tag[1] + "\n"
-        if d != {}:
-            freq_string += "\r\nDocument " + str(cnt) + "\n"
-            for tag in d:
-                if tag in tags_dict:
-                    freq_string += tag + ' (' + tags_dict[tag] + '): ' + str(d.get(tag)) + '\n'
-                else:
-                    freq_string += tag + ': ' + str(d.get(tag)) + '\n'
-            freq_output_string = freq_output_string + freq_string + " \n\n"
-            cnt += 1
-    return outputstring, freq_output_string
+    doc = ''
+    for t in txt:
+        if t != '':
+            doc += t
+    tokenized = sent_tokenize(doc)
+    stop_words = make_sw_list(sw)
+    d = defaultdict(int)
+    freq_string = ''
+    txt_hl = doc
+    for i in tokenized:
+        wordsList = nltk.word_tokenize(i)
+        wordsList = [w for w in wordsList if not w in stop_words]
+        tagged = nltk.pos_tag(wordsList)
+        for tag in tagged:
+                d[tag[1]] += 1
+                outputstring = outputstring + tag[0] + ": " + tag[1] + "\n"
+                if tag[1].startswith('N'):
+                    s = '<span style="background-color:' + 'red' + '">' + tag[0] + '</span>'
+                    txt_hl = re.sub(r'\b'+tag[0]+r'\b', s, txt_hl)
+                elif tag[1].startswith('V'):
+                    s = '<span style="background-color:' + 'blue' + '">' + tag[0] + '</span>'
+                    txt_hl = re.sub(r'\b'+tag[0]+r'\b', s, txt_hl)
+                elif tag[1].startswith('J'):
+                    s = '<span style="background-color:' + 'green' + '">' + tag[0] + '</span>'
+                    txt_hl = re.sub(r'\b'+tag[0]+r'\b', s, txt_hl)
+                elif tag[1].startswith('R'):
+                    s = '<span style="background-color:' + 'yellow' + '">' + tag[0] + '</span>'
+                    txt_hl = re.sub(r'\b'+tag[0]+r'\b', s, txt_hl)
+    if d != {}:
+        for tag in d:
+            if tag in tags_dict:
+                freq_string += tag + ' [' + tags_dict[tag] + ']: ' + str(d.get(tag)) + '\n'
+            else:
+                freq_string += tag + ': ' + str(d.get(tag)) + '\n'
+        freq_output_string = freq_output_string + freq_string + " \n"
+        cnt += 1
+    return outputstring, freq_output_string, txt_hl
 
 #write results to file, save file, allow for download, delete file
 
@@ -290,7 +327,7 @@ def result(request):
             file1.close()
             freq_display_str = output_freq_string.replace("\n", "<br>")
             txt = clean_up(txt)
-            textout = '<br>'.join(txt)
+            textout = posprocess(txt, sw)
             context = {
                'base': base,
                'text': textout,
@@ -499,14 +536,15 @@ def analyze_doc_pos(request, document_id):
         }
         return render(request, 'result.html', context = context)
     sw = request.POST.get('sws')
-    outputstring, output_freq_string = posprocess(txt, sw)
+    outputstring = posprocess(txt, sw)[0]
+    output_freq_string = posprocess(txt, sw)[1]
 #change outputstring to formatted with txt file
     file1 = open(filename,"w+")
     file1.write(outputstring)
     file1.close()
     freq_display_str = output_freq_string.replace("\n", "<br>")
-    txt = clean_up(txt)
-    textout = '<br>'.join(txt)
+    #txt = clean_up(txt)
+    textout = posprocess(txt, sw)[2]
     context = {
         'text': textout,
         'outputstring': outputstring,
@@ -537,7 +575,7 @@ def analyze_doc_lda(request, document_id):
         return render(request, 'result.html', context = context)
     sw = request.POST.get('sws')
     try:
-        outputstring, textout = ldaprocess(txt, sw, num_of_topics)
+        outputstring, file_string, textout = ldaprocess(txt, sw, num_of_topics)
     except ValueError:
         context = {
             'output_error_text': "<br><br>The text you input does not contain enough unique terms for LDA!",
@@ -545,7 +583,7 @@ def analyze_doc_lda(request, document_id):
         return render(request, 'result.html', context=context)
 #change outputstring to formatted with txt file, also add for frequencies
     file1 = open(filename,"w+")
-    file1.write(outputstring)
+    file1.write(file_string)
     file1.close()
     outputstring = outputstring.replace("\n", "<br>")
     context = {
@@ -648,7 +686,7 @@ def multi_tfidf(request, project_id):
     sw = request.POST.get('sws')
     try:
         newtext = tfidfprocess(entire_text, sw)[1]
-        textout = tfidfprocess(present_text, sw)[0]
+        textout = tfidfprocess(entire_text, sw)[0]
     except ValueError:
         context = {
             'output_error_text': "<br><br>The text you input likely contains only stopwords. Try again.",
@@ -686,10 +724,13 @@ def multi_pos(request, project_id):
     entire_text = ""
     present_text = ""
     i = 0
+    sw = request.POST.get('sws')
     for doc in docs:
         i = i + 1
         text = doc.text
-        present_text = present_text + "<strong>Document " + str(i) + "</strong>\r\n" + text + "\r\n"
+        present_text += "<br><br> <strong>Document " + str(i) + "</strong> <br> "
+        out = posprocess(text, sw)[2]
+        present_text += out
         text = text.replace("\r\n", "")
         entire_text = entire_text + text + "\r\n"
     check_txt = entire_text.replace(' ', '')
@@ -698,15 +739,15 @@ def multi_pos(request, project_id):
             'output_error_text': "<br>The document is empty!<br><br>"
         }
         return render(request, 'result.html', context = context)
-    sw = request.POST.get('sws')
-    outputstring, output_freq_string = posprocess(entire_text, sw)
+    outputstring = posprocess(entire_text, sw)[0]
+    output_freq_string = posprocess(entire_text, sw)[1]
 #change outputstring to formatted with txt file
     file1 = open(filename,"w+")
     file1.write(outputstring)
     file1.close()
     freq_display_str = output_freq_string.replace("\n", "<br>")
-    txt = clean_up(present_text)
-    textout = '<br><br>'.join(txt)
+    #textout = present_text
+    textout = posprocess(entire_text, sw)[2]
     context = {
         'text': textout,
         'outputstring': outputstring,
@@ -747,8 +788,7 @@ def multi_lda(request, project_id):
     sw = request.POST.get('sws')
     num_of_topics = request.POST.get('numoftopics')
     try:
-        outputstring = ldaprocess(entire_text, sw, num_of_topics)[0]
-        textout = ldaprocess(present_text, sw, num_of_topics)[1]
+        outputstring, file_string, textout = ldaprocess(entire_text, sw, num_of_topics)
     except ValueError:
         context = {
             'output_error_text': "<br><br>The text you input does not contain enough unique terms for LDA!",
@@ -756,9 +796,9 @@ def multi_lda(request, project_id):
         return render(request, 'result.html', context=context)
 #change outputstring to formatted with txt file, also add for frequencies
     file1 = open(filename,"w+")
-    file1.write(outputstring)
+    file1.write(file_string)
     file1.close()
-    txt = clean_up(present_text)
+    #txt = clean_up(present_text)
     #textout = '<br><br>'.join(txt)
     outputstring = outputstring.replace("\n", "<br>")
     context = {
@@ -767,8 +807,6 @@ def multi_lda(request, project_id):
         'algorithm': 'lda'
     }
     return render(request, 'result.html', context=context)
-
-
 
 
 
@@ -802,14 +840,13 @@ def tfidfprocess(txt, sw):
 #needs work
 def posprocess(txt, sw):
     txt = clean_up(txt)
-    outputstring = pos(txt, sw)
-    return outputstring
+    outputstring, output_freq_string, textout = pos(txt, sw)
+    return outputstring, output_freq_string, textout
 
 def ldaprocess(txt, sw, numberoftopics):
     txt = clean_up(txt)
-    outputstring = lda(txt, sw, numberoftopics)[0]
-    newtext = lda(txt, sw, numberoftopics)[1]
-    return outputstring, newtext
+    outputstring, file_string, newtext = lda(txt, sw, numberoftopics)
+    return outputstring, file_string, newtext
 
 #TODO (Ainsley):
 #error message in case all text entered consists of stopwords (single, multi, and input)
