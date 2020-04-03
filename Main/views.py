@@ -372,7 +372,7 @@ def result(request):
             return render(request, 'result.html', context= context)
         if algorithm == 'lda':
             try:
-                outputstring, textout = ldaprocess(txt, sw, num_of_topics)
+                outputstring, file_string, textout = ldaprocess(txt, sw, num_of_topics)
             except ValueError:
                 context = {
                     'output_error_text': "<br><br>The text you input does not contain enough unique terms for LDA!",
@@ -380,7 +380,7 @@ def result(request):
                 return render(request, 'result.html', context=context)
 #change outputstring to formatted with txt file, also add for frequencies
             file1 = open(filename,"w+")
-            file1.write(outputstring)
+            file1.write(file_string)
             file1.close()
             context = {
                 'base': base,
