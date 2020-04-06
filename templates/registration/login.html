@@ -19,7 +19,7 @@
 
 	<form method="post" id="loginform" action="">
 		{% csrf_token %}
-		<h4 class="loginsection">Email Address</h4>
+		<h4 class="loginsection">Username</h4>
 		<input class="loginformbox" type="text" name="username">
 		<h4 class="loginsection">Password</h4>
 		<input class="loginformbox" type="password" name="password" >
@@ -27,7 +27,7 @@
 		<div id="checkforgot">
 			<span>
 				<label><input type="checkbox" id="rememberme" name="rememberme"/>&nbsp;Remember Me</label>
-				<a href="{% url 'password_reset' %}" id="forgotpassword">Forgot Password</a>
+			<!--	<a href="{% url 'password_reset' %}" id="forgotpassword">Forgot Password</a>-->
 			</span>
 		</div>
 
