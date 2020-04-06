@@ -48,10 +48,6 @@ Testing login:
 username: clubpenguin
 password: gamecocks
 
-You can also check out the login below to test the algorithms on some sample book chapters.
-username: samyu
-password: gamecocks
-
 PLEASE LOG OUT AFTER USAGE.  ONLY ONE PERSON MAY BE LOGGED INTO ACCOUNT AT A TIME.
 
 ## Testing
