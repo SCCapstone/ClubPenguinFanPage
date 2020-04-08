@@ -13,14 +13,10 @@
 <body>
   <div id="resultscontents">
 	  <h1>Text Penguin</h1>
-	  Hi {{ user.username }}!
+	  Hi {{ user.username }}! <br> <br>
 	  {% if output_error_text %}
 	  	<p>{{ output_error_text | safe }}</p>
 	  {% else %}
-		  <p>
-		  	<br><strong> Input text: </strong>
-		  	<br> {{ text | safe}} <br><br>
-		  </p>
 		  {% if algorithm == 'tfidf' %}
 		  		<strong>TF-IDF Results:</strong><br><br>
 		  		<div id="tfidfresults">{{ newtext | safe }}</div><br><br>
@@ -39,6 +35,10 @@
 				<a href="/Content-Disposition/" download>Download Full P-O-S Results</a>
 				<br><br>
 			{% endif %}
+			<p>
+		  	<br><strong> Input text: </strong>
+		  	<br> {{ text | safe}} <br><br>
+		  </p>
 		{% endif %}
 		<p>For more information on how to interpret these results, check out our <a href="{% url 'resources' %}"> resources page</a>!</p>
 	  <p><a href="{% url 'logout' %}">Logout</a></p>
@@ -48,14 +48,10 @@
 <body>
   <div id="resultscontents">
 	  <h1>Text Penguin</h1>
-	  Hi Guest!
+	  Hi Guest! <br> <br>
 	  {% if output_error_text %}
 	  	<p>{{ output_error_text | safe }}</p>
 	  {% else %}
-		  <p>
-		  	<br><strong> Input text: </strong><br>
-		  	<br> {{ text | safe}} <br>
-		  </p>
 		  {% if algorithm == 'tfidf' %}
 		  		<h3>TF-IDF Results:</h3>
 		  		<div id="tfidfresults">{{ newtext | safe }}</div><br><br>
@@ -74,8 +70,13 @@
 				<a href="/Content-Disposition/" download>Download Full P-O-S Results</a>
 				<br><br>
 			{% endif %}
+			<p>
+				<br><strong> Input text: </strong><br>
+				<br> {{ text | safe}} <br>
+			</p>
 		{% endif %}
   </div>
 </body>
 {% endif %}
+<p>For more information on how to interpret these results, check out our <a href="{% url 'resources' %}"> resources page</a>!</p>
 {% endblock %}
