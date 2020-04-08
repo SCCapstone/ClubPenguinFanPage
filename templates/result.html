@@ -41,6 +41,8 @@
 		  </p>
 		{% endif %}
 		<p>For more information on how to interpret these results, check out our <a href="{% url 'resources' %}"> resources page</a>!</p>
+		<a href="/home/" Analyze more documents>Analyze more documents</a>
+				<br><br>
 	  <p><a href="{% url 'logout' %}">Logout</a></p>
   </div>
 </body>
@@ -75,6 +77,9 @@
 				<br> {{ text | safe}} <br>
 			</p>
 		{% endif %}
+		<p>For more information on how to interpret these results, check out our <a href="{% url 'guestresources' %}"> resources page</a>!</p>
+		<a href="/guesthome/" Analyze more documents>Analyze more documents</a>
+				<br><br>
   </div>
 </body>
 {% endif %}

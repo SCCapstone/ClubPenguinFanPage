@@ -72,7 +72,7 @@ def tfidf(txt, sw):
     col1 = Color("#DFFDFE")
     colors = list(col1.range_to(Color("#26267A"),len(top15_freqs_sort)))
     colors = [str(c) for c in colors]
-    print(colors)
+    #print(colors)
 
     txt_hl = ''
     outputstring = ''
@@ -102,7 +102,7 @@ def tfidf(txt, sw):
             outputstring += '<tr> <td style="background-color:' + colors[top15_freqs_sort.index(top15.iloc[i,1])] + '">' + top15.iloc[i,0] + '</td>'
             outputstring += '<td style="background-color:' + colors[top15_freqs_sort.index(top15.iloc[i,1])] + '">' +str(round(top15.iloc[i,1],4)) + '</td></tr>'
     outputstring += "</table>"
-
+    
     return ranking[['feat','rank']][0:15], outputstring, txt_hl
 
 def lda(txt, sw, noOfTopics):
@@ -244,7 +244,7 @@ def pos(txt, sw):
     col1 = Color("#DFFDFE")
     colors = list(col1.range_to(Color("#26267A"),4))
     colors = [str(c) for c in colors]
-    print(colors)
+    #print(colors)
 
     doc = ''
     for t in txt:

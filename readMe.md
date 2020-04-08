@@ -12,10 +12,20 @@ In order to build this project, you will need to install:
 * [Pip](https://pip.pypa.io/en/stable/installing/)
 * [Django](https://docs.djangoproject.com/en/2.2/topics/install/)
 
-After downloading Python3 and Pip from the websites shown above, you can install Django (on Ubuntu) using:
+After downloading Python3 and Pip from the websites shown above, you should create a virtual environment, if you do not already have one. 
+```
+python3 -m venv env 
+```
+
+Once you are in the virtual environment, you can install Django (on Ubuntu) using:
 ```
 pip install Django
 ```
+If you are still missing any of the dependencies, you can run
+```
+pip install requirements.txt
+```
+
 
 # Running
 
@@ -24,7 +34,6 @@ To run the app on your laptop, log into the virtual environment and use the Linu
 source env/bin/activate
 python3 manage.py runserver
 ```
-
 
 ## Deployment
 Deployment utilized [Heroku's](https://www.heroku.com/home) deployment platform.  The deployment can be found here: [Text Penguin](http://textpenguin.herokuapp.com/)
