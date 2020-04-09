@@ -268,19 +268,20 @@ def pos(txt, present_txt, sw):
         tagged = nltk.pos_tag(wordsList)
         for tag in tagged:
                 d[tag[1]] += 1
-                if tag[1].startswith('N'):
-                    s = '<span style="background-color:' + colors[0] + '">' + tag[0] + '</span>'
-                    txt_hl = re.sub(r'\b'+tag[0]+r'\b', s, txt_hl)
-                elif tag[1].startswith('V'):
-                    s = '<span style="background-color:' + colors[1] + '">' + tag[0] + '</span>'
-                    txt_hl = re.sub(r'\b'+tag[0]+r'\b', s, txt_hl)
-                elif tag[1].startswith('J'):
-                    s = '<span style="color:white;background-color:' + colors[2] + '">' + tag[0] + '</span>'
-                    txt_hl = re.sub(r'\b'+tag[0]+r'\b', s, txt_hl)
-                elif tag[1].startswith('R'):
-                    s = '<span style="color:white;background-color:' + colors[3] + '">' + tag[0] + '</span>'
-                    txt_hl = re.sub(r'\b'+tag[0]+r'\b', s, txt_hl)
-                file_string += tag[0] + "_" + tag[1] + "\n"
+                if tag[0].lower() not in stop_words:
+                    if tag[1].startswith('N'):
+                        s = '<span style="background-color:' + colors[0] + '">' + tag[0] + '</span>'
+                        txt_hl = re.sub(r'\b'+tag[0]+r'\b', s, txt_hl)
+                    elif tag[1].startswith('V'):
+                        s = '<span style="background-color:' + colors[1] + '">' + tag[0] + '</span>'
+                        txt_hl = re.sub(r'\b'+tag[0]+r'\b', s, txt_hl)
+                    elif tag[1].startswith('J'):
+                        s = '<span style="color:white;background-color:' + colors[2] + '">' + tag[0] + '</span>'
+                        txt_hl = re.sub(r'\b'+tag[0]+r'\b', s, txt_hl)
+                    elif tag[1].startswith('R'):
+                        s = '<span style="color:white;background-color:' + colors[3] + '">' + tag[0] + '</span>'
+                        txt_hl = re.sub(r'\b'+tag[0]+r'\b', s, txt_hl)
+                    file_string += tag[0] + "_" + tag[1] + "\n"
 
     if d != {}:
         data = []
