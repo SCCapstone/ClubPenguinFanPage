@@ -35,7 +35,8 @@ def button(request):
     return render(request, 'home.html')
 
 # runs tf-idf algorithm, returns ranked list
-def tfidf(txt, sw):
+def tfidf(txt, present_txt, sw):
+    print(present_txt)
     tokens = []
     s = ''
     for elem in txt:
@@ -76,7 +77,7 @@ def tfidf(txt, sw):
 
     txt_hl = ''
     outputstring = ''
-    for para in txt:
+    for para in present_txt:
         for word in para.split():
             if word.startswith('<strong>'):
                 word = '<br><br>' + word
@@ -92,6 +93,7 @@ def tfidf(txt, sw):
                             word = '<span style="background-color:' + colors[top15_freqs_sort.index(freq)] + '">' + word + '</span>'
             txt_hl += word + ' '
             outputstring += "<table style='padding:15px;margin-left:auto;margin-right:auto;'>"
+        txt_hl += '<br>'
 
     top15 = ranking[['feat','rank']][0:15]
     for i in range(len(top15)):
@@ -102,10 +104,10 @@ def tfidf(txt, sw):
             outputstring += '<tr> <td style="background-color:' + colors[top15_freqs_sort.index(top15.iloc[i,1])] + '">' + top15.iloc[i,0] + '</td>'
             outputstring += '<td style="background-color:' + colors[top15_freqs_sort.index(top15.iloc[i,1])] + '">' +str(round(top15.iloc[i,1],4)) + '</td></tr>'
     outputstring += "</table>"
-    
+
     return ranking[['feat','rank']][0:15], outputstring, txt_hl
 
-def lda(txt, sw, noOfTopics):
+def lda(txt, present_txt, sw, noOfTopics):
     outputstring = ""
     documents = []
     ignoreList = []
@@ -176,7 +178,7 @@ def lda(txt, sw, noOfTopics):
         outputstring += "</table>"
 
     txt_hl = ''
-    for para in txt:
+    for para in present_txt:
         for word in para.split():
             if word.startswith('<strong>'):
                 word = '<br><br>' + word
@@ -189,7 +191,7 @@ def lda(txt, sw, noOfTopics):
             txt_hl += word + ' '
     return outputstring, file_string, txt_hl
 
-def pos(txt, sw):
+def pos(txt, present_txt, sw):
     cnt = 1
     outputstring = ""
     file_string = ''
@@ -258,7 +260,8 @@ def pos(txt, sw):
     output_string += "<span style=color:white;background-color:" + colors[2] + ">adjectives</span>, and "
     output_string += "<span style=color:white;background-color:" + colors[3] + ">adverbs</span>, respectively."
     output_string += "<table style='margin-left:auto;margin-right:auto;'>"
-    txt_hl = doc
+    txt_hl = present_txt
+
     for i in tokenized:
         wordsList = nltk.word_tokenize(i)
         wordsList = [w for w in wordsList if not w in stop_words]
@@ -342,7 +345,7 @@ def result(request):
                 print("Error while deleting file")
         if algorithm == 'tfidf':
             try:
-                textout, newtext = tfidfprocess(txt, sw)
+                textout, newtext = tfidfprocess(txt, txt, sw)
             except ValueError:
                 context = {
                     'output_error_text': "<br><br>The text you input likely contains only stopwords. Try again.",
@@ -356,7 +359,7 @@ def result(request):
             }
             return render(request, 'result.html', context = context)
         if algorithm == 'pos':
-            outputstring, file_string, textout = posprocess(txt, sw)
+            outputstring, file_string, textout = posprocess(txt, txt, sw)
             #change outputstring to formatted with txt file
             file1 = open(filename,"w+")
             file1.write(file_string)
@@ -372,7 +375,7 @@ def result(request):
             return render(request, 'result.html', context= context)
         if algorithm == 'lda':
             try:
-                outputstring, file_string, textout = ldaprocess(txt, sw, num_of_topics)
+                outputstring, file_string, textout = ldaprocess(txt, txt, sw, num_of_topics)
             except ValueError:
                 context = {
                     'output_error_text': "<br><br>The text you input does not contain enough unique terms for LDA!",
@@ -537,7 +540,7 @@ def analyze_doc_tfidf(request, document_id):
         return render(request, 'result.html', context = context)
     sw = request.POST.get('sws')
     try:
-        textout, newtext = tfidfprocess(txt, sw)
+        textout, newtext = tfidfprocess(txt, txt, sw)
     except ValueError:
         context = {
             'output_error_text': "<br><br>The text you input likely contains only stopwords. Try again.",
@@ -569,7 +572,7 @@ def analyze_doc_pos(request, document_id):
         }
         return render(request, 'result.html', context = context)
     sw = request.POST.get('sws')
-    outputstring, file_string, textout = posprocess(txt, sw)
+    outputstring, file_string, textout = posprocess(txt, txt, sw)
 #change outputstring to formatted with txt file
     file1 = open(filename,"w+")
     file1.write(file_string)
@@ -604,7 +607,7 @@ def analyze_doc_lda(request, document_id):
         return render(request, 'result.html', context = context)
     sw = request.POST.get('sws')
     try:
-        outputstring, file_string, textout = ldaprocess(txt, sw, num_of_topics)
+        outputstring, file_string, textout = ldaprocess(txt, txt, sw, num_of_topics)
     except ValueError:
         context = {
             'output_error_text': "<br><br>The text you input does not contain enough unique terms for LDA!",
@@ -704,7 +707,7 @@ def multi_tfidf(request, project_id):
         i = i + 1
         text = doc.text
         present_text = present_text + "<strong>Document " + str(i) + "</strong>\r\n" + text + "\r\n"
-        text = text.replace("\r\n", "")
+        #text = text.replace("\r\n", "")
         entire_text = entire_text + text + "\r\n"
     check_txt = entire_text.replace(' ', '')
     if check_txt == '':
@@ -714,8 +717,7 @@ def multi_tfidf(request, project_id):
         return render(request, 'result.html', context = context)
     sw = request.POST.get('sws')
     try:
-        newtext = tfidfprocess(entire_text, sw)[1]
-        textout = tfidfprocess(entire_text, sw)[0]
+        textout, newtext = tfidfprocess(entire_text, present_text, sw)
     except ValueError:
         context = {
             'output_error_text': "<br><br>The text you input likely contains only stopwords. Try again.",
@@ -728,8 +730,8 @@ def multi_tfidf(request, project_id):
     except:
         print('file not found exception')
     '''
-    txt = clean_up(present_text)
-    present_text = '<br><br>'.join(txt)
+    #txt = clean_up(present_text)
+    #present_text = '<br><br>'.join(txt)
     context = {
         'text': textout,
         'newtext': newtext,
@@ -757,10 +759,9 @@ def multi_pos(request, project_id):
     for doc in docs:
         i = i + 1
         text = doc.text
-        #present_text += "<br><br> <strong>Document " + str(i) + "</strong> <br> "
-        #out = posprocess(text, sw)[1]
-        #present_text += out
-        text = text.replace("\r\n", "")
+        present_text += "<br><br><strong>Document " + str(i) + "</strong><br> "
+        present_text += text
+        #text = text.replace("\r\n", "")
         entire_text = entire_text + text + "\r\n"
     check_txt = entire_text.replace(' ', '')
     if check_txt == '':
@@ -768,13 +769,12 @@ def multi_pos(request, project_id):
             'output_error_text': "<br>The document is empty!<br><br>"
         }
         return render(request, 'result.html', context = context)
-    outputstring, file_string, textout = posprocess(entire_text, sw)
+    outputstring, file_string, textout = posprocess(entire_text, present_text, sw)
 #change outputstring to formatted with txt file
     file1 = open(filename,"w+")
     file1.write(file_string)
     file1.close()
     freq_display_str = outputstring.replace("\n", "<br>")
-    #textout = present_text
     context = {
         'text': textout,
         'outputstring': outputstring,
@@ -814,7 +814,7 @@ def multi_lda(request, project_id):
     sw = request.POST.get('sws')
     num_of_topics = request.POST.get('numoftopics')
     try:
-        outputstring, file_string, textout = ldaprocess(entire_text, sw, num_of_topics)
+        outputstring, file_string, textout = ldaprocess(entire_text, present_text, sw, num_of_topics)
     except ValueError:
         context = {
             'output_error_text': "<br><br>The text you input does not contain enough unique terms for LDA!",
@@ -853,25 +853,27 @@ def make_sw_list(sw):
     stopwords = text.ENGLISH_STOP_WORDS.union(user_stopwords)
     return stopwords
 
-def tfidfprocess(txt, sw):
+def tfidfprocess(txt, present_txt, sw):
     txt = clean_up(txt)
+    present_txt = clean_up(present_txt)
     sws = make_sw_list(sw)
     filename = 'output-' + str(date.today()) + '.txt'
-    tfidf(txt, sws)[0].to_csv(filename, header=None, index=None, sep=' ', mode='w')
-    newtext = tfidf(txt, sws)[1]
+    tfidf(txt, present_txt, sws)[0].to_csv(filename, header=None, index=None, sep=' ', mode='w')
+    newtext = tfidf(txt, present_txt, sws)[1]
     #textout = '<br>'.join(txt)
-    textout = tfidf(txt, sws)[2]
+    textout = tfidf(txt, present_txt, sws)[2]
     return textout, newtext
 
 #needs work
-def posprocess(txt, sw):
+def posprocess(txt, present_txt, sw):
     txt = clean_up(txt)
-    outputstring, file_string, textout = pos(txt, sw)
+    outputstring, file_string, textout = pos(txt, present_txt, sw)
     return outputstring, file_string, textout
 
-def ldaprocess(txt, sw, numberoftopics):
+def ldaprocess(txt, present_txt, sw, numberoftopics):
     txt = clean_up(txt)
-    outputstring, file_string, newtext = lda(txt, sw, numberoftopics)
+    present_txt = clean_up(present_txt)
+    outputstring, file_string, newtext = lda(txt, present_txt, sw, numberoftopics)
     return outputstring, file_string, newtext
 
 #TODO (Ainsley):
