@@ -35,15 +35,13 @@
 				<a href="/Content-Disposition/" download>Download Full P-O-S Results</a>
 				<br><br>
 			{% endif %}
-			<p>
-		  	<br><strong> Input text: </strong>
-		  	<br> {{ text | safe}} <br><br>
-		  </p>
+			<p>For more information on how to interpret these results, check out our <a href="{% url 'resources' %}"> resources page</a>!</p>
+			<a href="/home/" Analyze more documents>Analyze more documents</a>
+					<br><br>
+		  <p><a href="{% url 'logout' %}">Logout</a></p>
+		  <br><strong> Input text: </strong><br>
+		  {{ text | safe}} <br><br>
 		{% endif %}
-		<p>For more information on how to interpret these results, check out our <a href="{% url 'resources' %}"> resources page</a>!</p>
-		<a href="/home/" Analyze more documents>Analyze more documents</a>
-				<br><br>
-	  <p><a href="{% url 'logout' %}">Logout</a></p>
   </div>
 </body>
 {% else %}
@@ -72,14 +70,14 @@
 				<a href="/Content-Disposition/" download>Download Full P-O-S Results</a>
 				<br><br>
 			{% endif %}
+			<p>For more information on how to interpret these results, check out our <a href="{% url 'guestresources' %}"> resources page</a>!</p>
+			<a href="/guesthome/" Analyze more documents>Analyze more documents</a>
 			<p>
-				<br><strong> Input text: </strong><br>
+				<br><strong> Input text: </strong>
 				<br> {{ text | safe}} <br>
 			</p>
 		{% endif %}
-		<p>For more information on how to interpret these results, check out our <a href="{% url 'guestresources' %}"> resources page</a>!</p>
-		<a href="/guesthome/" Analyze more documents>Analyze more documents</a>
-				<br><br>
+		<br><br>
   </div>
 </body>
 {% endif %}

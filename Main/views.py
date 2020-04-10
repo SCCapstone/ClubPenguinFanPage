@@ -73,7 +73,6 @@ def tfidf(txt, present_txt, sw):
     col1 = Color("#DFFDFE")
     colors = list(col1.range_to(Color("#26267A"),len(top15_freqs_sort)))
     colors = [str(c) for c in colors]
-    #print(colors)
 
     txt_hl = ''
     outputstring = ''
@@ -191,7 +190,7 @@ def lda(txt, present_txt, sw, noOfTopics):
             txt_hl += word + ' '
     return outputstring, file_string, txt_hl
 
-def pos(txt, present_txt, sw):
+def pos(txt, sw):
     cnt = 1
     outputstring = ""
     file_string = ''
@@ -232,15 +231,13 @@ def pos(txt, present_txt, sw):
     "WP$": "possessive wh-pronoun",
     "WRB": "wh-abverb",
     ",":"comma",
-    ".":"period",
+    ".":"sentence ending punctuation",
     "''": "quotation marks",
     "``": "line break",
     "(": "open parenthesis",
     ")": "closed parenthesis",
     ":": "colon",
-    ";": "semi-colon",
-    "?": "question mark",
-    "!": "exclamation mark"
+    ";": "semi-colon"
     }
 
     col1 = Color("#DFFDFE")
@@ -260,29 +257,41 @@ def pos(txt, present_txt, sw):
     output_string += "<span style=color:white;background-color:" + colors[2] + ">adjectives</span>, and "
     output_string += "<span style=color:white;background-color:" + colors[3] + ">adverbs</span>, respectively."
     output_string += "<table style='margin-left:auto;margin-right:auto;'>"
-    txt_hl = present_txt
+    txt_hl = ''
 
+    cnt = 0
     for i in tokenized:
+        txt_hl += "<br><strong>Sentence " + str(cnt) + "</strong><br>"
+        file_string += "Sentence " + str(cnt) + '\n'
         wordsList = nltk.word_tokenize(i)
-        wordsList = [w for w in wordsList if not w in stop_words]
+        wordsList = [w for w in wordsList]
         tagged = nltk.pos_tag(wordsList)
         for tag in tagged:
                 d[tag[1]] += 1
+                s = tag[0]
                 if tag[0].lower() not in stop_words:
                     if tag[1].startswith('N'):
                         s = '<span style="background-color:' + colors[0] + '">' + tag[0] + '</span>'
-                        txt_hl = re.sub(r'\b'+tag[0]+r'\b', s, txt_hl)
                     elif tag[1].startswith('V'):
                         s = '<span style="background-color:' + colors[1] + '">' + tag[0] + '</span>'
-                        txt_hl = re.sub(r'\b'+tag[0]+r'\b', s, txt_hl)
                     elif tag[1].startswith('J'):
                         s = '<span style="color:white;background-color:' + colors[2] + '">' + tag[0] + '</span>'
-                        txt_hl = re.sub(r'\b'+tag[0]+r'\b', s, txt_hl)
                     elif tag[1].startswith('R'):
                         s = '<span style="color:white;background-color:' + colors[3] + '">' + tag[0] + '</span>'
-                        txt_hl = re.sub(r'\b'+tag[0]+r'\b', s, txt_hl)
+                if tag[0] not in string.punctuation:
+                    if txt_hl.endswith('’'):
+                        txt_hl += s
+                    txt_hl += ' ' + s
+                elif tag[0] in ['\'', '"', '’']:
+                    txt_hl += s
+                else:
+                    txt_hl += s
+                if tag[0].lower() not in stop_words:
                     file_string += tag[0] + "_" + tag[1] + "\n"
+        txt_hl += "<br>"
+        cnt += 1
 
+    #pos_summary = ''
     if d != {}:
         data = []
         for tag in d:
@@ -304,6 +313,7 @@ def pos(txt, present_txt, sw):
                 else:
                     fmt_tag = '<td>' + tags_dict[tag_info[0]] + '</td>'
                 output_string += '<tr> <td>' + tag_info[0] + fmt_tag + '<td>' + str(tag_info[1])
+                #pos_summary += tag_info[0] + '\t' + tags_dict[tag_info[0]] + '\t' + str(tag_info[1]) + '\t' + '\n'
             else:
                 output_string += '<tr> <td>' + tag_info[0] + '<td> <td>' + str(tag_info[1])
 
@@ -360,11 +370,12 @@ def result(request):
             }
             return render(request, 'result.html', context = context)
         if algorithm == 'pos':
-            outputstring, file_string, textout = posprocess(txt, txt, sw)
+            outputstring, file_string, textout = posprocess(txt, sw)
             #change outputstring to formatted with txt file
             file1 = open(filename,"w+")
             file1.write(file_string)
             file1.close()
+
             freq_display_str = outputstring.replace("\n", "<br>")
             context = {
                'base': base,
@@ -573,11 +584,12 @@ def analyze_doc_pos(request, document_id):
         }
         return render(request, 'result.html', context = context)
     sw = request.POST.get('sws')
-    outputstring, file_string, textout = posprocess(txt, txt, sw)
+    outputstring, file_string, textout = posprocess(txt, sw)
 #change outputstring to formatted with txt file
     file1 = open(filename,"w+")
     file1.write(file_string)
     file1.close()
+
     freq_display_str = outputstring.replace("\n", "<br>")
     context = {
         'text': textout,
@@ -770,11 +782,12 @@ def multi_pos(request, project_id):
             'output_error_text': "<br>The document is empty!<br><br>"
         }
         return render(request, 'result.html', context = context)
-    outputstring, file_string, textout = posprocess(entire_text, present_text, sw)
+    outputstring, file_string, textout = posprocess(entire_text, sw)
 #change outputstring to formatted with txt file
     file1 = open(filename,"w+")
     file1.write(file_string)
     file1.close()
+
     freq_display_str = outputstring.replace("\n", "<br>")
     context = {
         'text': textout,
@@ -866,9 +879,9 @@ def tfidfprocess(txt, present_txt, sw):
     return textout, newtext
 
 #needs work
-def posprocess(txt, present_txt, sw):
+def posprocess(txt, sw):
     txt = clean_up(txt)
-    outputstring, file_string, textout = pos(txt, present_txt, sw)
+    outputstring, file_string, textout = pos(txt, sw)
     return outputstring, file_string, textout
 
 def ldaprocess(txt, present_txt, sw, numberoftopics):
