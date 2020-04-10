@@ -259,7 +259,7 @@ def pos(txt, sw):
     output_string += "<table style='margin-left:auto;margin-right:auto;'>"
     txt_hl = ''
 
-    cnt = 0
+    cnt = 1
     for i in tokenized:
         txt_hl += "<br><strong>Sentence " + str(cnt) + "</strong><br>"
         file_string += "Sentence " + str(cnt) + '\n'
