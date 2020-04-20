@@ -12,6 +12,20 @@
 	margin: 100px auto;
 }
 
+#title_container {
+	width: 80%;
+	overflow-y: auto;
+	display: inline-block;
+	max-height: 150px;
+}
+
+#titleandedit {
+	max-width: 35%;
+	max-height: 250px;
+	margin: 3% auto;
+	padding: 0 auto;
+}
+
 .document {
 	width: 400px;
 	height: 500px;
@@ -25,10 +39,7 @@
 }
 
 #projecttitle {
-	width: 500px;
-	margin: 0 auto;
 	text-align: center;
-	margin: 40px auto;
 	color: white;
 	font-size: 30px;
 	font-family: 'Roboto Slab', serif;
@@ -41,8 +52,9 @@
 #formholder {
 	width: 50%;
 	margin-left: 30%;
-	margin-top: 50px;
+	margin-top: 1%;
 }
+
 
 label {
     color: white;
@@ -107,16 +119,21 @@ label {
 }
 
 #edittitle {
+	text-align: center;
+	color: white;
+	font-family: 'Roboto Slab', serif;
+	display: inline-block;
 	font-size: 11px;
-	margin-left: 5%;
+	margin-left: 3%;
 }
 
 #editprojecttitleform {
-	display: block;
-	width: 30%;
-	margin: 1% 45%;
+	margin: 3% 45%;
 	font-family: 'Rajdhani', serif;
 	font-size: 15px;
+	display: inline-block;
+	margin-top: 3%;
+	max-height: 100px;
 }
 
 #newtitlesubmit {
@@ -238,10 +255,14 @@ select {
 #edittitlecancel {
 	font-size: 11px;
 	margin-left: 5%;
+	text-align: center;
+	color: white;
+	font-family: 'Roboto Slab', serif;
+	display: inline-block;
 }
 
 .multidocbutton {
-	margin-bottom: 10px;
+	margin: 10px auto;
 	background-color: #1c87c9;
     border: none;
     color: white;
@@ -249,15 +270,25 @@ select {
     font-family: 'Rajdhani', serif;
 }
 
+.buttonandform {
+	display: table-cell;
+}
+
 #multidocheader {
 	color: white;
 	font-size: 20px;
 	font-family: 'Roboto Slab', serif;
-	margin-bottom: 20px;
 }
 
 #multidocanalyzediv {
-	width: 95%;
-	text-align: right;
+	width: 30%;
+	display: table;
+	table-layout: fixed;
+	margin: 0 auto;
 }
 
+#edittitleformspan {
+	display: inline-block;
+	margin-top: 3%;
+	max-height: 100px;
+}

@@ -130,28 +130,38 @@
 
 {% block content %}
     {% if user.is_authenticated %}
-    <h3 id="projecttitle">{{ title }}<span id="edittitle">      [Edit]</span><span id="edittitlecancel">      [Cancel]</span></h3>
-    <form method="post" enctype="multipart/form-data" id="editprojecttitleform" action="/editProjectTitle/{{ project.id }}/">
-        {% csrf_token %}
-        <input type="text" id="newtitleinput" placeholder="Project Title" name="newtitleinput" required>
-        <input type="submit" id="newtitlesubmit">
-    </form>
+    <div id="titleandedit">
+        <div id="title_container">
+            <h3 id="projecttitle">{{ title }}</h3>
+        </div>
+        <span id="edittitle">      [Edit Title]</span><span id="edittitlecancel">      [Cancel]</span>
+        <div id="edittitleformspan"><form method="post" enctype="multipart/form-data" id="editprojecttitleform" action="/editProjectTitle/{{ project.id }}/">
+                {% csrf_token %}
+                <input type="text" id="newtitleinput" placeholder="Project Title" name="newtitleinput" required>
+                <input type="submit" id="newtitlesubmit">
+                </form>
+        </div>
+    </div>
     <div id="multidocanalyzediv">
-        <h5 id="multidocheader">Analyze Project</h5>
-        <button class="multidocbutton" id="tfidfmultidocbutton">Analyze Project - TF-IDF</button><br>
-        <button class="multidocbutton" id="posmultidocbutton">Analyze Project - P-O-S</button><br>
-        <button class="multidocbutton" id="ldamultidocbutton">Analyze Project - LDA</button><br>
+        <div class="buttonandform">
+        <button class="multidocbutton" id="tfidfmultidocbutton">Analyze Project - TF-IDF</button>
         <form method="post" enctype="multipart/form-data" class="tfidfmultiform" action="/tfidfMultiAnalyze/{{ project.id }}/">
                     {% csrf_token %}
                     <input type="text" name="sws" class="swsinput" placeholder="TF-IDF custom stop-words">
                     <input class="swsinputbutton" type="submit" value="Analyze">
        </form>
-       <form method="post" enctype="multipart/form-data" class="posmultiform" action="/posMultiAnalyze/{{ project.id }}/">
+       </div>
+       <div class="buttonandform">
+        <button class="multidocbutton" id="posmultidocbutton">Analyze Project - P-O-S</button>
+        <form method="post" enctype="multipart/form-data" class="posmultiform" action="/posMultiAnalyze/{{ project.id }}/">
                     {% csrf_token %}
                     <input type="text" name="sws" class="swsinput" placeholder="P-O-S custom stop-words">
                     <input class="swsinputbutton" type="submit" value="Analyze">
        </form>
-       <form method="post" enctype="multipart/form-data" class="ldamultiform" action="/ldaMultiAnalyze/{{ project.id }}/">
+       </div>
+       <div class="buttonandform">
+        <button class="multidocbutton" id="ldamultidocbutton">Analyze Project - LDA</button>
+        <form method="post" enctype="multipart/form-data" class="ldamultiform" action="/ldaMultiAnalyze/{{ project.id }}/">
                     {% csrf_token %}
                     <input type="text" name="sws" class="swsinput" placeholder="LDA custom stop-words"><br>
                     <label for="numoftopics" class="numoftopicslabel"># of Topics:</label>
@@ -166,6 +176,7 @@
                     </select>
                     <input class="ldasubmitbutton" type="submit" value="Analyze">
        </form>
+       </div>
     </div><br>
     <div id="docs_container">
         {% for document in doc_list %}
