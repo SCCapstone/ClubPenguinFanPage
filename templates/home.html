@@ -95,8 +95,10 @@
 		</div>
 	{% else %}
   <div id="login_status">
-  	<p>You are not logged in</p>
-  	<a href="{% url 'login' %}">Login</a>
+  	<u id="notloggedin">Welcome to TextPenguin</u>
+	  	<a class="landingoption" href="{% url 'login' %}">Login</a>
+	  	<p id="or">-or-</p>
+	  	<a class="landingoption" href="{% url 'guesthome' %}">Continue as Guest</a>
   </div>
 {% endif %}
 {% endblock %}

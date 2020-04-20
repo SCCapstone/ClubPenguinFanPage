@@ -57,3 +57,22 @@
 body {
 	font-family: 'Rajdhani', serif;
 }
+
+.landingoption {
+	width: 80%;
+	display: block;
+	margin: 2% auto;
+}
+
+#or {
+	margin: 2% auto;
+	width: 80%;
+	text-align: center;
+}
+
+#notloggedin {
+	margin: 2% auto;
+	width: 80%;
+	text-align: center;
+	font-size: 25px;
+}
