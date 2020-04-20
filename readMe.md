@@ -5,7 +5,7 @@ Term Frequency-Inverse Document Frequency, Part-of-Speech Tagging, and Latent Di
 
 ![](tfidfcolor.jpg)
 <b>Text Penguin gives you precise numerical results</b> 
-<br></br>
+<br>
 
 
 ## Who can use Text Penguin?
@@ -23,12 +23,12 @@ The documents can be saved in files called "Projects", which will act as a means
 
 ![](sentences.jpg)
 <b>By highlighting the results, we make them easier for you to read</b>
-<br></br>
+<br>
 
 
 ![](projects.jpg)
 <b>By creating an account, users are able to reuse and re-analyze text</b>
-<br></br>
+<br>
 
 
 ## Where can I find Text Penguin?
