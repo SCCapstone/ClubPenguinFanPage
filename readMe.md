@@ -7,14 +7,14 @@ Term Frequency-Inverse Document Frequency, Part-of-Speech Tagging, and Latent Di
 
 <b>Anyone!</b> Whether you are a hummanities researcher, student, or someone who's just curious about text, Text Penguin was made for you. We make it both simple to analyze text and easy to analyze the results. Even if you know nothing about text analysis, we provide resources for you to get started learning about the algorithms on our [Resources Page](http://textpenguin.herokuapp.com/resources/)!
 
+## Is it easy to use? 
+
+Yes! Check out the video below about how to use our website:
+
 ## Why should I use Text Penguin?
 
 Text Penguin currently provides you access to three of the most commonly used text analysis algorithms and if you sign up for a <b>free</b> account, we give you a place to save your analyzed documents.
 The documents can be saved in files called "Projects", which will act as a means to organize the documents for a single project if need be.
-
-## Is it easy to use? 
-
-Yes! Check out the video below about how to use our website:
 
 ## Where can I find Text Penguin?
 
