@@ -2,7 +2,9 @@
 
 Text Penguin is a webapp where users can upload documents (by either copying it into a text box or uploading a .txt file) in order to have the contents of the document analyzed by three different algorithms:
 Term Frequency-Inverse Document Frequency, Part-of-Speech Tagging, and Latent Direchlet Allocation. 
+
 ![](tfidfcolor.jpg)
+ Text Penguin gives you precise numerical results
 
 ## Who can use Text Penguin?
 
@@ -17,7 +19,9 @@ Yes! Check out the video below about how to use our website:
 Text Penguin currently provides you access to three of the most commonly used text analysis algorithms and if you sign up for a <b>free</b> account, we give you a place to save your analyzed documents.
 The documents can be saved in files called "Projects", which will act as a means to organize the documents for a single project if need be.
 
+
 ![](sentences.jpg)
+ By highlighting the results, we make them easier for you to read
 
 ## Where can I find Text Penguin?
 
