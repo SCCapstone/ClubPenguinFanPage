@@ -15,7 +15,7 @@ Yes! Check out the video below about how to use our website:
 
 Text Penguin currently provides you access to three of the most commonly used text analysis algorithms and if you sign up for a <b>free</b> account, we give you a place to save your analyzed documents.
 The documents can be saved in files called "Projects", which will act as a means to organize the documents for a single project if need be.
-![]({{https://sccapstone.github.io/ClubPenguinFanPage}}/tfidf.jpg)
+![]({{ site.url }}/tfidf.jpg)
 
 ## Where can I find Text Penguin?
 
