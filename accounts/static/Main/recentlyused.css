@@ -24,6 +24,15 @@
 .projecttitle {
 	color: black;
 	text-align: center;
+	width: 100%;
+	margin-bottom: 20px;
+	text-decoration: underline;
+}
+
+.doctext {
+	color: black;
+	width: 80%;
+	margin-left: 3%;
 }
 
 #NONOZONE {

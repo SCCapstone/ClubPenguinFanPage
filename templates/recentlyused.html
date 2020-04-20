@@ -2,6 +2,8 @@
 
 {% load static %}
 
+{% load dictfordocutext %}
+
 {% block title %}Projects{% endblock %}
 
 {% block extra_head %}
@@ -41,6 +43,9 @@
     	        <a href="/recentlyused/{{ project.id }}/">
         	        <div class="individualproject">
         	            <h4 class="projecttitle">{{ project.title }}</h4>
+                        {% for docu in docu_dict|lookup:project.title %}
+                            <h5 class="doctext">{{ docu.text|truncatechars:20 }}</h5>
+                        {% endfor %}
         	        </div>
     	        </a>
     	    </div>

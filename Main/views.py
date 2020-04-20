@@ -471,8 +471,16 @@ def recentlyused(request):
         Document = apps.get_model('accounts', 'Document')
         user = request.user
         project_list=Project.objects.filter(owner=user.id)
+        docu_dict = {}
+        for project in project_list:
+            documents = Document.objects.filter(project=project.id)
+            if len(documents) is not 0:
+                docu_dict[project.title] = Document.objects.filter(project=project.id)
+            else: 
+                docu_dict[project.title] = []
         context = {
             'proj_list': project_list,
+            'docu_dict': docu_dict,
         }
         return render(request,"recentlyused.html",context=context)
 
