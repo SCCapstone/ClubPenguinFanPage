@@ -4,7 +4,7 @@ Text Penguin is a webapp where users can upload documents (by either copying it 
 Term Frequency-Inverse Document Frequency, Part-of-Speech Tagging, and Latent Direchlet Allocation. 
 
 ![](tfidfcolor.jpg)
- Text Penguin gives you precise numerical results
+<b>Text Penguin gives you precise numerical results</b> 
 
 ## Who can use Text Penguin?
 
@@ -21,7 +21,7 @@ The documents can be saved in files called "Projects", which will act as a means
 
 
 ![](sentences.jpg)
- By highlighting the results, we make them easier for you to read
+<b>By highlighting the results, we make them easier for you to read</b>
 
 ## Where can I find Text Penguin?
 
