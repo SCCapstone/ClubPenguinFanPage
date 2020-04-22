@@ -1,0 +1,87 @@
+#placeholder {
+	width: 40%;
+	margin: 50px auto;
+	padding: 10px 20px;
+	text-align: center;
+}
+
+#projectitles {
+    width: 70%;
+}
+
+.individualproject {
+	width: 200px;
+	height: 200px;
+	margin: 10px auto;
+	background-color: #C3E0E5;
+	padding: 10px;
+	display: inline-block;
+	vertical-align: middle;
+	overflow: auto;
+	font-family: 'Rajdhani', serif;
+}
+
+.projecttitle {
+	color: black;
+	text-align: center;
+	width: 100%;
+	margin-bottom: 20px;
+	text-decoration: underline;
+}
+
+.doctext {
+	color: black;
+	width: 80%;
+	margin-left: 3%;
+}
+
+#NONOZONE {
+	background-color: red;
+	width: 100px;
+	position: absolute;
+	bottom: 0px;
+	right: 0px;
+}
+
+#NONOZONE a {
+	color: black;
+	text-decoration: none;
+}
+
+#recentlyusedheader {
+	width: 100%;
+	text-align: center;
+	color: white;
+	margin-top: 50px;
+	margin-bottom: 60px;
+	font-family: 'Roboto Slab', serif;
+}
+
+.projectstuff {
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.deleteprojbutton {
+	margin-left: 90%;
+	background-color: #1c87c9;
+    border: none;
+    color: white;
+    padding-left: 7px;
+    padding-right: 7px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    font-family: 'Rajdhani', serif;
+}
+
+#notloggedin {
+	width: 50%;
+	height: 10%;
+	background-color: white;
+	margin: 10% 20%;
+	text-align: center;
+	padding: 5% 1%;
+	overflow: auto;
+	font-family: 'Rajdhani', serif;
+	font-size: 20px;
+}

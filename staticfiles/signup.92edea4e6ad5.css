@@ -1,0 +1,20 @@
+#signupform {
+	width: 530px;
+	height: 375px;
+	padding: 20px;
+	background-color: #C3E0E5;
+}
+
+#signuptitle {
+	color: #C3E0E5;
+	font-size: 72px;
+	font-family: Roboto Slab;
+	text-align: center;
+	margin-top: 110px;
+	margin-bottom: 30px;
+}
+
+#signupcenter {
+	width: 530px;
+	margin: 0 auto;
+}

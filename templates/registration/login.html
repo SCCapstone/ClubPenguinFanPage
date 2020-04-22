@@ -7,15 +7,15 @@
 	<title>{% block title %}Login{% endblock %}</title>
 	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
-	<link rel="stylesheet" type="text/css" href="{% static 'Main/nav.css' %}">
+	<!---<link rel="stylesheet" type="text/css" href="{% static 'Main/nav.css' %}">-->
  	<link href="https://fonts.googleapis.com/css?family=Rajdhani|Roboto+Condensed|Roboto+Slab&display=swap" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="{% static 'Main/login.css' %}">
 </head>
-<body>
+<body style="background-color:#274472">
 
 {% block content %}
 <h2 id="logintitle">Text Penguin</h2>
-<div id="logincenter">
+<div id="logincenter" >
 
 	<form method="post" id="loginform" action="">
 		{% csrf_token %}

@@ -1,0 +1,8 @@
+#placeholder {
+	width: 65%;
+	margin: 50px auto;
+	border: solid black 1px;
+	padding: 100px 20px;
+	background-color: white;
+	overflow: auto;
+}

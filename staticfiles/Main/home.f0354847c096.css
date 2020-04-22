@@ -1,0 +1,78 @@
+#login_status {
+	width: 50%;
+	height: 10%;
+	background-color: white;
+	margin: 10% 20%;
+	text-align: center;
+	padding: 5% 1%;
+	overflow: auto;
+	font-family: 'Rajdhani', serif;
+	font-size: 20px;
+}
+
+#inp {
+	margin: auto;
+	text-align: center;
+}
+
+#algorithm {
+	width: 40%;
+}
+
+#inputfileradio {
+	margin-left: 7%;
+}
+
+#firstdocinput {
+	display: block;
+	margin: 0 auto;
+	margin-top: 3%;
+	width: 95%;
+}
+
+#fileinput {
+	display: block;
+	margin: 10% auto;
+}
+
+#tfidfsw {
+	width: 80%;
+	margin-top: 5%;
+	overflow-x: scroll;
+}
+
+#submitbuttoninput {
+	background-color: #1c87c9;
+    border: none;
+         color: white;
+         padding: 2%;
+         text-align: center;
+         text-decoration: none;
+         display: inline-block;
+         font-size: 20px;
+         margin: 0 auto;
+         cursor: pointer;
+}
+
+body {
+	font-family: 'Rajdhani', serif;
+}
+
+.landingoption {
+	width: 80%;
+	display: block;
+	margin: 2% auto;
+}
+
+#or {
+	margin: 2% auto;
+	width: 80%;
+	text-align: center;
+}
+
+#notloggedin {
+	margin: 2% auto;
+	width: 80%;
+	text-align: center;
+	font-size: 25px;
+}

@@ -1,0 +1,105 @@
+#loginform {
+	width: 530px;
+	height: 375px;
+	padding: 20px;
+	background-color: #C3E0E5;
+}
+
+#logintitle {
+	color: #C3E0E5;
+	font-size: 72px;
+	font-family: Roboto Slab;
+	text-align: center;
+	margin-top: 110px;
+	margin-bottom: 30px;
+}
+
+#logincenter {
+	width: 520px;
+	margin: 50%;
+}
+
+.loginsection {
+	color: #403939;
+	font-size: 26px;
+	font-family: Rajdhani;
+	font-style: normal;
+	font-weight: bold;
+}
+
+.loginformbox {
+	border: none;
+	width: 100%;
+	height: 45px;
+	font-size: 20px;
+	padding: 0px 10px;
+}
+
+#logincheckbox {
+	border: none;
+	height: 30px;
+	width: 20px;
+}
+
+#loginsubmit {
+	height: 45px;
+	width: 100%;
+	padding: 0px 10px;
+	border: none;
+	background-color: #274472;
+	color: #C3E0E5;
+	font-size: 26px;
+	font-family: Rajdhani;
+	font-weight: bold;
+	margin: 30px 0px;
+}
+
+#addloginlinks {
+}
+
+#addlink1 {
+	font-family: Rajdhani;
+	font-size: 20px;
+	text-decoration-line: underline;
+	font-weight: bold;
+	color: #C3E0E5;
+	margin-right: 100px;
+}
+
+#addlink2 {
+	font-family: Rajdhani;
+	font-size: 20px;
+	text-decoration-line: underline;
+	font-weight: bold;
+	color: #C3E0E5;
+	margin-left: 95px;
+}
+
+input#rememberme {
+	vertical-align: sub;
+	width: 25px;
+	height: 25px;
+}	
+
+label {
+	font-size: 20px;
+	font-family: Roboto Condensed;
+	font-weight: normal;
+	color: #403939;
+	margin-right: 100px;
+}
+
+#forgotpassword {
+	font-size: 20px;
+	font-family: Roboto Condensed;
+	font-weight: normal;
+	color: #403939; 
+	margin-left: 100px;
+}
+
+#checkforgot {
+	margin-top: 10px;
+}
+
+
+

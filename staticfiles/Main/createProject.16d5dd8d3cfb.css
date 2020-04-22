@@ -1,0 +1,65 @@
+.button {
+    background-color: #1c87c9;
+    border: none;
+    color: white;
+    padding: 20px 20px;
+    text-align: center;
+    font-size: 20px;
+    margin-left: 80%;
+}
+
+#formholder {
+    width: 80%;
+    margin-left: 35%;
+}
+
+#createaprojectheader {
+    color: white;
+    width: 100%;
+    text-align: center;
+    margin-top: 50px;
+    margin-bottom: 60px;
+}
+
+#titleinput {
+    width: 300px;
+    height: 30px;
+    font-size: 15px;
+    margin-top: 10px;
+    margin-bottom: 30px;
+}
+
+#firstdocinput {
+    
+}
+
+#submitbuttoninput {
+    background-color: #1c87c9;
+    border: none;
+    color: white;
+    padding: 10px 10px;
+    text-align: center;
+    font-size: 15px;
+}
+
+#or {
+    color: white;
+    position: relative;
+    left: 18%;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+label {
+    color: white;
+    margin-right: 40px;
+    font-size: 18px;
+    font-weight: normal;
+    margin-bottom: 30px;
+}
+
+#fileinput {
+   margin-bottom: 60px;
+   color: white;
+   font-size: 15px;
+}

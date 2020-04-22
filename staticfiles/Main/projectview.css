@@ -1,0 +1,294 @@
+#addDocButton {
+	width: 200px;
+	height: 50px;
+	margin: 50px auto;
+	display: block;
+}
+
+#addDocDiv {
+	width: 500px;
+	height: 500px;
+	display: block;
+	margin: 100px auto;
+}
+
+#title_container {
+	width: 80%;
+	overflow-y: auto;
+	display: inline-block;
+	max-height: 150px;
+}
+
+#titleandedit {
+	max-width: 35%;
+	max-height: 250px;
+	margin: 3% auto;
+	padding: 0 auto;
+}
+
+.document {
+	width: 400px;
+	height: 500px;
+	margin: 10px auto;
+	background: white;
+	padding: 10px;
+	text-overflow: ellipsis;
+	overflow: auto;
+	font-family: 'Rajdhani', serif;
+	font-size: 15px;
+}
+
+#projecttitle {
+	text-align: center;
+	color: white;
+	font-size: 30px;
+	font-family: 'Roboto Slab', serif;
+}
+
+#docs_container {
+	width: 80%;
+}
+
+#formholder {
+	width: 50%;
+	margin-left: 30%;
+	margin-top: 1%;
+}
+
+
+label {
+    color: white;
+    margin-right: 40px;
+    font-size: 18px;
+    font-weight: normal;
+    margin-bottom: 30px;
+    font-family: 'Rajdhani', serif;
+}
+
+#fileinput {
+   margin-bottom: 60px;
+   color: white;
+   font-size: 15px;
+   font-family: 'Rajdhani', serif;
+}
+
+#add_doc_header {
+	color: white;
+	font-family: 'Roboto Slab', serif;
+}
+
+.document_and_analyze_button {
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.sentimentlink {
+	margin-left: 160px;
+}
+
+#createprojectform {
+	margin-bottom: 100px;
+}
+
+.tfidfbutton {
+	margin-bottom: 10px;
+	background-color: #1c87c9;
+    border: none;
+    color: white;
+    padding: 6px;
+    font-family: 'Rajdhani', serif;
+}
+
+.swsinputbutton {
+	margin-bottom: 10px;
+	background-color: #1c87c9;
+    border: none;
+    color: white;
+    padding: 6px;
+    font-family: 'Rajdhani', serif;
+}
+
+.swsinput {
+	padding: 4px;
+	font-family: 'Rajdhani', serif;
+	margin-bottom: 2%;
+}
+
+.document_and_analyze_button {
+	margin-bottom: 40px;
+}
+
+#edittitle {
+	text-align: center;
+	color: white;
+	font-family: 'Roboto Slab', serif;
+	display: inline-block;
+	font-size: 11px;
+	margin-left: 3%;
+}
+
+#editprojecttitleform {
+	margin: 3% 45%;
+	font-family: 'Rajdhani', serif;
+	font-size: 15px;
+	display: inline-block;
+	margin-top: 3%;
+	max-height: 100px;
+}
+
+#newtitlesubmit {
+	margin-bottom: 10px;
+	background-color: #1c87c9;
+    border: none;
+    color: white;
+    padding: 6px;
+    font-family: 'Rajdhani', serif;
+}
+
+#newtitleinput {
+	padding: 4px;
+	font-family: 'Rajdhani', serif;
+}
+
+.posbutton {
+	margin-bottom: 10px;
+	background-color: #1c87c9;
+    border: none;
+    color: white;
+    padding: 6px;
+    font-family: 'Rajdhani', serif;
+}
+
+.ldabutton {
+	margin-bottom: 10px;
+	background-color: #1c87c9;
+    border: none;
+    color: white;
+    padding: 6px;
+    font-family: 'Rajdhani', serif;
+}
+
+.deletedocbutton {
+	margin-bottom: 10px;
+	background-color: #1c87c9;
+    border: none;
+    color: white;
+    padding: 7px;
+    font-family: 'Rajdhani', serif;
+    margin-left: 20%;
+}
+
+.doceditlink {
+	font-family: 'Rajdhani', serif;
+	color: white;
+}
+
+.editdocarea {
+	width: 400px;
+	height: 500px;
+	margin: 10px auto;
+	background: white;
+	padding: 10px;
+	text-overflow: ellipsis;
+	overflow: auto;
+	font-family: 'Rajdhani', serif;
+	font-size: 15px;
+}
+
+.doceditcancellink {
+	font-family: 'Rajdhani', serif;
+	color: white;
+}
+
+.submiteditdoc {
+	background-color: #1c87c9;
+    border: none;
+    color: white;
+    padding: 10px 10px;
+    text-align: center;
+    font-size: 15px;
+}
+
+#addDocButton {
+	background-color: #1c87c9;
+    border: none;
+    color: white;
+    padding: 10px 10px;
+    text-align: center;
+    font-size: 15px;
+}
+
+#submitbuttoninput {
+	background-color: #1c87c9;
+    border: none;
+    color: white;
+    padding: 10px 10px;
+    text-align: center;
+    font-size: 15px;
+}
+
+.ldasubmitbutton {
+	margin-bottom: 10px;
+	background-color: #1c87c9;
+    border: none;
+    color: white;
+    padding: 6px;
+    font-family: 'Rajdhani', serif;
+}
+
+.numoftopicslabel {
+	color: white;
+    font-size: 18px;
+    font-weight: normal;
+    font-family: 'Rajdhani', serif;
+    margin-right: 2%;
+}
+
+.numoftopics {
+	margin-right: 2%;
+}
+
+select {
+	padding: 6px;
+}
+
+#edittitlecancel {
+	font-size: 11px;
+	margin-left: 5%;
+	text-align: center;
+	color: white;
+	font-family: 'Roboto Slab', serif;
+	display: inline-block;
+}
+
+.multidocbutton {
+	margin: 10px auto;
+	background-color: #1c87c9;
+    border: none;
+    color: white;
+    padding: 6px;
+    font-family: 'Rajdhani', serif;
+}
+
+.buttonandform {
+	display: table-cell;
+}
+
+#multidocheader {
+	color: white;
+	font-size: 20px;
+	font-family: 'Roboto Slab', serif;
+}
+
+#multidocanalyzediv {
+	width: 30%;
+	display: table;
+	table-layout: fixed;
+	margin: 0 auto;
+}
+
+#edittitleformspan {
+	display: inline-block;
+	margin-top: 3%;
+	max-height: 100px;
+}
