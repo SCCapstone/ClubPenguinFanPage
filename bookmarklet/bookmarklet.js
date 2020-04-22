@@ -4,7 +4,8 @@ if (window.getSelection)
 }
 
 function setText(text){
-  document.getElementById("firstdocinput").value = text;
+  let text = document.querySelector("firstdocinput");
+  return text;
 }
 
 function newTab(){
@@ -17,5 +18,10 @@ function newTab(){
 (function() {
   var text = selection();
   console.log("Selected Text:" + text);
+  console.log("Opening new tab!");
   newTab();
+  console.log("New tab opened!");
+  window.onload = function(){
+    console.log("loaded!");
+};
 })();
