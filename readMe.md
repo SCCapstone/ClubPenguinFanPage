@@ -10,7 +10,7 @@ Term Frequency-Inverse Document Frequency, Part-of-Speech Tagging, and Latent Di
 
 ## Who can use Text Penguin?
 
-<b>Anyone!</b> Whether you are a hummanities researcher, student, or someone who's just curious about text, Text Penguin was made for you. We make it both simple to analyze text and easy to analyze the results. Even if you know nothing about text analysis, we provide resources for you to get started learning about the algorithms on our [Resources Page](http://textpenguin.herokuapp.com/resources/)!
+<b>Anyone!</b> Whether you are a humanities researcher, student, or someone who's just curious about text, Text Penguin was made for you. We make it both simple to analyze text and easy to analyze the results. Even if you know nothing about text analysis, we provide resources for you to get started learning about the algorithms on our [Resources Page](http://textpenguin.herokuapp.com/resources/)!
 
 ## Is it easy to use? 
 
