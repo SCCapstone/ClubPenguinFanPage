@@ -3,25 +3,12 @@ if (window.getSelection)
        return window.getSelection();
 }
 
-function setText(text){
-  let text = document.querySelector("firstdocinput");
-  return text;
-}
-
-function newTab(){
-  window.open('http://textpenguin.herokuapp.com/guesthome/', '_blank');
-  window.addEventListener('load', function () {
-    setText();
-})
-}
-
 (function() {
   var text = selection();
   console.log("Selected Text:" + text);
   console.log("Opening new tab!");
-  newTab();
+  var newP = window.open('http://textpenguin.herokuapp.com/guesthome/', '_blank').focus();
   console.log("New tab opened!");
-  window.onload = function(){
-    console.log("loaded!");
-};
+  //Doesn't actually focus on the new tab and therefore says it can't update value of null for "firstdocinput"
+  document.querySelector("firstdocinput").value = text;
 })();
