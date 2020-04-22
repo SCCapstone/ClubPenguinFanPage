@@ -56,8 +56,11 @@
 
 {% block content %}
 	{% if user.is_authenticated %}
+		<!--<p><a href="{% url 'change_password'%}">Reset Password</a></p> -->
 		<div id="login_status">
-			<p>Hi {{ user.username }}!</p><br>
+			
+			<p>Hi {{ user.username }}!</p>
+			<p style=" font-size:16px"><a href="{% url 'change_password'%}">Reset Password</a></p><br>
 			<form id="algform" enctype="multipart/form-data" action="{% url 'result' %}" method="POST">
 				{% csrf_token %}
 				<h4 id="algorithmchoicetitle">Choose your text-analysis algorithm:</h4>
@@ -91,7 +94,8 @@
 				<input id="submitbuttoninput" type="submit" value="Submit">
 			</form>
 		<br><br><br><br>
-  		<p><a href="{% url 'logout' %}">Logout</a></p>
+		
+  		<!--<p><a href="{% url 'logout' %}">Logout</a></p>-->
 		</div>
 	{% else %}
   <div id="login_status">

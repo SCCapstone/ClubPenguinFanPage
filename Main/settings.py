@@ -55,6 +55,8 @@ MIDDLEWARE = [
     'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+
 ROOT_URLCONF = 'Main.urls'
 
 TEMPLATES = [
@@ -134,6 +136,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'accounts/static')
 STATICFILES_DIRS = ['accounts/static/Main',]		#  os.path.join(BASE_DIR,'static'),]
 STATICFILES_STORAGE = 'whitenoise.django.CompressedManifestStaticFilesStorage' # heroku
 
+SESSION_COOKIE_AGE = 60 * 60 * 24 * 14
 
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
