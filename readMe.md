@@ -15,7 +15,7 @@ Term Frequency-Inverse Document Frequency, Part-of-Speech Tagging, and Latent Di
 ## Is it easy to use? 
 
 Yes! Check out the video below about how to use our website: 
-[![Text Penguin Demo]({https://ibb.co/HdcQrV8})]({https://www.youtube.com/embed/us4Q0OJoumg} "Text Penguin Demo")
+[Text Penguin](https://www.youtube.com/watch?v=us4Q0OJoumg)
 
 ## Why should I use Text Penguin?
 
