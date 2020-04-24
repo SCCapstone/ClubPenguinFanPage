@@ -1,9 +1,9 @@
 function selection(){
 if (window.getSelection)
-       return window.getSelection();
+       return window.getSelection().toString();
 }
 
-(function() {
+javascript:(function() {
   var text = selection();
   console.log("Selected Text:" + text);
   window.location.href = "http://textpenguin.herokuapp.com/guesthome/";

@@ -22,6 +22,11 @@
 
         $("#algorithm").change(function(){choiceCheck2()});
 
+	var bookmarklet_text = window.location.hash.substring(1);
+	bookmarklet_text = decodeURI(bookmarklet_text);
+
+	document.getElementById("firstdocinput").value = bookmarklet_text;
+
         function choiceCheck() {
           if (document.getElementById('inputtextradio').checked) {
             document.getElementById("fileinput").value =  '';
