@@ -251,74 +251,87 @@ def pos(txt, sw):
             doc += t
     tokenized = sent_tokenize(doc)
     stop_words = make_sw_list(sw)
-    d = defaultdict(int)
-    output_string = "The highlighting denotes <span style=background-color:" + colors[0] + ">nouns</span>, "
-    output_string += "<span style=background-color:" + colors[1] + ">verbs</span>, "
-    output_string += "<span style=color:white;background-color:" + colors[2] + ">adjectives</span>, and "
-    output_string += "<span style=color:white;background-color:" + colors[3] + ">adverbs</span>, respectively."
-    output_string += "<table style='margin-left:auto;margin-right:auto;'>"
-    txt_hl = ''
+    not_all_sw = False
+    for sentence in tokenized:
+        for term in sentence.split(' '):
+            term = term.translate(str.maketrans('', '', string.punctuation))
+            if term not in stop_words:
+                not_all_sw = True
+                break
 
-    cnt = 1
-    for i in tokenized:
-        txt_hl += "<br><strong>Sentence " + str(cnt) + "</strong><br>"
-        file_string += "Sentence " + str(cnt) + '\n'
-        wordsList = nltk.word_tokenize(i)
-        wordsList = [w for w in wordsList]
-        tagged = nltk.pos_tag(wordsList)
-        for tag in tagged:
-                d[tag[1]] += 1
-                s = tag[0]
-                if tag[0].lower() not in stop_words:
-                    if tag[1].startswith('N'):
-                        s = '<span style="background-color:' + colors[0] + '">' + tag[0] + '</span>'
-                    elif tag[1].startswith('V'):
-                        s = '<span style="background-color:' + colors[1] + '">' + tag[0] + '</span>'
-                    elif tag[1].startswith('J'):
-                        s = '<span style="color:white;background-color:' + colors[2] + '">' + tag[0] + '</span>'
-                    elif tag[1].startswith('R'):
-                        s = '<span style="color:white;background-color:' + colors[3] + '">' + tag[0] + '</span>'
-                if tag[0] not in string.punctuation:
-                    if txt_hl.endswith('’'):
+    if not_all_sw == False:
+        output_string = "only stopwords"
+        file_string = ''
+        txt_hl = ''
+    else:
+        d = defaultdict(int)
+        output_string = "The highlighting denotes <span style=background-color:" + colors[0] + ">nouns</span>, "
+        output_string += "<span style=background-color:" + colors[1] + ">verbs</span>, "
+        output_string += "<span style=color:white;background-color:" + colors[2] + ">adjectives</span>, and "
+        output_string += "<span style=color:white;background-color:" + colors[3] + ">adverbs</span>, respectively."
+        output_string += "<table style='margin-left:auto;margin-right:auto;'>"
+        txt_hl = ''
+
+        cnt = 1
+        for i in tokenized:
+            txt_hl += "<br><strong>Sentence " + str(cnt) + "</strong><br>"
+            file_string += "Sentence " + str(cnt) + '\n'
+            wordsList = nltk.word_tokenize(i)
+            wordsList = [w for w in wordsList]
+            tagged = nltk.pos_tag(wordsList)
+            for tag in tagged:
+                    d[tag[1]] += 1
+                    s = tag[0]
+                    if tag[0].lower() not in stop_words:
+                        if tag[1].startswith('N'):
+                            s = '<span style="background-color:' + colors[0] + '">' + tag[0] + '</span>'
+                        elif tag[1].startswith('V'):
+                            s = '<span style="background-color:' + colors[1] + '">' + tag[0] + '</span>'
+                        elif tag[1].startswith('J'):
+                            s = '<span style="color:white;background-color:' + colors[2] + '">' + tag[0] + '</span>'
+                        elif tag[1].startswith('R'):
+                            s = '<span style="color:white;background-color:' + colors[3] + '">' + tag[0] + '</span>'
+                    if tag[0] not in string.punctuation:
+                        if txt_hl.endswith('’'):
+                            txt_hl += s
+                        txt_hl += ' ' + s
+                    elif tag[0] in ['\'', '"', '’']:
                         txt_hl += s
-                    txt_hl += ' ' + s
-                elif tag[0] in ['\'', '"', '’']:
-                    txt_hl += s
+                    else:
+                        txt_hl += s
+                    if tag[0].lower() not in stop_words:
+                        file_string += tag[0] + "_" + tag[1] + "\n"
+            txt_hl += "<br>"
+            cnt += 1
+
+        #pos_summary = ''
+        if d != {}:
+            data = []
+            for tag in d:
+                data.append( ((tag, d.get(tag))) )
+
+            counts = pd.DataFrame(data, columns=['pos','cnt'])
+            df = counts.sort_values('cnt', ascending=False)
+            sort = df.values.tolist()
+            for tag_info in sort:
+                if tag_info[0] in tags_dict:
+                    if tag_info[0].startswith('N'):
+                        fmt_tag = '<td style="background-color:' + colors[0] + '">' + tags_dict[tag_info[0]] + '</td>'
+                    elif tag_info[0].startswith('V'):
+                        fmt_tag = '<td style="background-color:' + colors[1] + '">' + tags_dict[tag_info[0]] + '</td>'
+                    elif tag_info[0].startswith('J'):
+                        fmt_tag = '<td style="color:white;background-color:' + colors[2] + '">' + tags_dict[tag_info[0]] + '</td>'
+                    elif tag_info[0].startswith('R'):
+                        fmt_tag = '<td style="color:white;background-color:' + colors[3] + '">' + tags_dict[tag_info[0]] + '</td>'
+                    else:
+                        fmt_tag = '<td>' + '\t' + tags_dict[tag_info[0]] + '</td>'
+                    output_string += '<tr> <td>' + tag_info[0] + fmt_tag + '<td>' + '\t\t' + str(tag_info[1])
+                    #pos_summary += tag_info[0] + '\t' + tags_dict[tag_info[0]] + '\t' + str(tag_info[1]) + '\t' + '\n'
                 else:
-                    txt_hl += s
-                if tag[0].lower() not in stop_words:
-                    file_string += tag[0] + "_" + tag[1] + "\n"
-        txt_hl += "<br>"
+                    output_string += '<tr> <td>' + tag_info[0] + '<td> <td>' + str(tag_info[1])
+
+        output_string +=  "</table>"
         cnt += 1
-
-    #pos_summary = ''
-    if d != {}:
-        data = []
-        for tag in d:
-            data.append( ((tag, d.get(tag))) )
-
-        counts = pd.DataFrame(data, columns=['pos','cnt'])
-        df = counts.sort_values('cnt', ascending=False)
-        sort = df.values.tolist()
-        for tag_info in sort:
-            if tag_info[0] in tags_dict:
-                if tag_info[0].startswith('N'):
-                    fmt_tag = '<td style="background-color:' + colors[0] + '">' + tags_dict[tag_info[0]] + '</td>'
-                elif tag_info[0].startswith('V'):
-                    fmt_tag = '<td style="background-color:' + colors[1] + '">' + tags_dict[tag_info[0]] + '</td>'
-                elif tag_info[0].startswith('J'):
-                    fmt_tag = '<td style="color:white;background-color:' + colors[2] + '">' + tags_dict[tag_info[0]] + '</td>'
-                elif tag_info[0].startswith('R'):
-                    fmt_tag = '<td style="color:white;background-color:' + colors[3] + '">' + tags_dict[tag_info[0]] + '</td>'
-                else:
-                    fmt_tag = '<td>' + tags_dict[tag_info[0]] + '</td>'
-                output_string += '<tr> <td>' + tag_info[0] + fmt_tag + '<td>' + str(tag_info[1])
-                #pos_summary += tag_info[0] + '\t' + tags_dict[tag_info[0]] + '\t' + str(tag_info[1]) + '\t' + '\n'
-            else:
-                output_string += '<tr> <td>' + tag_info[0] + '<td> <td>' + str(tag_info[1])
-
-    output_string +=  "</table>"
-    cnt += 1
     return output_string, file_string, txt_hl
 
 #write results to file, save file, allow for download, delete file
@@ -375,16 +388,21 @@ def result(request):
             file1 = open(filename,"w+")
             file1.write(file_string)
             file1.close()
-
             freq_display_str = outputstring.replace("\n", "<br>")
-            context = {
-               'base': base,
-               'text': textout,
-               'outputstring': outputstring,
-               'algorithm': 'pos',
-               'freq_display_str': freq_display_str,
-            }
-            return render(request, 'result.html', context= context)
+            if outputstring == "only stopwords":
+                context = {
+                    'output_error_text': "<br><br>The text you input likely contains only stopwords. Try again.",
+                }
+                return render(request, 'result.html', context=context)
+            else:
+                context = {
+                   'base': base,
+                   'text': textout,
+                   'outputstring': outputstring,
+                   'algorithm': 'pos',
+                   'freq_display_str': freq_display_str,
+                }
+                return render(request, 'result.html', context= context)
         if algorithm == 'lda':
             try:
                 outputstring, file_string, textout = ldaprocess(txt, txt, sw, num_of_topics)
@@ -476,7 +494,7 @@ def recentlyused(request):
             documents = Document.objects.filter(project=project.id)
             if len(documents) is not 0:
                 docu_dict[project.title] = Document.objects.filter(project=project.id)
-            else: 
+            else:
                 docu_dict[project.title] = []
         context = {
             'proj_list': project_list,
