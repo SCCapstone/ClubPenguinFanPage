@@ -24,6 +24,15 @@ def change_password(request):
 		form = PasswordChangeForm(request.user)
 	return render(request, 'registration/change_password.html',{ 'form': form})
 
+def login(request):
+	form = LoginForm(request.POST)
+	if request.POST and form.is_valid():
+		user = form.login(request)
+		if user:
+			auth_login(request, user)
+			return redirect('')
+	return render(request, 'registration/login.html', {'form': form})
+
 class SignUp(generic.CreateView):
 	form_class = UserCreationForm
 	success_url = reverse_lazy('login')

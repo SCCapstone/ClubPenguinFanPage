@@ -19,10 +19,18 @@
 
 	<form method="post" id="loginform" action="">
 		{% csrf_token %}
+		
 		<h4 class="loginsection">Username</h4>
 		<input class="loginformbox" type="text" name="username">
+		{% if form.non_field_errors %}
+			<ul class="errors">
+				{% for error in form.non_field_errors %}
+					<li style = "color:red; font_size:20px">{{ error }}</li>
+				{% endfor %}
+			</ul>
+		{% endif %}
 		<h4 class="loginsection">Password</h4>
-		<input class="loginformbox" type="password" name="password" >
+		<input class="loginformbox" type="password" name="password">
 		
 		<div id="checkforgot">
 			<span>
@@ -30,12 +38,14 @@
 				<!--<a href="{% url 'change_password' %}" id="changepassword">Reset Password</a>-->
 			</span>
 		</div>
-
+		
 		<button type="submit" id="loginsubmit">Login</button>
+		
 	</form><br>
-
+		
 	<span id="addloginlinks"><a href = "{% url 'signup' %}" id="addlink1">Create an Account</a><a href= "{% url 'guesthome' %}" id=
 "addlink2">Continue as Guest</a></span>
+
 </div>
 {% endblock %}
 
