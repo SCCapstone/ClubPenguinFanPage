@@ -70,7 +70,7 @@
 		<div id="login_status">
 			<p>Hi Guest!</p><br>
 			<div class="bookmarklet">
-			<h4>Drag this link into your bookmarks in order to create the <a href="javascript:(function() {if(window.getSelection){ var bookmarklet_text = window.getSelection(); console.log("Selected Text: " + bookmarklet_text); window.location.href = "https://textpenguin.herokuapp.com/guesthome/" + "#" + bookmarklet_text;"}})();">Text Penguin Bookmarklet</a></h4>
+			<h4>Drag this link into your bookmarks in order to create the <a href='javascript:(function() {if(window.getSelection){ var bookmarklet_text = window.getSelection(); console.log("Selected Text: " + bookmarklet_text); window.location.href = "https://textpenguin.herokuapp.com/guesthome/" + "#" + bookmarklet_text;"}})();'>Text Penguin Bookmarklet</a></h4>
 			</div><br>
 			<form id="algform" enctype="multipart/form-data" action="{% url 'result' %}" method="POST">
 				{% csrf_token %}
