@@ -60,13 +60,6 @@
 {% endblock %}
 
 {% block content %}
-	{% if user.is_authenticated %}
-		<div id="login_status">
-			<p>Hi {{ user.username }}!</p><br>
-
-		</div>
-	{% else %}
-
 		<div id="login_status">
 			<p>Hi Guest!</p><br>
 			<div class="bookmarklet">
@@ -105,5 +98,4 @@
 				<input id="submitbuttoninput" type="submit" value="Submit">
 			</form>
 			</div>
-{% endif %}
 {% endblock %}
