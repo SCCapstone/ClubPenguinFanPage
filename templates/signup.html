@@ -20,17 +20,17 @@
 
 {% block content %}
 <div class="container">
-  <h2 style = "color:white">Sign up</h2>
+  <h2 style = "color:white; font-family: 'Roboto Slab', serif"">Sign up</h2>
   <form method="post" novalidate>
     {% csrf_token %}
 	{{ form.non_field_errors }}
 	{% for field in form %}
-	<p style = "color=white">
-		<p style = "color:white">{{ field.label_tag }}</p>
+	<p style = "color=white; font-size:20px; font-family: 'Rajdhani', serif">
+		<p style = "color:white; font-size:20px; font-family: 'Rajdhani', serif">{{ field.label_tag }}</p>
 		{{ field }}
-		<small style="color:red">{{ field.errors}}</small>
+		<small style="color:red; font-size:16px; font-family: 'Rajdhani', serif">{{ field.errors}}</small>
 		{% if field.help_text %}
-			<small style="color:white">{{ field.help_text }}</small>
+			<small style="color:white; font-size:16px; font-family: 'Rajdhani', serif">{{ field.help_text }}</small>
 		{% endif %}
 		<!--
 			<ul class="errors">
@@ -40,7 +40,7 @@
 			</ul>-->
 	</p>
 	{% endfor %}
-    <button type="submit" href = "{% url 'login' %}">Sign Up</button>
+    <button type="submit" href = "{% url 'login' %}" style="font-family: 'Rajdhani', serif; font-size:18px; font-weight:bold">Sign Up</button>
   </form>
 <!--</div>-->
 </div>
