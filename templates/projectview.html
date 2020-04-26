@@ -21,6 +21,13 @@
         $(".tfidfmultiform").hide();
         $(".posmultiform").hide();
         $(".ldamultiform").hide();
+	$("#formoverlayholder").hide();
+		
+	$("#canceldocadd").on("click", function(){
+	    $("#addDocButton").show();
+	    $("#formoverlayholder").hide(); 
+	 	document.getElementById("formoverlayholder").style.display = "none";
+	});
         
         choiceCheck();
         
@@ -103,7 +110,8 @@
     
 	function addDoc() {
 	    $("#addDocButton").hide();
-	    $("#formholder").show();
+	    $("#formoverlayholder").show(); 
+	 	document.getElementById("formoverlayholder").style.display = "block";
 	 }
         
       function choiceCheck() {
@@ -215,7 +223,7 @@
             <div class="document">
                 <p class="documenttext">{{ document.text }}</p>
             </div>
-            <form method="post" enctype="multipart/form-data" class="doceditform" action="/editDocument/{{ document.id }}/">
+  <form method="post" enctype="multipart/form-data" class="doceditform" action="/editDocument/{{ document.id }}/">
                 {% csrf_token %}
                 <textarea class="editdocarea" name="editdocinput" cols="54" rows="23">{{ document.text }}</textarea><br>
                 <input class="submiteditdoc" type="submit">
@@ -224,10 +232,9 @@
         {% endfor %}
     </div>
     <button id="addDocButton" onClick="addDoc()">Add another document</button>
-    
-     <div id="formholder">
-         <h2 id="add_doc_header">Add Document</h2>
-        <form method="post" enctype="multipart/form-data" id="createprojectform" action="/addDocument/{{ project.id }}/">
+    <div id="formoverlayholder">
+	<h3>Add a Document</h3>
+    <form method="post" enctype="multipart/form-data" id="createprojectform" action="/addDocument/{{ project.id }}/">
             {% csrf_token %}
             <span>
                 <input id="inputtextradio" type="radio" name="inputradio">
@@ -237,9 +244,12 @@
             </span><br>
             <textarea id="firstdocinput" name="textInput" cols="80" rows="20" placeholder="Input the text of an additional document!"></textarea><br>
             <input id="fileinput" type="file" name="fileInput">
-            <input id="submitbuttoninput" type="submit" value="Submit">
+	    <span id="submit and cancel">
+		    <input id="submitbuttoninput" type="submit" value="Submit">
+		    <p id="canceldocadd">[ Cancel ]</p>
+	    </span>
         </form>
-    </div>
+	<div id="formoverlayholder">
     {% else %}
     {% endif %}
      

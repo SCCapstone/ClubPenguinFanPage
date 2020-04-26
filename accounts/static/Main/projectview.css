@@ -5,13 +5,6 @@
 	display: block;
 }
 
-#addDocDiv {
-	width: 500px;
-	height: 500px;
-	display: block;
-	margin: 100px auto;
-}
-
 #title_container {
 	width: 80%;
 	overflow-y: auto;
@@ -57,7 +50,7 @@
 
 
 label {
-    color: white;
+    color: black;
     margin-right: 40px;
     font-size: 18px;
     font-weight: normal;
@@ -67,13 +60,13 @@ label {
 
 #fileinput {
    margin-bottom: 60px;
-   color: white;
+   color: black;
    font-size: 15px;
    font-family: 'Rajdhani', serif;
 }
 
 #add_doc_header {
-	color: white;
+	color: black;
 	font-family: 'Roboto Slab', serif;
 }
 
@@ -88,6 +81,8 @@ label {
 
 #createprojectform {
 	margin-bottom: 100px;
+	width: 80%;
+	position: absolute;
 }
 
 .tfidfbutton {
@@ -272,6 +267,7 @@ select {
 
 .buttonandform {
 	display: table-cell;
+	width: 9%;
 }
 
 #multidocheader {
@@ -291,4 +287,30 @@ select {
 	display: inline-block;
 	margin-top: 3%;
 	max-height: 100px;
+}
+
+#formoverlayholder {
+	padding: 2%;
+	display: none;
+	position: fixed;
+	width: 40%;
+	height: 85%;
+	z-index: 2;
+	right: 18%;
+	bottom: 5%;
+	background-color: #C3E0E5;
+	overflow: auto;
+	color: black;
+	border: 3px solid #1c87c9;
+	font-family: 'Rajdhani', serif;
+}
+
+#firstdocinput {
+	width: 90%;
+}
+
+#canceldocadd {
+	font-size: 15px;
+	margin-left: 60%;
+	width: 80px;
 }
