@@ -34,7 +34,8 @@ def home(request):
 def button(request):
     return render(request, 'home.html')
 
-# runs tf-idf algorithm, returns ranked list
+# runs tf-idf algorithm, returns ranked list, ranked list as a string,
+# and highlighted text to display
 def tfidf(txt, present_txt, sw):
     print(present_txt)
     tokens = []
@@ -64,18 +65,22 @@ def tfidf(txt, present_txt, sw):
     top15 = {}
     for item in t:
         top15.update({item[0]: item[1]})
+    # create ranked list of words and frequencies
     top15_words = ranking.iloc[:,0][0:15].values.tolist()
     top15_freqs = ranking.iloc[:,1][0:15].values.tolist()
     top15_freqs = list(set(top15_freqs))
     top15_freqs = [float(i) for i in top15_freqs]
     top15_freqs_sort = sorted(top15_freqs)
 
+    # generate colors based on the number of unique frequencies
+    # in the color range below
     col1 = Color("#DFFDFE")
     colors = list(col1.range_to(Color("#26267A"),len(top15_freqs_sort)))
     colors = [str(c) for c in colors]
 
     txt_hl = ''
     outputstring = ''
+    # highlights input text for display
     for para in present_txt:
         for word in para.split():
             if word.startswith('<strong>'):
@@ -86,6 +91,8 @@ def tfidf(txt, present_txt, sw):
             if clean_word in top15_words:
                 for freq in top15_freqs_sort:
                     if top15[clean_word] == freq:
+                        # highlights words
+                        # if words are highlighted in dark colors, change font color to white
                         if top15_freqs_sort.index(freq) >= len(colors) / 2:
                             word = '<span style="color:white;background-color:' + colors[top15_freqs_sort.index(freq)] + '">' + word + '</span>'
                         else:
@@ -94,9 +101,11 @@ def tfidf(txt, present_txt, sw):
             outputstring += "<table style='padding:15px;margin-left:auto;margin-right:auto;'>"
         txt_hl += '<br>'
 
+    # highlights and prepares output table
     top15 = ranking[['feat','rank']][0:15]
     for i in range(len(top15)):
         if top15_freqs_sort.index(top15.iloc[i,1]) >= len(colors) / 2:
+            # if words are highlighted in dark colors, change font color to white
             outputstring += '<tr> <td style="color:white;background-color:' + colors[top15_freqs_sort.index(top15.iloc[i,1])] + '">' + top15.iloc[i,0] + '</td>'
             outputstring += '<td style="color:white;background-color:' + colors[top15_freqs_sort.index(top15.iloc[i,1])] + '">' +str(round(top15.iloc[i,1],4)) + '</td></tr>'
         else:
@@ -165,6 +174,7 @@ def lda(txt, present_txt, sw, noOfTopics):
         # topic = lsi.print_topic(i, x)
         # where x = number of words per topic if desired
         words = []
+        # print each topic in a table
         topic = lda.print_topic(i)
         outputstring += "<table style='padding:15px;margin-left:auto;margin-right:auto;'>"
         for t in topic.split('+'):
@@ -177,6 +187,7 @@ def lda(txt, present_txt, sw, noOfTopics):
         outputstring += "</table>"
 
     txt_hl = ''
+    # highlights user-inputted text depending on the topic
     for para in present_txt:
         for word in para.split():
             if word.startswith('<strong>'):
@@ -194,6 +205,7 @@ def pos(txt, sw):
     cnt = 1
     outputstring = ""
     file_string = ''
+    # list of possible tags
     tags_dict = {
     "CC": "coordinating conjunction",
     "CD": "cardinal digit",
@@ -243,12 +255,12 @@ def pos(txt, sw):
     col1 = Color("#DFFDFE")
     colors = list(col1.range_to(Color("#26267A"),4))
     colors = [str(c) for c in colors]
-    #print(colors)
 
     doc = ''
     for t in txt:
         if t != '':
             doc += t
+    # sent_tokenize splits doc into where nltk thinks sentence breaks are
     tokenized = sent_tokenize(doc)
     stop_words = make_sw_list(sw)
     not_all_sw = False
@@ -265,6 +277,7 @@ def pos(txt, sw):
         txt_hl = ''
     else:
         d = defaultdict(int)
+        # key for highlighted nouns, verbs, adjectives, and adverbs
         output_string = "The highlighting denotes <span style=background-color:" + colors[0] + ">nouns</span>, "
         output_string += "<span style=background-color:" + colors[1] + ">verbs</span>, "
         output_string += "<span style=color:white;background-color:" + colors[2] + ">adjectives</span>, and "
@@ -273,6 +286,8 @@ def pos(txt, sw):
         txt_hl = ''
 
         cnt = 1
+        # highlights words in each detected sentence based on if they are
+        # nouns, verbs, adjectives or adverbs
         for i in tokenized:
             txt_hl += "<br><strong>Sentence " + str(cnt) + "</strong><br>"
             file_string += "Sentence " + str(cnt) + '\n'
@@ -299,17 +314,19 @@ def pos(txt, sw):
                         txt_hl += s
                     else:
                         txt_hl += s
+                    # adds each word and its tag into the file output
                     if tag[0].lower() not in stop_words:
                         file_string += tag[0] + "_" + tag[1] + "\n"
             txt_hl += "<br>"
             cnt += 1
 
-        #pos_summary = ''
         if d != {}:
             data = []
             for tag in d:
                 data.append( ((tag, d.get(tag))) )
 
+            # creates output table with highlighting and counts of occurences
+            # of all parts of speech
             counts = pd.DataFrame(data, columns=['pos','cnt'])
             df = counts.sort_values('cnt', ascending=False)
             sort = df.values.tolist()
@@ -326,7 +343,6 @@ def pos(txt, sw):
                     else:
                         fmt_tag = '<td>' + '\t' + tags_dict[tag_info[0]] + '</td>'
                     output_string += '<tr> <td>' + tag_info[0] + fmt_tag + '<td>' + '\t\t' + str(tag_info[1])
-                    #pos_summary += tag_info[0] + '\t' + tags_dict[tag_info[0]] + '\t' + str(tag_info[1]) + '\t' + '\n'
                 else:
                     output_string += '<tr> <td>' + tag_info[0] + '<td> <td>' + str(tag_info[1])
 
@@ -335,7 +351,6 @@ def pos(txt, sw):
     return output_string, file_string, txt_hl
 
 #write results to file, save file, allow for download, delete file
-
 def result(request):
     if request.user.is_authenticated:
         base = "base.html"
@@ -534,7 +549,7 @@ def delete_all_projects(self):
     print("All project and document objects have been deleted")
     return redirect("/")
 
-#ADD DOCUMENT TO PROJECDT
+#ADD DOCUMENT TO PROJECT
 def add_document(request, project_id):
     Project = apps.get_model('accounts', 'Project')
     Document = apps.get_model('accounts', 'Document')
@@ -877,22 +892,26 @@ def multi_lda(request, project_id):
 
 
 #other methods for other stuff
+# splits input string into a list
 def clean_up(txt):
     clean_text = txt
     clean_list = clean_text.split("\r\n")
     num_of_doc = len(clean_list)
     return clean_list
 
+# splits stopword input string into a list
 def sw_clean(sw):
     clean_sw = sw
     sw_list = clean_sw.split(" ")
     return sw_list
 
+# union of user stopwords and standard stopwords
 def make_sw_list(sw):
     user_stopwords = sw_clean(sw)
     stopwords = text.ENGLISH_STOP_WORDS.union(user_stopwords)
     return stopwords
 
+# calls tf idf method and returns output, formatted display text, and file output
 def tfidfprocess(txt, present_txt, sw):
     txt = clean_up(txt)
     present_txt = clean_up(present_txt)
@@ -900,16 +919,16 @@ def tfidfprocess(txt, present_txt, sw):
     filename = 'output-' + str(date.today()) + '.txt'
     tfidf(txt, present_txt, sws)[0].to_csv(filename, header=None, index=None, sep=' ', mode='w')
     newtext = tfidf(txt, present_txt, sws)[1]
-    #textout = '<br>'.join(txt)
     textout = tfidf(txt, present_txt, sws)[2]
     return textout, newtext
 
-#needs work
+# calls pos method and returns output, formatted display text, and file output
 def posprocess(txt, sw):
     txt = clean_up(txt)
     outputstring, file_string, textout = pos(txt, sw)
     return outputstring, file_string, textout
 
+# calls lda method and returns output, formatted display text, and file output
 def ldaprocess(txt, present_txt, sw, numberoftopics):
     txt = clean_up(txt)
     present_txt = clean_up(present_txt)
