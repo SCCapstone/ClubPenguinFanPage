@@ -58,12 +58,12 @@
 	{% if user.is_authenticated %}
 		<!--<p><a href="{% url 'change_password'%}">Reset Password</a></p> -->
 		<div id="login_status">
-			
+
 			<p>Hi {{ user.username }}!</p>
 			<p style=" font-size:16px"><a href="{% url 'change_password'%}">Reset Password</a></p><br>
 			<div class="bookmarklet">
-			<h4>Drag this link into your bookmarks in order to create the <a href='javascript:(function() {if(window.getSelection){ var bookmarklet_text = window.getSelection(); console.log("Selected Text: " + bookmarklet_text); window.location.href = "https://textpenguin.herokuapp.com/guesthome/" + "#" + bookmarklet_text;}})();'>Text Penguin Bookmarklet</a></h4>
-			</div><br>
+				<h4>Drag this link into your bookmarks in order to create the <a href='javascript:(function() {if(window.getSelection){ var bookmarklet_text = window.getSelection(); console.log("Selected Text: " + bookmarklet_text); window.location.href = "https://textpenguin.herokuapp.com/guesthome/" + "#" + bookmarklet_text;}})();'>Text Penguin Bookmarklet</a>!
+				<br>For more information, check out our <a href="/resources">Resources</a> page! </h4><br>
 			<form id="algform" enctype="multipart/form-data" action="{% url 'result' %}" method="POST">
 				{% csrf_token %}
 				<h4 id="algorithmchoicetitle">Choose your text-analysis algorithm:</h4>
@@ -97,7 +97,7 @@
 				<input id="submitbuttoninput" type="submit" value="Submit">
 			</form>
 		<br><br><br><br>
-		
+
   		<!--<p><a href="{% url 'logout' %}">Logout</a></p>-->
 		</div>
 	{% else %}

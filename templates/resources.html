@@ -73,15 +73,17 @@
 		<p1><br>How to use the Text Penguin Bookmarklet:</p1>
 		<ul>
 			<ul>
-				<p3>1) Go to the webpage that holds the body of text you want to analyze</p3>
+				<p3>1) Drag this link into your bookmarks in order to create the <a href='javascript:(function() {if(window.getSelection){ var bookmarklet_text = window.getSelection(); console.log("Selected Text: " + bookmarklet_text); window.location.href = "https://textpenguin.herokuapp.com/guesthome/" + "#" + bookmarklet_text;}})();'>Text Penguin Bookmarklet</a></p3>
 			</ul>
 			<ul>
-				<p3>2) Highlight the text you want analyzed</p3>
+				<p3>2) Go to the webpage that holds the body of text you want to analyze</p3>
 			</ul>
 			<ul>
-				<p3>3) Click the Text Penguin Bookmarklet</p3>
+				<p3>3) Highlight the text you want analyzed</p3>
 			</ul>
-			<p3>If you follow these steps, the text that you highlighted should appear within the text area on the guest home page for quick access to the available algorithms</p3>
+			<ul>
+				<p3>4) Click the Text Penguin Bookmarklet. If you follow these steps, the text that you highlighted should appear within the text area on the guest home page for quick access to the available algorithms!</p3>
+			</ul>
 		</ul>
 	</div>
 	{% if user.is_authenticated %}
