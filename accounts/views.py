@@ -27,8 +27,15 @@ def change_password(request):
 def login(request):
 	form = LoginForm(request.POST)
 	if request.POST and form.is_valid():
+		username = form.cleaned_data['username']
+		password = form.cleaned_data['password']
+		rememberMe = form.cleaned_data['rememberMe']
 		user = form.login(request)
 		if user:
+			if not request.POST.get('rememberMe',None):
+				request.session.set_expiry(0)
+			else:
+				request.session.set_expiry(1209600)
 			auth_login(request, user)
 			return redirect('')
 	return render(request, 'registration/login.html', {'form': form})
