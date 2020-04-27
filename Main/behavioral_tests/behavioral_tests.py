@@ -2,9 +2,11 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.select import Select
+from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support import expected_conditions as EC
+import random
 import time
 
 #Opens a browser and logs into the test account on the website
@@ -34,9 +36,11 @@ def login_setup():
 def correct_login():
 	driver = login_setup()
 
-	login_status = driver.find_elements_by_id('login_status')
 
-	if len(login_status) == 1:
+
+	buttons = driver.find_elements_by_class_name("nav-item")
+
+	if len(buttons) == 5:
 		print("Correct Login Passed ")
 		return 1
 	else:
@@ -67,13 +71,13 @@ def incorrect_login():
 	login_btn.click()
 	time.sleep(1)
 
-	login_status = driver.find_elements_by_id('login_status')
+	buttons = driver.find_elements_by_class_name("nav-item")
 
-	if len(login_status) == 1:
-		print("Incorrect Login Failed ")
+	if len(buttons) == 5:
+		print("Incorrect Login info detected an error.")
 		return 0
 	else:
-		print("Incorrect Login Passed ")
+		print("Incorrect Login info worked as expected. ")
 		return 1
 
 	driver.quit()
@@ -224,11 +228,13 @@ def create_project_test():
 		proj = projects[i].find_element_by_class_name("individualproject")
 		title = proj.find_element_by_tag_name("h4")
 		if title.text == "projecttest":
+			driver.quit()
 			num = 1
 			print("Project successfully created.")
 			return num
 		i = i + 1
 
+	driver.quit()
 	print("Project failed to be created.")
 	return num
 
@@ -255,21 +261,109 @@ def delete_project_test():
 			alert_obj = driver.switch_to.alert
 			alert_obj.accept()
 			print("Project successfully deleted.")
+			driver.quit()
 		i = i + 1
 
 	if num == 0:
+		driver.quit()
 		print("Project failed to be deleted.")
 
 	return num
+
+
+#Tests bookmarklet functionality
+def bookmarklet_test():
+	driver = webdriver.Chrome()
+	driver.get("https://www.npr.org/sections/coronavirus-live-updates/2020/04/25/844939777/no-evidence-that-recovered-covid-19-patients-are-immune-who-says")
+	src = driver.find_element_by_class_name('credit-caption')
+	dst = driver.find_element_by_tag_name('p')
+	ActionChains(driver).drag_and_drop(src, dst).perform()
+
+	js = """
+	javascript:(function() {
+		if(window.getSelection){
+			var bookmarklet_text = window.getSelection();
+			console.log("Selected Text: " + bookmarklet_text);
+			window.location.href = "https://textpenguin.herokuapp.com/guesthome/" + "#" + bookmarklet_text;
+		}
+	})();
+
+	"""
+	driver.execute_script(js)
+	WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.ID, "algorithm")))
+	time.sleep(1)
+
+	text = driver.find_element_by_tag_name("textarea")
+	if text.text != "Input the text of document!":
+		print("Bookmarklet sent text successfully.")
+		driver.quit()
+		return 1
+	else:
+		print("Bookmarklet didn't send text properly.")
+		driver.quit()
+		return 0
+
+#Tests if a user can create a new account
+def create_account_test():
+	num = 0
+	username = str(random.randint(1000000, 9999999))
+	username = username + 'a'
+	password = str(random.randint(1000000, 9999999))
+	password = password + 'b'
+
+	driver = webdriver.Chrome()
+	driver.get("http://textpenguin.herokuapp.com/")
+
+	login = driver.find_element_by_xpath('//a[@href="/accounts/login/"]')
+	login.click()
+	WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CLASS_NAME, "loginformbox")))
+	time.sleep(1)
+	driver.find_element_by_id("addlink1").click()
+	WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.ID, "id_username")))
+	time.sleep(1)
+	driver.find_element_by_id("id_username").send_keys(username)
+	driver.find_element_by_id("id_password1").send_keys(password)
+	driver.find_element_by_id("id_password2").send_keys(password)
+	driver.find_element_by_tag_name("button").click()
+
+	#Log in with new username/password to test if an account was created
+	WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CLASS_NAME, \
+	"loginformbox")))
+	time.sleep(1)
+
+	driver.find_element_by_name('username').send_keys(username)
+	driver.find_element_by_name('password').send_keys(password)
+	login_btn = driver.find_element_by_id('loginsubmit')
+	login_btn.click()
+	WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.ID, \
+	"algorithm")))
+	time.sleep(1)
+
+	buttons = driver.find_elements_by_class_name("nav-item")
+
+	if len(buttons) == 5:
+		driver.quit()
+		print("Created account successfully.")
+		num = 1
+	else:
+		driver.quit()
+		print("Create account failed.")
+		num = 0
+
+	return num
+
+
+
+
 
 #Runs all tests and tracks how many pass or fail
 def test_suite():
 	num_passed = correct_login() + incorrect_login() + tfidf_test_text() + \
 	tfidf_test_no_text() + lda_test_text() + lda_test_no_text() + \
 	pos_test_text() + pos_test_no_text() + create_project_test() + \
-	delete_project_test()
+	delete_project_test() + bookmarklet_test() + create_account_test()
 	print("\n ... \n")
-	print("Passed Tests: " , num_passed , "out of", 10)
+	print("Passed Tests: " , num_passed , "out of", 12)
 
 
 test_suite()
