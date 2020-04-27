@@ -115,6 +115,7 @@ def tfidf(txt, present_txt, sw):
 
     return ranking[['feat','rank']][0:15], outputstring, txt_hl
 
+#runs lda algorithm
 def lda(txt, present_txt, sw, noOfTopics):
     outputstring = ""
     documents = []
@@ -201,6 +202,7 @@ def lda(txt, present_txt, sw, noOfTopics):
             txt_hl += word + ' '
     return outputstring, file_string, txt_hl
 
+#runs POS algorithm
 def pos(txt, sw):
     cnt = 1
     outputstring = ""
@@ -351,6 +353,7 @@ def pos(txt, sw):
     return output_string, file_string, txt_hl
 
 #write results to file, save file, allow for download, delete file
+#main reason for this method is to create display for "results" page after processing with algorithm.  
 def result(request):
     if request.user.is_authenticated:
         base = "base.html"
@@ -444,6 +447,7 @@ def result(request):
             'i shall walk to the grocery store tomorrow']
     return render(request, 'result.html')
 
+#if "download result" is clicked, this method is run
 def download_file(request):
     fl_path = 'output-' + str(date.today()) + '.txt'
     filename = 'output-' + str(date.today()) + '.txt'
@@ -454,6 +458,7 @@ def download_file(request):
     response['Content-Disposition'] = 'attachment; filename="%s"' %filename
     return response
 
+#this method creates project after user fills out create project form and submits
 def createProject(request):
     Project = apps.get_model('accounts', 'Project')
     Document = apps.get_model('accounts', 'Document')
@@ -499,6 +504,7 @@ def createProject(request):
     else:
         return render(request, 'createProject.html')
 
+#method produces the "project" page 
 def recentlyused(request):
         Project = apps.get_model('accounts', 'Project')
         Document = apps.get_model('accounts', 'Document')
@@ -521,12 +527,14 @@ def recentlyused(request):
     #form = createProjectForm()
     #return render(request, 'createProject.html', {'form': form})
 
+#goes to create project page
 def newProject(self, request):
     if request.method == 'POST':
         if request.POST.get('docText'):
             print(request.POST.get('textInput'))
     return render(request, 'createProject.html')
 
+#goes to project detail page.  produces doc list for each project for display.
 def project_detail(request, project_id):
     Project = apps.get_model('accounts', 'Project')
     Document = apps.get_model('accounts', 'Document')
@@ -540,7 +548,7 @@ def project_detail(request, project_id):
     }
     return render(request, "projectview.html", context=context)
 
-#DELETE ALL PROJECTS AND DOCUMENTS
+#DELETE ALL PROJECTS AND DOCUMENTS // No longer used method
 def delete_all_projects(self):
     Project = apps.get_model('accounts', 'Project')
     Document = apps.get_model('accounts', 'Document')
@@ -573,6 +581,7 @@ def add_document(request, project_id):
 
     return redirect("project_detail", project_id=project_id)
 
+#ANALYZES DOCUMENT FROM PROJECT DETAIL PAGE WITH TFIDF
 def analyze_doc_tfidf(request, document_id):
     Document = apps.get_model('accounts', 'Document')
     doc = Document.objects.get(pk=document_id)
@@ -606,6 +615,7 @@ def analyze_doc_tfidf(request, document_id):
     }
     return render(request, 'result.html', context = context)
 
+#ANALYZES DOCUMENT FROM PROJECT DETAIL PAGE WITH POS ALGORITHM
 def analyze_doc_pos(request, document_id):
     Document = apps.get_model('accounts', 'Document')
     doc = Document.objects.get(pk=document_id)
@@ -640,6 +650,7 @@ def analyze_doc_pos(request, document_id):
     }
     return render(request, 'result.html', context= context)
 
+#ANALYZES DOCUMENT FROM PROJECT DETAIL PAGE WITH LDA ALGORITHM
 def analyze_doc_lda(request, document_id):
     Document = apps.get_model('accounts', 'Document')
     doc = Document.objects.get(pk=document_id)
@@ -680,7 +691,7 @@ def analyze_doc_lda(request, document_id):
     return render(request, 'result.html', context=context)
 
 
-#change to redirect
+#REDIRECTS TO PROJECT PAGE AFTER DELETING PROJECT WITH REFRESHED VIEW
 def delete_project(request, project_id):
     Project = apps.get_model('accounts', 'Project')
     Document = apps.get_model('accounts', 'Document')
@@ -695,7 +706,7 @@ def delete_project(request, project_id):
     }
     return redirect("recentlyused")
 
-#change to redirect
+#IF USER EDITS TITLE, REDIRECTS TO PROJECT DETAIL PAGE WITH NEW TITLE
 def edit_project_title(request, project_id):
     if request.method == 'POST':
         new_name = request.POST.get("newtitleinput")
@@ -712,7 +723,7 @@ def edit_project_title(request, project_id):
         }
         return redirect("project_detail", project_id = proj.id)
 
-#change to redirect
+#IF USER DELETES DOCUMENT, REDIRECTS TO PROJECT DETAIL PAGE MINUS THE DELETED DOCUMENT
 def delete_document(request, document_id):
     Project = apps.get_model('accounts', 'Project')
     Document = apps.get_model('accounts', 'Document')
@@ -738,6 +749,7 @@ def delete_document(request, document_id):
         }
         return redirect("recentlyused")
 
+#IF USER EDITS DOCUMENT, REDIRECTS TO PROJECT DETAIL PAGE WITH DOCUMENT UPDATED
 def edit_document(request, document_id):
     if request.method == 'POST':
         new_text = request.POST.get("editdocinput")
@@ -749,6 +761,7 @@ def edit_document(request, document_id):
         proj_id = proj.id
         return redirect("project_detail", project_id = proj.id)
 
+#IF USER CLICKS TO ANALYZE PROJECT WITH TFIDF, USES THIS METHOD
 def multi_tfidf(request, project_id):
     Project = apps.get_model('accounts', 'Project')
     Document = apps.get_model('accounts', 'Document')
@@ -793,6 +806,7 @@ def multi_tfidf(request, project_id):
     }
     return render(request, 'result.html', context = context)
 
+#IF USER CLICKS TO ANALYZE PROJECT WITH POS, USES THIS METHOD
 def multi_pos(request, project_id):
     Project = apps.get_model('accounts', 'Project')
     Document = apps.get_model('accounts', 'Document')
@@ -838,6 +852,7 @@ def multi_pos(request, project_id):
     }
     return render(request, 'result.html', context= context)
 
+#IF USER CLICKS TO ANALYZE PROJECT WITH LDA, USES THIS METHOD
 def multi_lda(request, project_id):
     Project = apps.get_model('accounts', 'Project')
     Document = apps.get_model('accounts', 'Document')
@@ -935,6 +950,3 @@ def ldaprocess(txt, present_txt, sw, numberoftopics):
     outputstring, file_string, newtext = lda(txt, present_txt, sw, numberoftopics)
     return outputstring, file_string, newtext
 
-#TODO (Ainsley):
-#error message in case all text entered consists of stopwords (single, multi, and input)
-#css work on submit/back button on project creation page
