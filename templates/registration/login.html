@@ -24,6 +24,7 @@
 		<input class="loginformbox" type="text" name="username">
 		{% if form.non_field_errors %}
 			<ul class="errors">
+				<!--gives error messages for a bad login-->
 				{% for error in form.non_field_errors %}
 					<li style = "color:red; font_size:20px">{{ error }}</li>
 				{% endfor %}

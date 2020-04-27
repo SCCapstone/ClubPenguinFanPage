@@ -23,12 +23,15 @@
   <h2 style = "color:white; font-family: 'Roboto Slab', serif"">Sign up</h2>
   <form method="post" novalidate>
     {% csrf_token %}
+	
 	{{ form.non_field_errors }}
 	{% for field in form %}
 	<p style = "color=white; font-size:20px; font-family: 'Rajdhani', serif">
 		<p style = "color:white; font-size:20px; font-family: 'Rajdhani', serif">{{ field.label_tag }}</p>
 		{{ field }}
+		<!--displays the errors with the input information-->
 		<small style="color:red; font-size:16px; font-family: 'Rajdhani', serif">{{ field.errors}}</small>
+		<!--displays the requirements for each field-->
 		{% if field.help_text %}
 			<small style="color:white; font-size:16px; font-family: 'Rajdhani', serif">{{ field.help_text }}</small>
 		{% endif %}

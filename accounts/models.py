@@ -2,6 +2,7 @@ from django.db import models
 
 from django.contrib.auth.models import User
 
+#User gets the projects and documents under authenticated account
 class Project(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.TextField(default="Title")
