@@ -98,7 +98,7 @@ def tfidf(txt, present_txt, sw):
                         else:
                             word = '<span style="background-color:' + colors[top15_freqs_sort.index(freq)] + '">' + word + '</span>'
             txt_hl += word + ' '
-            outputstring += "<table style='padding:15px;margin-left:auto;margin-right:auto;'>"
+            outputstring += "<table style='margin-left:auto;margin-right:auto;'>"
         txt_hl += '<br>'
 
     # highlights and prepares output table
@@ -106,11 +106,11 @@ def tfidf(txt, present_txt, sw):
     for i in range(len(top15)):
         if top15_freqs_sort.index(top15.iloc[i,1]) >= len(colors) / 2:
             # if words are highlighted in dark colors, change font color to white
-            outputstring += '<tr> <td style="color:white;background-color:' + colors[top15_freqs_sort.index(top15.iloc[i,1])] + '">' + top15.iloc[i,0] + '</td>'
-            outputstring += '<td style="color:white;background-color:' + colors[top15_freqs_sort.index(top15.iloc[i,1])] + '">' +str(round(top15.iloc[i,1],4)) + '</td></tr>'
+            outputstring += '<tr> <td style="padding:5px;color:white;background-color:' + colors[top15_freqs_sort.index(top15.iloc[i,1])] + '">' + top15.iloc[i,0] + '</td>'
+            outputstring += '<td style="padding:5px;color:white;background-color:' + colors[top15_freqs_sort.index(top15.iloc[i,1])] + '">' +str(round(top15.iloc[i,1],4)) + '</td></tr>'
         else:
-            outputstring += '<tr> <td style="background-color:' + colors[top15_freqs_sort.index(top15.iloc[i,1])] + '">' + top15.iloc[i,0] + '</td>'
-            outputstring += '<td style="background-color:' + colors[top15_freqs_sort.index(top15.iloc[i,1])] + '">' +str(round(top15.iloc[i,1],4)) + '</td></tr>'
+            outputstring += '<tr> <td style="padding:5px;background-color:' + colors[top15_freqs_sort.index(top15.iloc[i,1])] + '">' + top15.iloc[i,0] + '</td>'
+            outputstring += '<td style="padding:5px;background-color:' + colors[top15_freqs_sort.index(top15.iloc[i,1])] + '">' +str(round(top15.iloc[i,1],4)) + '</td></tr>'
     outputstring += "</table>"
 
     return ranking[['feat','rank']][0:15], outputstring, txt_hl
@@ -177,12 +177,12 @@ def lda(txt, present_txt, sw, noOfTopics):
         words = []
         # print each topic in a table
         topic = lda.print_topic(i)
-        outputstring += "<table style='padding:15px;margin-left:auto;margin-right:auto;'>"
+        outputstring += "<table style='margin-left:auto;margin-right:auto;align:center;'>"
         for t in topic.split('+'):
             t = t.replace(" ", "").replace('*', " ")
             w = (re.sub(r"[0-9.\"]+", '', t)).strip(' ')
             words.append(w)
-            outputstring += "<tr> <td>" + t.split(" ")[1].strip('"') + "<td>" + t.split(" ")[0] + "</tr>"
+            outputstring += "<tr> <td style='padding:2px;'>" + t.split(" ")[1].strip('"') + "<td>" + t.split(" ")[0] + "</tr>"
             file_string += t + "\n"
         topic_contents.append(words)
         outputstring += "</table>"
@@ -335,25 +335,25 @@ def pos(txt, sw):
             for tag_info in sort:
                 if tag_info[0] in tags_dict:
                     if tag_info[0].startswith('N'):
-                        fmt_tag = '<td style="background-color:' + colors[0] + '">' + tags_dict[tag_info[0]] + '</td>'
+                        fmt_tag = '<td style="padding:2px;background-color:' + colors[0] + '">' + tags_dict[tag_info[0]] + '</td>'
                     elif tag_info[0].startswith('V'):
-                        fmt_tag = '<td style="background-color:' + colors[1] + '">' + tags_dict[tag_info[0]] + '</td>'
+                        fmt_tag = '<td style="padding:2px;background-color:' + colors[1] + '">' + tags_dict[tag_info[0]] + '</td>'
                     elif tag_info[0].startswith('J'):
-                        fmt_tag = '<td style="color:white;background-color:' + colors[2] + '">' + tags_dict[tag_info[0]] + '</td>'
+                        fmt_tag = '<td style="padding:2px;color:white;background-color:' + colors[2] + '">' + tags_dict[tag_info[0]] + '</td>'
                     elif tag_info[0].startswith('R'):
-                        fmt_tag = '<td style="color:white;background-color:' + colors[3] + '">' + tags_dict[tag_info[0]] + '</td>'
+                        fmt_tag = '<td style="padding:2px;color:white;background-color:' + colors[3] + '">' + tags_dict[tag_info[0]] + '</td>'
                     else:
-                        fmt_tag = '<td>' + '\t' + tags_dict[tag_info[0]] + '</td>'
-                    output_string += '<tr> <td>' + tag_info[0] + fmt_tag + '<td>' + '\t\t' + str(tag_info[1])
+                        fmt_tag = '<td style="padding:2px;">' + '\t' + tags_dict[tag_info[0]] + '</td>'
+                    output_string += '<tr> <td style="padding:2px;">' + tag_info[0] + fmt_tag + '<td style="padding:2px;">' + '\t\t' + str(tag_info[1])
                 else:
-                    output_string += '<tr> <td>' + tag_info[0] + '<td> <td>' + str(tag_info[1])
+                    output_string += '<tr> <td style="padding:2px;">' + tag_info[0] + '<td style="padding:2px;"> <td style="padding:2px;">' + str(tag_info[1])
 
         output_string +=  "</table>"
         cnt += 1
     return output_string, file_string, txt_hl
 
 #write results to file, save file, allow for download, delete file
-#main reason for this method is to create display for "results" page after processing with algorithm.  
+#main reason for this method is to create display for "results" page after processing with algorithm.
 def result(request):
     if request.user.is_authenticated:
         base = "base.html"
@@ -504,7 +504,7 @@ def createProject(request):
     else:
         return render(request, 'createProject.html')
 
-#method produces the "project" page 
+#method produces the "project" page
 def recentlyused(request):
         Project = apps.get_model('accounts', 'Project')
         Document = apps.get_model('accounts', 'Document')
@@ -949,4 +949,3 @@ def ldaprocess(txt, present_txt, sw, numberoftopics):
     present_txt = clean_up(present_txt)
     outputstring, file_string, newtext = lda(txt, present_txt, sw, numberoftopics)
     return outputstring, file_string, newtext
-
