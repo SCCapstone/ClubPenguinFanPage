@@ -10,7 +10,8 @@
 
 #formholder {
     width: 80%;
-    margin-left: 35%;
+    margin-left: 25%;
+    font-family: 'Rajdhani', serif;
 }
 
 #createaprojectheader {
@@ -19,6 +20,7 @@
     text-align: center;
     margin-top: 50px;
     margin-bottom: 60px;
+    font-family: 'Roboto Slab', serif;
 }
 
 #titleinput {
