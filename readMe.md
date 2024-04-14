@@ -76,7 +76,6 @@ After your installation is complete, you can run the test using `python3 behavio
 
 |Name:                 |Github:                                                  |Gmail:                                |
 |----------------------|---------------------------------------------------------|--------------------------------------|
-|Samyu Comandur        |[@samyuc](https://github.com/samyuc)                     |samyuktha.comandur@gmail.com          |
 |Ainsley McWaters      |[@mcwatera](https://github.com/mcwatera)                 |mcwatera@gmail.com                    |
 |Suzie Prentice        |[@suzanneprentice](https://github.com/suzanneprentice)   |suzanneprentice26@gmail.com           |
 |Matt O’Neill          |[@oneillm71](https://github.com/oneillm71)               |matthew.oneill71@gmail.com            |
